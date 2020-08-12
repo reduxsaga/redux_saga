@@ -126,15 +126,7 @@ sagaMiddleware.run(mySaga);
 
 # Documentation
 
-- [Introduction](xxx)
-- [Basic Concepts](xxx)
-- [Advanced Concepts](xxx)
-- [Recipes](xxx)
-- [External Resources](xxx)
-- [Troubleshooting](xxx)
-- [Glossary](xxx)
 - [API Reference](https://pub.dev/documentation/redux_saga)
-
 
 # Examples
 
@@ -142,13 +134,13 @@ sagaMiddleware.run(mySaga);
 
 Web based counter demo.
 
-[vanilla_counter](xxx)
+[vanilla_counter](https://github.com/reduxsaga/vanilla_counter)
 
 #### Counter
 
 Demo using `flutter` and high-level API `TakeEvery`.
 
-[vanilla_counter](xxx)
+[counter](xxx)
 
 #### Shopping Cart
 
