@@ -133,7 +133,7 @@ sagaMiddleware.run(mySaga);
 - [External Resources](xxx)
 - [Troubleshooting](xxx)
 - [Glossary](xxx)
-- [API Reference](xxx)
+- [API Reference](https://pub.dev/documentation/redux_saga)
 
 
 # Examples
