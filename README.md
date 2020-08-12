@@ -8,37 +8,7 @@ It uses synchronous generator functions to make those asynchronous flows easy to
 
 You might've used `redux_thunk` before to handle your data fetching. Contrary to redux thunk, you don't end up in callback hell, you can test your asynchronous flows easily and your actions stay pure.
 
-`redux_saga` is ported and compatible with javascript [redux-saga](https://github.com/redux-saga/redux-saga) implementation and its documentation.
-
-# Getting started
-
-## Install
-
-Add this to your package's `pubspec.yaml` file:
-
-```yaml
-dependencies:
-  redux_saga: ^1.0.0
-```
-You can install packages from the command line:
-
-with pub:
-
-```sh
-$ pub get
-```
-
-with Flutter:
-
-```sh
-$ flutter pub get
-```
-
-Now in your Dart code, you can use:
-
-```dart
-import 'package:redux_saga/redux_saga.dart';
-```
+`redux_saga` is ported and compatible with javascript redux-saga implementation and its documentation.
 
 ## Usage Example
 
@@ -61,7 +31,7 @@ class MyComponent extends StatelessWidget {
 
 The Component dispatches a plain Object action to the Store. We'll create a Saga that watches for all `UserFetchRequested` actions and triggers an API call to fetch the user data.
 
-#### `sagas.dart`
+### `sagas.dart`
 
 ```dart
 import 'package:redux_saga/redux_saga.dart';
@@ -99,7 +69,7 @@ mySaga() sync* {
 
 To run our Saga, we'll have to connect it to the Redux Store using the `redux_saga` middleware.
 
-#### `main.dart`
+### `main.dart`
 
 ```dart
 import 'package:redux/redux.dart';
@@ -124,31 +94,31 @@ sagaMiddleware.run(mySaga);
 // render the application
 ```
 
-# Documentation
+## Documentation
 
 - [API Reference](https://pub.dev/documentation/redux_saga)
 
-# Examples
+## Examples
 
-#### Vanilla Counter
+### Vanilla Counter
 
 Web based counter demo.
 
 [vanilla_counter](https://github.com/reduxsaga/vanilla_counter)
 
-#### Counter
+### Counter
 
 Demo using `flutter` and high-level API `TakeEvery`.
 
 [counter](https://github.com/reduxsaga/counter)
 
-#### Shopping Cart
+### Shopping Cart
 
 A basic shopping cart example using `flutter`.
 
 [shopping_cart](https://github.com/reduxsaga/shopping_cart)
 
-#### Async App
+### Async App
 
 A demo using async functions to fetch reddit posts.
 
