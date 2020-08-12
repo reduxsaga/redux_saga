@@ -62,3 +62,4 @@ part 'src/options.dart';
 part 'src/stack.dart';
 part 'src/taskResult.dart';
 part 'src/functions.dart';
+part 'src/cloneableGenerator.dart';

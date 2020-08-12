@@ -168,3 +168,11 @@ class CannotDetermineNullFunctionArguments implements Exception {
     return 'Can not determine null function arguments';
   }
 }
+
+/// Thrown when provided function is not a generator function
+class GeneratorFunctionExpectedException implements Exception {
+  @override
+  String toString() {
+    return 'Generator function expected';
+  }
+}
