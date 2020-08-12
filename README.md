@@ -1,4 +1,4 @@
-<center><img src='logo/redux_saga.png'></center>
+<img src='logo/redux_saga.png' width='800px'>
 
 # redux_saga
 
