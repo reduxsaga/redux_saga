@@ -10,7 +10,7 @@ You might've used `redux_thunk` before to handle your data fetching. Contrary to
 
 `redux_saga` is ported and compatible with javascript redux-saga implementation and its documentation.
 
-## Usage Example
+### Usage Example
 
 Suppose we have a UI to fetch some user data from a remote server when a button is clicked. (For brevity, we'll just show the action triggering code.)
 
@@ -31,7 +31,7 @@ class MyComponent extends StatelessWidget {
 
 The Component dispatches a plain Object action to the Store. We'll create a Saga that watches for all `UserFetchRequested` actions and triggers an API call to fetch the user data.
 
-### `sagas.dart`
+#### `sagas.dart`
 
 ```dart
 import 'package:redux_saga/redux_saga.dart';
@@ -69,7 +69,7 @@ mySaga() sync* {
 
 To run our Saga, we'll have to connect it to the Redux Store using the `redux_saga` middleware.
 
-### `main.dart`
+#### `main.dart`
 
 ```dart
 import 'package:redux/redux.dart';
@@ -94,37 +94,37 @@ sagaMiddleware.run(mySaga);
 // render the application
 ```
 
-## Documentation
+### Documentation
 
 - [API Reference](https://pub.dev/documentation/redux_saga)
 
-## Examples
+### Examples
 
-### Vanilla Counter
+#### Vanilla Counter
 
 Web based counter demo.
 
 [vanilla_counter](https://github.com/reduxsaga/vanilla_counter)
 
-### Counter
+#### Counter
 
 Demo using `flutter` and high-level API `TakeEvery`.
 
 [counter](https://github.com/reduxsaga/counter)
 
-### Shopping Cart
+#### Shopping Cart
 
 A basic shopping cart example using `flutter`.
 
 [shopping_cart](https://github.com/reduxsaga/shopping_cart)
 
-### Async App
+#### Async App
 
 A demo using async functions to fetch reddit posts.
 
 [async_app](https://github.com/reduxsaga/async_app)
 
-## License
+### License
 Copyright (c) 2020 Bilal Uslu.
 
 Licensed under The MIT License (MIT).
