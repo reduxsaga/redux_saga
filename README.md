@@ -1,4 +1,4 @@
-<img src='logo/redux_saga.png'>
+<center><img src='logo/redux_saga.png'></center>
 
 # redux_saga
 
@@ -10,7 +10,7 @@ It uses synchronous generator functions to make those asynchronous flows easy to
 
 You might've used `redux_thunk` before to handle your data fetching. Contrary to redux thunk, you don't end up in callback hell, you can test your asynchronous flows easily and your actions stay pure.
 
-`redux_saga` is ported and compatible with javascript [redux-saga for javascript](xxx) implementation and its documentation.
+`redux_saga` is ported and compatible with javascript [redux-saga](https://github.com/redux-saga/redux-saga) implementation and its documentation.
 
 # Getting started
 
