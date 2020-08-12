@@ -140,19 +140,19 @@ Web based counter demo.
 
 Demo using `flutter` and high-level API `TakeEvery`.
 
-[counter](xxx)
+[counter](https://github.com/reduxsaga/counter)
 
 #### Shopping Cart
 
 A basic shopping cart example using `flutter`.
 
-[shopping_cart](xxx)
+[shopping_cart](https://github.com/reduxsaga/shopping_cart)
 
 #### Async App
 
 A demo using async functions to fetch reddit posts.
 
-[async_app](xxx)
+[async_app](https://github.com/reduxsaga/async_app)
 
 ## License
 Copyright (c) 2020 Bilal Uslu.
