@@ -41,7 +41,8 @@ class All extends EffectWithResult {
   All(this.effects, {AllResult result}) : super(result: result);
 
   @override
-  void _run(_SagaMiddleware middleware, _TaskCallback cb, _ExecutingContext executingContext) {
+  void _run(_SagaMiddleware middleware, _TaskCallback cb,
+      _ExecutingContext executingContext) {
     if (effects.isEmpty) {
       cb.next(arg: <dynamic, Effect>{});
       return;
@@ -51,7 +52,8 @@ class All extends EffectWithResult {
 
     var childCallbacks = _createAllStyleChildCallbacks(effects, cb);
     for (var key in effects.keys) {
-      executingContext.digestEffect(effects[key], effectId, childCallbacks[key], key);
+      executingContext.digestEffect(
+          effects[key], effectId, childCallbacks[key], key);
     }
   }
 

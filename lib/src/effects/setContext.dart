@@ -10,7 +10,8 @@ class SetContext extends Effect {
   SetContext(this.context) : super();
 
   @override
-  void _run(_SagaMiddleware middleware, _TaskCallback cb, _ExecutingContext executingContext) {
+  void _run(_SagaMiddleware middleware, _TaskCallback cb,
+      _ExecutingContext executingContext) {
     executingContext.task.context._extend(context);
     cb.next();
   }

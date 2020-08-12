@@ -36,7 +36,8 @@ class FlushChannel extends EffectWithResult {
   FlushChannel(this.channel, {Result result}) : super(result: result);
 
   @override
-  void _run(_SagaMiddleware middleware, _TaskCallback cb, _ExecutingContext executingContext) {
+  void _run(_SagaMiddleware middleware, _TaskCallback cb,
+      _ExecutingContext executingContext) {
     if (channel == null) {
       cb.next(arg: null);
     } else {

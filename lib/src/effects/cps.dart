@@ -47,10 +47,12 @@ class CPS extends EffectWithResult {
   final Map<Symbol, dynamic> namedArgs;
 
   /// Creates an instance of a CPS effect.
-  CPS(this.fn, {this.args, this.namedArgs, this.name, Result result}) : super(result: result);
+  CPS(this.fn, {this.args, this.namedArgs, this.name, Result result})
+      : super(result: result);
 
   @override
-  void _run(_SagaMiddleware middleware, _TaskCallback cb, _ExecutingContext executingContext) {
+  void _run(_SagaMiddleware middleware, _TaskCallback cb,
+      _ExecutingContext executingContext) {
     // CPS (ie node style functions) can define their own cancellation logic
     // by setting cancel field on the cb
 

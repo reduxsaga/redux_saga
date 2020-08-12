@@ -93,7 +93,10 @@ Iterable<Effect> _TakeEvery(Function saga,
     yield Fork(saga,
         args: args,
         namedArgs: _functionHasActionArgument(saga)
-            ? <Symbol, dynamic>{...?namedArgs, #action: action is Result ? action.value : action}
+            ? <Symbol, dynamic>{
+                ...?namedArgs,
+                #action: action is Result ? action.value : action
+              }
             : namedArgs,
         Catch: Catch,
         Finally: Finally,

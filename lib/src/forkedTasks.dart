@@ -45,8 +45,8 @@ class _ForkedTasks {
 
   void addTask(dynamic task) {
     tasks.add(task);
-    task.continueCallback =
-        _TaskCallback(({_TaskCallback invoker, dynamic arg, bool isErr = false}) {
+    task.continueCallback = _TaskCallback((
+        {_TaskCallback invoker, dynamic arg, bool isErr = false}) {
       if (completed) {
         return;
       }

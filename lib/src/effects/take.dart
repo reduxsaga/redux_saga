@@ -48,10 +48,12 @@ class Take extends EffectWithResult {
   final bool maybe;
 
   /// Creates an instance of a Take effect.
-  Take({this.pattern, this.channel, this.maybe = false, Result result}) : super(result: result);
+  Take({this.pattern, this.channel, this.maybe = false, Result result})
+      : super(result: result);
 
   @override
-  void _run(_SagaMiddleware middleware, _TaskCallback cb, _ExecutingContext executingContext) {
+  void _run(_SagaMiddleware middleware, _TaskCallback cb,
+      _ExecutingContext executingContext) {
     var takeCb = TakeCallback<dynamic>((dynamic input) {
       if (input is Exception) {
         cb.next(arg: input, isErr: true);
@@ -68,7 +70,10 @@ class Take extends EffectWithResult {
 
     try {
       _channel.take(
-          takeCb, pattern == null ? _wilcardMatcher<dynamic>() : _matcher<dynamic>(pattern));
+          takeCb,
+          pattern == null
+              ? _wilcardMatcher<dynamic>()
+              : _matcher<dynamic>(pattern));
     } catch (e) {
       cb.next(arg: e, isErr: true);
       return;

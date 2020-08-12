@@ -65,8 +65,8 @@ class _Task extends Task<dynamic> {
 
   int get id => parentEffectId;
 
-  _Task(this.middleware, SagaContext parentContext, this.mainTask, this.parentEffectId, this.meta,
-      this.isRoot,
+  _Task(this.middleware, SagaContext parentContext, this.mainTask,
+      this.parentEffectId, this.meta, this.isRoot,
       [this.continueCallback]) {
     context = SagaContext();
     context._extend(parentContext.objects);
@@ -107,11 +107,13 @@ class _Task extends Task<dynamic> {
 
       taskResult = null; //added ***
 
-      middleware.errorStack.addSagaFrame(_SagaFrame(meta, cancelledDueToErrorTasks));
+      middleware.errorStack
+          .addSagaFrame(_SagaFrame(meta, cancelledDueToErrorTasks));
 
       if (isRoot) {
         if (arg is _SagaInternalException) {
-          middleware.onError(arg.message, '${arg.stackTrace}\n${middleware.errorStack}');
+          middleware.onError(
+              arg.message, '${arg.stackTrace}\n${middleware.errorStack}');
         } else {
           middleware.onError(arg, '${middleware.errorStack}');
         }
@@ -122,7 +124,8 @@ class _Task extends Task<dynamic> {
         taskStackTrace = arg.stackTrace;
       } else {
         taskError = arg;
-        taskStackTrace = StackTrace.fromString(middleware.errorStack.toString());
+        taskStackTrace =
+            StackTrace.fromString(middleware.errorStack.toString());
       }
 
       if (futureEnd != null) {
@@ -153,7 +156,8 @@ class _Task extends Task<dynamic> {
   @override
   bool get isCancelled =>
       status == _TaskStatus.Cancelled ||
-      (status == _TaskStatus.Running && mainTask.status == _TaskStatus.Cancelled);
+      (status == _TaskStatus.Running &&
+          mainTask.status == _TaskStatus.Cancelled);
 
   @override
   bool get isRunning => status == _TaskStatus.Running;

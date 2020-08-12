@@ -9,7 +9,8 @@ class GetContext extends EffectWithResult {
   GetContext(this.name, {Result result}) : super(result: result);
 
   @override
-  void _run(_SagaMiddleware middleware, _TaskCallback cb, _ExecutingContext executingContext) {
+  void _run(_SagaMiddleware middleware, _TaskCallback cb,
+      _ExecutingContext executingContext) {
     cb.next(arg: executingContext.task.context[name]);
   }
 

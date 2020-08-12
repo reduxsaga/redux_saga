@@ -28,10 +28,12 @@ class _SagaErrorStack {
       var cancelledTasks = <String>[];
       for (var i = 0; i < sagaStack.length; i++) {
         var frame = sagaStack[i];
-        var effectDesc =
-            frame.crashedEffect == null ? '' : ' when executing effect ${frame.crashedEffect}';
+        var effectDesc = frame.crashedEffect == null
+            ? ''
+            : ' when executing effect ${frame.crashedEffect}';
         if (i == 0) {
-          lines.add('The above error occurred in task ${frame.meta} ${effectDesc}');
+          lines.add(
+              'The above error occurred in task ${frame.meta} ${effectDesc}');
         } else {
           lines.add(' created by ${frame.meta}');
         }
@@ -63,7 +65,8 @@ class _SagaFrame {
   _SagaFrame(this.meta, this.cancelledTasks);
 }
 
-_SagaInternalException _createSagaException(dynamic error, [StackTrace stackTrace]) {
+_SagaInternalException _createSagaException(dynamic error,
+    [StackTrace stackTrace]) {
   if (error is _SagaInternalException) return error;
   return _SagaInternalException(error, stackTrace);
 }

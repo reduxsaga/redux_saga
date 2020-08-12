@@ -80,7 +80,8 @@ class Fork extends EffectWithResult {
       : super(result: result);
 
   @override
-  void _run(_SagaMiddleware middleware, _TaskCallback cb, _ExecutingContext executingContext) {
+  void _run(_SagaMiddleware middleware, _TaskCallback cb,
+      _ExecutingContext executingContext) {
     var parent = executingContext.task;
 
     var taskIterator = _createTaskIterator(fn, args, namedArgs);

@@ -352,7 +352,8 @@ class EventChannel extends _EventChannel<dynamic> {
   ///   function must return an unsubscribe function to terminate the subscription.
   /// [buffer] is an optional Buffer object to buffer messages on this channel. If
   ///   not provided, messages will not be buffered on this channel.
-  EventChannel({Subscribe subscribe, Buffer buffer}) : super(subscribe: subscribe, buffer: buffer);
+  EventChannel({Subscribe subscribe, Buffer buffer})
+      : super(subscribe: subscribe, buffer: buffer);
 }
 
 class _MultiCastChannel<T> implements Channel<T> {

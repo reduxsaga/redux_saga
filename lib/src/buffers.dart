@@ -144,7 +144,8 @@ class _SlidingBuffer<T> extends _RingBuffer<T> {
 }
 
 class _ExpandingBuffer<T> extends _RingBuffer<T> {
-  _ExpandingBuffer(int initialSize) : super(initialSize, _overflowActions.Expand);
+  _ExpandingBuffer(int initialSize)
+      : super(initialSize, _overflowActions.Expand);
 }
 
 /// Provides some common buffers.

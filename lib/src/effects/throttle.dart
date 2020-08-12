@@ -99,7 +99,8 @@ Iterable<Effect> _Throttle(Function saga,
 
   if (channel == null) {
     var channelResult = Result<Channel>();
-    yield ActionChannel(pattern, buffer: Buffers.sliding<dynamic>(1), result: channelResult);
+    yield ActionChannel(pattern,
+        buffer: Buffers.sliding<dynamic>(1), result: channelResult);
     throttleChannel = channelResult.value;
   } else {
     throttleChannel = channel;
@@ -112,7 +113,10 @@ Iterable<Effect> _Throttle(Function saga,
     yield Fork(saga,
         args: args,
         namedArgs: _functionHasActionArgument(saga)
-            ? <Symbol, dynamic>{...?namedArgs, #action: action is Result ? action.value : action}
+            ? <Symbol, dynamic>{
+                ...?namedArgs,
+                #action: action is Result ? action.value : action
+              }
             : namedArgs,
         Catch: Catch,
         Finally: Finally,

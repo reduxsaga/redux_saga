@@ -1,4 +1,3 @@
-import 'package:meta/meta.dart';
 import 'dart:convert';
 import 'package:redux/redux.dart';
 import 'package:redux_saga/redux_saga.dart';
@@ -13,11 +12,10 @@ Store<AppState> createStore(SagaMiddleware middleware) {
   );
 }
 
-@immutable
 class AppState {
   final int x;
 
-  const AppState({@required this.x});
+  const AppState({this.x});
 
   factory AppState.initial() {
     return AppState(x: 0);

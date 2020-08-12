@@ -12,7 +12,8 @@ class Delay extends EffectWithResult {
   Delay(this.duration, {this.value, Result result}) : super(result: result);
 
   @override
-  void _run(_SagaMiddleware middleware, _TaskCallback cb, _ExecutingContext executingContext) {
+  void _run(_SagaMiddleware middleware, _TaskCallback cb,
+      _ExecutingContext executingContext) {
     var completer = Completer<dynamic>();
     var timer = Timer(duration, () {
       completer.complete(value ?? true);

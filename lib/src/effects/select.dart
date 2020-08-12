@@ -85,15 +85,18 @@ class Select extends EffectWithResult {
   final Map<Symbol, dynamic> namedArgs;
 
   /// Creates an instance of a Select effect.
-  Select({this.selector, this.args, this.namedArgs, Result result}) : super(result: result);
+  Select({this.selector, this.args, this.namedArgs, Result result})
+      : super(result: result);
 
   @override
-  void _run(_SagaMiddleware middleware, _TaskCallback cb, _ExecutingContext executingContext) {
+  void _run(_SagaMiddleware middleware, _TaskCallback cb,
+      _ExecutingContext executingContext) {
     try {
       if (selector == null) {
         cb.next(arg: middleware.getState());
       } else {
-        dynamic state = _callFunctionWithArgument(selector, args, namedArgs, middleware.getState());
+        dynamic state = _callFunctionWithArgument(
+            selector, args, namedArgs, middleware.getState());
         cb.next(arg: state);
       }
     } catch (e, s) {

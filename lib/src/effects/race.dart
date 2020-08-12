@@ -51,7 +51,8 @@ class Race extends EffectWithResult {
   Race(this.effects, {RaceResult result}) : super(result: result);
 
   @override
-  void _run(_SagaMiddleware middleware, _TaskCallback cb, _ExecutingContext executingContext) {
+  void _run(_SagaMiddleware middleware, _TaskCallback cb,
+      _ExecutingContext executingContext) {
     var effectId = middleware.uniqueId.currentEffectId();
 
     var keys = effects.keys;
@@ -93,7 +94,8 @@ class Race extends EffectWithResult {
       if (completed) {
         return;
       }
-      executingContext.digestEffect(effects[key], effectId, childCallbacks[key], key);
+      executingContext.digestEffect(
+          effects[key], effectId, childCallbacks[key], key);
     }
   }
 

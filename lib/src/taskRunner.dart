@@ -4,12 +4,15 @@ bool _shouldTerminate(dynamic value) => value == Terminate;
 
 bool _shouldCancel(dynamic value) => value == TaskCancel;
 
-bool _shouldComplete(dynamic value) => _shouldTerminate(value) || _shouldCancel(value);
+bool _shouldComplete(dynamic value) =>
+    _shouldTerminate(value) || _shouldCancel(value);
 
-typedef _DigestEffectHandler = void Function(dynamic effect, int parentEffectId, _TaskCallback cb,
+typedef _DigestEffectHandler = void Function(
+    dynamic effect, int parentEffectId, _TaskCallback cb,
     [dynamic label]);
 
-typedef _RunEffectHandler = void Function(dynamic effect, int effectId, _TaskCallback currCb);
+typedef _RunEffectHandler = void Function(
+    dynamic effect, int effectId, _TaskCallback currCb);
 typedef _RunEffectFinalizer = _RunEffectHandler Function(_RunEffectHandler);
 
 class _ExecutingContext {
@@ -43,8 +46,16 @@ class _taskRunner {
 
   _RunEffectHandler finalRunEffect;
 
-  _taskRunner(this.middleware, this.parentContext, this.iterator, this.onError, this.onFinally,
-      this.parentEffectId, this.meta, this.isRoot, this.continueCallback);
+  _taskRunner(
+      this.middleware,
+      this.parentContext,
+      this.iterator,
+      this.onError,
+      this.onFinally,
+      this.parentEffectId,
+      this.meta,
+      this.isRoot,
+      this.continueCallback);
 
   _InternalTask mainTask;
   _ExecutingContext executingContext;
@@ -72,8 +83,8 @@ class _taskRunner {
 
     //Creates a new task descriptor for this generator.
     //A task is the aggregation of it's mainTask and all it's forked tasks.
-    _task =
-        _Task(middleware, parentContext, mainTask, parentEffectId, meta, isRoot, continueCallback);
+    _task = _Task(middleware, parentContext, mainTask, parentEffectId, meta,
+        isRoot, continueCallback);
 
     mainTask.task = _task;
 
@@ -120,8 +131,8 @@ class _taskRunner {
       clearCurrentExecution(ncb);
       onErrorExecuted = true;
       codeBlock = _CodeBlock.errorCode;
-      processFunctionReturn(
-          ncb, _callErrorFunction(onError, currentException), !_isFunctionVoid(onError));
+      processFunctionReturn(ncb, _callErrorFunction(onError, currentException),
+          !_isFunctionVoid(onError));
     } catch (e, s) {
       ncb.next(arg: _createSagaException(e, s), isErr: true);
     }
@@ -132,15 +143,18 @@ class _taskRunner {
       clearCurrentExecution(callback);
       onFinallyExecuted = true;
       codeBlock = _CodeBlock.finallyCode;
-      processFunctionReturn(callback, _callFinallyFunction(onFinally), !_isFunctionVoid(onFinally));
+      processFunctionReturn(callback, _callFinallyFunction(onFinally),
+          !_isFunctionVoid(onFinally));
     } catch (e, s) {
       callback.next(arg: _createSagaException(e, s), isErr: true);
     }
   }
 
-  void processFunctionReturn(_TaskCallback callback, dynamic fr, bool assignTaskResult) {
+  void processFunctionReturn(
+      _TaskCallback callback, dynamic fr, bool assignTaskResult) {
     if (fr is Future || fr is FutureWithCancel) {
-      var tcb = _TaskCallback(({_TaskCallback invoker, dynamic arg, bool isErr}) {
+      var tcb =
+          _TaskCallback(({_TaskCallback invoker, dynamic arg, bool isErr}) {
         if (!isErr) {
           if (assignTaskResult) mainTask.task.taskResult = arg;
         }
@@ -212,7 +226,8 @@ class _taskRunner {
           }
         }
 
-        var iterating = (!returnEffect) && (iterator != null) && iterator.moveNext();
+        var iterating =
+            (!returnEffect) && (iterator != null) && iterator.moveNext();
 
         done = !iterating;
 
@@ -267,14 +282,17 @@ class _taskRunner {
 
         mainTask.status = _TaskStatus.Aborted;
 
-        mainTask.continueCallback
-            .next(arg: isSagaError(e) ? currentException : _createSagaException(e, s), isErr: true);
+        mainTask.continueCallback.next(
+            arg: isSagaError(e) ? currentException : _createSagaException(e, s),
+            isErr: true);
       }
     }
   }
 
   bool shouldRunOnError() =>
-      (codeBlock == _CodeBlock.mainCode) && (onError != null) && (!onErrorExecuted);
+      (codeBlock == _CodeBlock.mainCode) &&
+      (onError != null) &&
+      (!onErrorExecuted);
 
   bool shouldRunOnFinally() => (onFinally != null) && (!onFinallyExecuted);
 
@@ -284,8 +302,8 @@ class _taskRunner {
     } else if (effect is FutureWithCancel) {
       _resolveFutureWithCancel(effect, currCb);
     } else if (effect is Iterable) {
-      middleware._createTask(
-          _task.context, effect.iterator, null, null, effectId, meta, false, currCb);
+      middleware._createTask(_task.context, effect.iterator, null, null,
+          effectId, meta, false, currCb);
     } else if (effect != null && effect is Effect) {
       effect._run(middleware, currCb, executingContext);
     } else {
@@ -297,13 +315,15 @@ class _taskRunner {
       [dynamic label = '']) {
     var effectId = middleware.uniqueId.nextSagaId();
     if (middleware.monitoring) {
-      middleware.sagaMonitor.effectTriggered(effectId, parentEffectId, label, effect);
+      middleware.sagaMonitor
+          .effectTriggered(effectId, parentEffectId, label, effect);
     }
 
     var effectSettled = false;
 
     // Completion callback passed to the appropriate effect runner
-    var currentCallback = _TaskCallback(({_TaskCallback invoker, dynamic arg, bool isErr = false}) {
+    var currentCallback = _TaskCallback((
+        {_TaskCallback invoker, dynamic arg, bool isErr = false}) {
       if (effectSettled) {
         return;
       }
@@ -312,8 +332,8 @@ class _taskRunner {
       callback.cancelHandler = _noop; // defensive measure
       if (middleware.monitoring) {
         if (isErr) {
-          middleware.sagaMonitor
-              .effectRejected(effectId, arg is _SagaInternalException ? arg.message : arg);
+          middleware.sagaMonitor.effectRejected(
+              effectId, arg is _SagaInternalException ? arg.message : arg);
         } else {
           middleware.sagaMonitor.effectResolved(effectId, arg);
         }

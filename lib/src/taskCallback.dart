@@ -4,7 +4,8 @@ void _noopNext({_TaskCallback invoker, dynamic arg, bool isErr = false}) {}
 
 final _TaskCallback _noopTaskCallback = _TaskCallback(_noopNext, _noop);
 
-typedef _NextHandler = void Function({_TaskCallback invoker, dynamic arg, bool isErr});
+typedef _NextHandler = void Function(
+    {_TaskCallback invoker, dynamic arg, bool isErr});
 
 class _TaskCallback {
   _NextHandler nextHandler;

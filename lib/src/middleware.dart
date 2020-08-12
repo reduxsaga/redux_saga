@@ -90,7 +90,9 @@ class _SagaMiddleware extends SagaMiddleware {
 
   _SagaMiddleware([Options options]) {
     context = options == null ? SagaContext() : SagaContext(options.context);
-    channel = options == null || options.channel == null ? StdChannel() : options.channel;
+    channel = options == null || options.channel == null
+        ? StdChannel()
+        : options.channel;
     sagaMonitor = options == null ? null : options.sagaMonitor;
     onError = options == null || options.onError == null
         ? (_isDebugMode ? _logError : _logErrorEmpty)
@@ -132,8 +134,8 @@ class _SagaMiddleware extends SagaMiddleware {
     }
 
     return immediately(() {
-      var task = _createTask(
-          context, iterator, Catch, Finally, effectId, SagaMeta(name, effectId), true, null);
+      var task = _createTask(context, iterator, Catch, Finally, effectId,
+          SagaMeta(name, effectId), true, null);
 
       if (monitoring) {
         sagaMonitor.effectResolved(effectId, task);
@@ -150,7 +152,8 @@ class _SagaMiddleware extends SagaMiddleware {
       var composedMiddleware = getComposedMiddleware();
       return (_RunEffectHandler runEffect) {
         return (dynamic effect, int effectId, _TaskCallback currCb) {
-          var plainRunEffect = (dynamic eff) => runEffect(eff, effectId, currCb);
+          var plainRunEffect =
+              (dynamic eff) => runEffect(eff, effectId, currCb);
           composedMiddleware(effect, plainRunEffect);
         };
       };
@@ -162,9 +165,10 @@ class _SagaMiddleware extends SagaMiddleware {
     effectMiddlewares.reversed.forEach((EffectMiddlewareHandler middleware) {
       var currentDispatcher = composedMiddleware;
       composedMiddleware = currentDispatcher == null
-          ? (dynamic effect, NextMiddlewareHandler runEffect) => middleware(effect, runEffect)
-          : (dynamic effect, NextMiddlewareHandler runEffect) =>
-              middleware(effect, (dynamic effect) => currentDispatcher(effect, runEffect));
+          ? (dynamic effect, NextMiddlewareHandler runEffect) =>
+              middleware(effect, runEffect)
+          : (dynamic effect, NextMiddlewareHandler runEffect) => middleware(
+              effect, (dynamic effect) => currentDispatcher(effect, runEffect));
     });
     return composedMiddleware;
   }
@@ -211,8 +215,8 @@ class _SagaMiddleware extends SagaMiddleware {
       SagaMeta meta,
       bool isRoot,
       _TaskCallback continueCallback) {
-    var runner = _taskRunner(this, parentContext, iterator, onError, onFinally, parentEffectId,
-        meta, isRoot, continueCallback);
+    var runner = _taskRunner(this, parentContext, iterator, onError, onFinally,
+        parentEffectId, meta, isRoot, continueCallback);
     return runner.createTask();
   }
 }

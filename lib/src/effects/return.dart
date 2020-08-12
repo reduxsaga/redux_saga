@@ -10,7 +10,8 @@ class Return extends Effect {
   Return([this.result]) : super();
 
   @override
-  void _run(_SagaMiddleware middleware, _TaskCallback cb, _ExecutingContext executingContext) {
+  void _run(_SagaMiddleware middleware, _TaskCallback cb,
+      _ExecutingContext executingContext) {
     if (result is Future) {
       _resolveFuture(result as Future, cb);
       return;

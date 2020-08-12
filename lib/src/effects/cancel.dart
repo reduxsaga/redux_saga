@@ -97,7 +97,8 @@ class Cancel extends Effect {
   Cancel([this.tasks]) : super();
 
   @override
-  void _run(_SagaMiddleware middleware, _TaskCallback cb, _ExecutingContext executingContext) {
+  void _run(_SagaMiddleware middleware, _TaskCallback cb,
+      _ExecutingContext executingContext) {
     if (tasks == null) {
       _cancelSingleTask(executingContext.task);
     } else {

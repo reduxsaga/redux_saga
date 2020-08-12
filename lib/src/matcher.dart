@@ -8,8 +8,8 @@ Matcher<T> _wilcardMatcher<T>() => (T message) => true;
 
 ///matches if message object type is equal to pattern string
 ///For example take('MyAction') matches MyAction()
-Matcher<T> _stringMatcher<T>(String pattern) =>
-    (T message) => (message != null) && identical(message.runtimeType.toString(), pattern);
+Matcher<T> _stringMatcher<T>(String pattern) => (T message) =>
+    (message != null) && identical(message.runtimeType.toString(), pattern);
 
 ///matches is any of the patterns in the list matches
 Matcher<T> _arrayMatcher<T>(List pattern) =>
@@ -26,7 +26,10 @@ Matcher<T> _typeMatcher<T>(Type pattern) =>
     (T message) => (message != null) && message.runtimeType == pattern;
 
 void _checkPattern(dynamic pattern) {
-  if (identical(pattern, '*') || pattern is String || pattern is Function || pattern is Type) {
+  if (identical(pattern, '*') ||
+      pattern is String ||
+      pattern is Function ||
+      pattern is Type) {
     return;
   } else if (pattern is List) {
     pattern.forEach(_checkPattern);

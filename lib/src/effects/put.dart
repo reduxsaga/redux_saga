@@ -29,10 +29,12 @@ class Put extends EffectWithResult {
   final bool resolve;
 
   /// Creates an instance of a Put effect.
-  Put(this.action, {this.channel, this.resolve = false, Result result}) : super(result: result);
+  Put(this.action, {this.channel, this.resolve = false, Result result})
+      : super(result: result);
 
   @override
-  void _run(_SagaMiddleware middleware, _TaskCallback cb, _ExecutingContext executingContext) {
+  void _run(_SagaMiddleware middleware, _TaskCallback cb,
+      _ExecutingContext executingContext) {
     //Schedule the put in case another saga is holding a lock.
     //The put will be executed atomically. ie nested puts will execute after
     //this put has terminated.

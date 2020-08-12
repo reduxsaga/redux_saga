@@ -36,10 +36,12 @@ class ActionChannel extends EffectWithResult {
   final Buffer buffer;
 
   /// Creates an instance of an ActionChannel effect
-  ActionChannel(this.pattern, {this.buffer, Result result}) : super(result: result);
+  ActionChannel(this.pattern, {this.buffer, Result result})
+      : super(result: result);
 
   @override
-  void _run(_SagaMiddleware middleware, _TaskCallback cb, _ExecutingContext executingContext) {
+  void _run(_SagaMiddleware middleware, _TaskCallback cb,
+      _ExecutingContext executingContext) {
     final chan = BasicChannel(buffer: buffer);
     final match = _matcher<dynamic>(pattern);
 

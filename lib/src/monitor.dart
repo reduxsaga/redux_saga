@@ -7,8 +7,8 @@ part of redux_saga;
 /// [saga] The generator function that starts to run
 ///
 /// [args] The arguments passed to the generator function
-typedef RootSagaStartedHandler = void Function(
-    int effectId, Function saga, List<dynamic> args, Map<Symbol, dynamic> namedArgs);
+typedef RootSagaStartedHandler = void Function(int effectId, Function saga,
+    List<dynamic> args, Map<Symbol, dynamic> namedArgs);
 
 /// Defines function type which is invoked when an effect triggered by the middleware
 ///
@@ -114,10 +114,11 @@ class SagaMonitor {
   /// should be given as an option to middleware creation
   SagaMonitor() {
     actionDispatched = (dynamic action) {};
-    rootSagaStarted =
-        (int effectId, Function saga, List<dynamic> args, Map<Symbol, dynamic> namedArgs) {};
+    rootSagaStarted = (int effectId, Function saga, List<dynamic> args,
+        Map<Symbol, dynamic> namedArgs) {};
     effectResolved = (int effectId, dynamic result) {};
-    effectTriggered = (int effectId, int parentEffectId, dynamic label, dynamic effect) {};
+    effectTriggered =
+        (int effectId, int parentEffectId, dynamic label, dynamic effect) {};
     effectRejected = (int effectId, dynamic error) {};
     effectCancelled = (int effectId) {};
   }

@@ -94,7 +94,8 @@ Iterable<Effect> _Debounce(Function saga,
 
   if (channel == null) {
     var channelResult = Result<Channel>();
-    yield ActionChannel(pattern, buffer: Buffers.sliding<dynamic>(1), result: channelResult);
+    yield ActionChannel(pattern,
+        buffer: Buffers.sliding<dynamic>(1), result: channelResult);
     debounceChannel = channelResult.value;
   } else {
     debounceChannel = channel;
@@ -102,14 +103,17 @@ Iterable<Effect> _Debounce(Function saga,
 
   while (true) {
     var actionResult = Result<dynamic>();
-    yield Take(pattern: pattern, channel: debounceChannel, result: actionResult);
+    yield Take(
+        pattern: pattern, channel: debounceChannel, result: actionResult);
     dynamic action = actionResult is Result ? actionResult.value : actionResult;
 
     while (true) {
       var raceResult = RaceResult();
 
       yield Race(<dynamic, Effect>{
-        #debounced: duration == null ? Delay(Duration(milliseconds: 0)) : Delay(duration),
+        #debounced: duration == null
+            ? Delay(Duration(milliseconds: 0))
+            : Delay(duration),
         #latestAction: Take(pattern: pattern, channel: debounceChannel)
       }, result: raceResult);
 

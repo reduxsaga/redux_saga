@@ -57,11 +57,18 @@ class Call extends EffectWithResult {
   final Function Finally;
 
   /// Creates an instance of a Call effect.
-  Call(this.fn, {this.args, this.namedArgs, this.Catch, this.Finally, this.name, Result result})
+  Call(this.fn,
+      {this.args,
+      this.namedArgs,
+      this.Catch,
+      this.Finally,
+      this.name,
+      Result result})
       : super(result: result);
 
   @override
-  void _run(_SagaMiddleware middleware, _TaskCallback cb, _ExecutingContext executingContext) {
+  void _run(_SagaMiddleware middleware, _TaskCallback cb,
+      _ExecutingContext executingContext) {
     if (Catch == null && Finally == null) {
       try {
         dynamic result = _callFunction(fn, args, namedArgs);
@@ -82,8 +89,7 @@ class Call extends EffectWithResult {
           if (result is Future) {
             _resolveFuture(result, cb);
             return;
-          }
-          else if (result is FutureWithCancel) {
+          } else if (result is FutureWithCancel) {
             _resolveFutureWithCancel(result, cb);
             return;
           }
@@ -121,4 +127,3 @@ class Call extends EffectWithResult {
     return kv;
   }
 }
-

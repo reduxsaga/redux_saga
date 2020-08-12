@@ -25,7 +25,8 @@ typedef NextMiddlewareHandler = void Function(dynamic effect);
 ///  );
 ///  ```
 ///
-typedef EffectMiddlewareHandler = void Function(dynamic effect, NextMiddlewareHandler next);
+typedef EffectMiddlewareHandler = void Function(
+    dynamic effect, NextMiddlewareHandler next);
 
 /// Handler for catching uncaught errors. It can be passed as an option while creating middleware.
 typedef OnErrorHandler = void Function(dynamic e, String stack);
@@ -85,5 +86,10 @@ class Options {
   List<EffectMiddlewareHandler> effectMiddlewares;
 
   /// Creates an instance of a middleware [Options]
-  Options({this.context, this.channel, this.sagaMonitor, this.onError, this.effectMiddlewares});
+  Options(
+      {this.context,
+      this.channel,
+      this.sagaMonitor,
+      this.onError,
+      this.effectMiddlewares});
 }

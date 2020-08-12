@@ -4,7 +4,8 @@ part of redux_saga;
 abstract class Effect {
   void _setResult(_Task task, dynamic value, bool isErr) {}
 
-  void _run(_SagaMiddleware middleware, _TaskCallback cb, _ExecutingContext executingContext);
+  void _run(_SagaMiddleware middleware, _TaskCallback cb,
+      _ExecutingContext executingContext);
 
   @override
   String toString() {
