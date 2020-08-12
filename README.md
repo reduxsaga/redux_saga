@@ -167,4 +167,5 @@ A demo using async functions to fetch reddit posts.
 ## License
 Copyright (c) 2020 Bilal Uslu.
 
-Licensed under The MIT License (MIT).# redux_saga
+Licensed under The MIT License (MIT).
+
