@@ -218,3 +218,63 @@ class _TaskJoin {
 
   _TaskJoin(this.task, this.callback);
 }
+
+/// Creates an object that mocks a [Task] for testing purposes only
+class MockTask extends Task<dynamic> {
+  dynamic _error;
+  bool _aborted = false;
+  bool _cancelled = false;
+  bool _running = true;
+  bool _result = true;
+
+  @override
+  void cancel() {}
+
+  @override
+  dynamic get error => _error;
+
+  @override
+  bool get isAborted => _aborted;
+
+  @override
+  bool get isCancelled => _cancelled;
+
+  @override
+  bool get isRunning => _running;
+
+  @override
+  dynamic get result => _result;
+
+  @override
+  void setContext(Map<String, dynamic> context) {}
+
+  @override
+  Future toFuture() {
+    throw InvalidOperation();
+  }
+
+  /// Sets error value
+  void setError(bool value) {
+    _error = value;
+  }
+
+  /// Sets isAborted value
+  void setAborted(bool value) {
+    _aborted = value;
+  }
+
+  /// Sets isCancelled value
+  void setCancelled(bool value) {
+    _cancelled = value;
+  }
+
+  /// Sets isRunning value
+  void setRunning(bool value) {
+    _running = value;
+  }
+
+  /// Sets result value
+  void setResult(bool value) {
+    _result = value;
+  }
+}

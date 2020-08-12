@@ -33,6 +33,7 @@ import 'forkjoin_test.dart' as forkjoin_test;
 import 'forkjoinErrors_test.dart' as fork_join_errors_test;
 import 'iterators_test.dart' as iterators_test;
 import 'take_sync_test.dart' as take_sync_test;
+import 'cloneableGenerator_test.dart' as cloneable_generator_test;
 
 void main() {
   //middleware
@@ -75,4 +76,6 @@ void main() {
   take_every_test.main();
   take_latest_test.main();
   take_leading_test.main();
+
+  cloneable_generator_test.main();
 }
