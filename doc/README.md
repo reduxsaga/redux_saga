@@ -10,6 +10,7 @@
   * [Dispatching actions](/doc/basics/DispatchingActions.md)
   * [Error handling](/doc/basics/ErrorHandling.md)
   * [A common abstraction: Effect](/doc/basics/Effect.md)
+* [Effects](/doc/effects/README.md)
 * [Migration from Javascript](/doc/migration/README.md)
 * [API Reference](https://pub.dev/documentation/redux_saga)
 
