@@ -8,7 +8,7 @@
 | TakeLatest           | No                                                          |
 | TakeLeading          | No                                                          |
 | Throttle             | No                                                          |
-| Debounce             | No                                                          |
+| Debounce             | :x:                                                          |
 | Retry                | :heavy_check_mark:                                                         |
 | Take                 | Yes                                                         |
 | TakeMaybe            | Yes                                                         |
