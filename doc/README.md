@@ -4,4 +4,5 @@
 * [Introduction](/doc/introduction/README.md)
   * [Beginner Tutorial](/doc/introduction/BeginnerTutorial.md)
   * [Saga background](/doc/introduction/SagaBackground.md)
+* [Migration from Javascript](/doc/migration/README.md)
 

@@ -8,7 +8,7 @@ It uses synchronous generator functions to make those asynchronous flows easy to
 
 You might've used `redux_thunk` before to handle your data fetching. Contrary to redux thunk, you don't end up in callback hell, you can test your asynchronous flows easily and your actions stay pure.
 
-`redux_saga` is ported and compatible with javascript redux-saga implementation and its documentation.
+`redux_saga` is ported and compatible with javascript redux-saga implementation and its documentation. If you use Javascript redux-saga before than you can check [Migration from Javascript](/doc/migration/README.md) documentation to get help about migration.
 
 ### Usage Example
 
@@ -99,6 +99,7 @@ sagaMiddleware.run(mySaga);
 * [Introduction](/doc/introduction/README.md)
   * [Beginner Tutorial](/doc/introduction/BeginnerTutorial.md)
   * [Saga background](/doc/introduction/SagaBackground.md)
+* [Migration from Javascript](/doc/migration/README.md)
 * [API Reference](https://pub.dev/documentation/redux_saga)
 
 ### Examples
