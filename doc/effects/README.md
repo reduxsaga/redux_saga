@@ -9,7 +9,7 @@
 | TakeLeading          | No                                                          |
 | Throttle             | No                                                          |
 | Debounce             | No                                                          |
-| Retry                | Yes                                                         |
+| Retry                | :heavy_check_mark:                                                         |
 | Take                 | Yes                                                         |
 | TakeMaybe            | Yes                                                         |
 | Put                  | No                                                          |
