@@ -1,7 +1,7 @@
 ## Table of Contents
 
 * [Read Me](/README.md)
-* [Introduction](/docs/introduction/README.md)
-  * [Beginner Tutorial](/docs/introduction/BeginnerTutorial.md)
-  * [Saga background](/docs/introduction/SagaBackground.md)
+* [Introduction](/doc/introduction/README.md)
+  * [Beginner Tutorial](/doc/introduction/BeginnerTutorial.md)
+  * [Saga background](/doc/introduction/SagaBackground.md)
 

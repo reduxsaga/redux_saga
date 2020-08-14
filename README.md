@@ -96,9 +96,9 @@ sagaMiddleware.run(mySaga);
 
 ### Documentation
 
-* [Introduction](/docs/introduction/README.md)
-  * [Beginner Tutorial](/docs/introduction/BeginnerTutorial.md)
-  * [Saga background](/docs/introduction/SagaBackground.md)
+* [Introduction](/doc/introduction/README.md)
+  * [Beginner Tutorial](/doc/introduction/BeginnerTutorial.md)
+  * [Saga background](/doc/introduction/SagaBackground.md)
 * [API Reference](https://pub.dev/documentation/redux_saga)
 
 ### Examples
