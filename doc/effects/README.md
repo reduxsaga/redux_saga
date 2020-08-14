@@ -1,6 +1,6 @@
 ## Effects
 
-### Blocking / :heavy_multiplication_x:n-blocking
+### Blocking / Non-blocking
 
 | Name                 | Blocking                                                    |
 | -------------------- | ------------------------------------------------------------|
