@@ -12,3 +12,7 @@ No changes yet.
 
 - Effect combinators fixed.
 
+## 1.0.8
+
+- Beginner tutorial is avaliable now.
+
