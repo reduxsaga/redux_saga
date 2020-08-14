@@ -14,5 +14,9 @@ No changes yet.
 
 ## 1.0.8
 
-- Beginner tutorial is avaliable now.
+- Beginner tutorial is available now.
+
+## 1.0.9
+
+- Migration guide is available now.
 
