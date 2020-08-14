@@ -49,7 +49,9 @@ In order to run our Saga, we need to:
 First we need to add required packages to `pubspec.yaml`:
 
 ```yaml
-  redux_saga: ^1.0.4
+dependencies:
+...
+  redux_saga: ^1.0.7
 ```
 
 Then in the command line, run to get packages:
@@ -95,43 +97,84 @@ So far, our Saga does nothing special. It just logs a message then exits.
 
 Now let's add something closer to the original Counter demo. To illustrate asynchronous calls, we will add another button to increment the counter 1 second after the click.
 
-First things first, we'll provide an additional button and a callback `onIncrementAsync` to the UI component.
+First we should add a new action named `IncrementAsyncAction` to the `actions.dart`
 
-```javascript
-const Counter = ({ value, onIncrement, onDecrement, onIncrementAsync }) =>
-  <div>
-    <button onClick={onIncrementAsync}>
-      Increment after 1 second
-    </button>
-    {' '}
-    <button onClick={onIncrement}>
-      Increment
-    </button>
-    {' '}
-    <button onClick={onDecrement}>
-      Decrement
-    </button>
-    <hr />
-    <div>
-      Clicked: {value} times
-    </div>
-  </div>
+```dart
+//...
+
+class IncrementAsyncAction {}
+
+//...
 ```
 
-Next we should connect the `onIncrementAsync` of the Component to a Store action.
+Then, we'll provide an additional button and dispatch an `IncrementAsyncAction` action on button press.
 
-We will modify the `main.js` module as follows
+```dart
+class MyHomePage extends StatelessWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
 
-```javascript
-function render() {
-  ReactDOM.render(
-    <Counter
-      value={store.getState()}
-      onIncrement={() => action('INCREMENT')}
-      onDecrement={() => action('DECREMENT')}
-      onIncrementAsync={() => action('INCREMENT_ASYNC')} />,
-    document.getElementById('root')
-  )
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'You have pushed the button this many times:',
+            ),
+            StoreConnector<dynamic, String>(
+              converter: (store) => store.state.toString(),
+              builder: (context, count) {
+                return new Text(
+                  count,
+                  style: Theme.of(context).textTheme.headline4,
+                );
+              },
+            ),
+            RaisedButton(
+              onPressed: () => StoreProvider.of(context).dispatch(IncrementAction()),
+              child: Text('Increase'),
+            ),
+            RaisedButton(
+              onPressed: () => StoreProvider.of(context).dispatch(DecrementAction()),
+              child: Text('Decrease'),
+            ),
+            StoreConnector<dynamic, VoidCallback>(
+              converter: (store) {
+                return () {
+                  if (store.state % 2 != 0) {
+                    store.dispatch(IncrementAction());
+                  }
+                };
+              },
+              builder: (context, callback) {
+                return RaisedButton(
+                  onPressed: callback,
+                  child: Text('IncreamentIfOdd'),
+                );
+              },
+            ),
+            //add button here
+            RaisedButton(
+              onPressed: () => StoreProvider.of(context).dispatch(IncrementAsyncAction()),
+              child: Text('IncrementAsync'),
+            )
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => StoreProvider.of(context).dispatch(IncrementAction()),
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ),
+    );
+  }
 }
 ```
 
@@ -139,227 +182,250 @@ Note that unlike in redux-thunk, our component dispatches a plain object action.
 
 Now we will introduce another Saga to perform the asynchronous call. Our use case is as follows:
 
-> On each `INCREMENT_ASYNC` action, we want to start a task that will do the following
+> On each `IncrementAsyncAction` action, we want to start a task that will do the following
 
 > - Wait 1 second then increment the counter
 
-Add the following code to the `sagas.js` module:
+Add the following code to the `sagas.dart` module:
 
-```javascript
-import { put, takeEvery } from 'redux-saga/effects'
-
-const delay = (ms) => new Promise(res => setTimeout(res, ms))
+```dart
+import 'package:redux_saga/redux_saga.dart';
+import 'actions.dart';
 
 // ...
 
-// Our worker Saga: will perform the async increment task
-export function* incrementAsync() {
-  yield delay(1000)
-  yield put({ type: 'INCREMENT' })
+Future<bool> delay(Duration duration) {
+  return Future<bool>.delayed(duration, () => true);
 }
 
-// Our watcher Saga: spawn a new incrementAsync task on each INCREMENT_ASYNC
-export function* watchIncrementAsync() {
-  yield takeEvery('INCREMENT_ASYNC', incrementAsync)
+// Our worker Saga: will perform the async increment task
+incrementAsync() sync* {
+  yield delay(Duration(seconds: 1));
+  yield Put(IncrementAction());
+}
+
+// Our watcher Saga: spawn a new incrementAsync task on each IncrementAsyncAction
+watchIncrementAsync() sync* {
+  yield TakeEvery(incrementAsync, pattern: IncrementAsyncAction);
 }
 ```
 
 Time for some explanations.
 
-We create a `delay` function that returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) that will resolve after a specified number of milliseconds. We'll use this function to *block* the Generator.
+We create a `delay` function that returns a [Future](https://dart.dev/codelabs/async-await) that will resolve after a specified duration. We'll use this function to *block* the Generator.
 
-Sagas are implemented as [Generator functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*) that *yield* objects to the redux-saga middleware. The yielded objects are a kind of instruction to be interpreted by the middleware. When a Promise is yielded to the middleware, the middleware will suspend the Saga until the Promise completes. In the above example, the `incrementAsync` Saga is suspended until the Promise returned by `delay` resolves, which will happen after 1 second.
+Sagas are implemented as [synchronous generator functions](https://dart.dev/guides/language/language-tour#generators) that *yield* objects to the redux_saga middleware. The yielded objects are a kind of instruction to be interpreted by the middleware. When a Future is yielded to the middleware, the middleware will suspend the Saga until the Future completes. In the above example, the `IncrementAsyncAction` Saga is suspended until the Future returned by `delay` resolves, which will happen after 1 second.
 
-Once the Promise is resolved, the middleware will resume the Saga, executing code until the next yield. In this example, the next statement is another yielded object: the result of calling `put({type: 'INCREMENT'})`, which instructs the middleware to dispatch an `INCREMENT` action.
+Once the Future is resolved, the middleware will resume the Saga, executing code until the next yield. In this example, the next statement is another yielded object: the result of calling `Put(IncrementAction())`, which instructs the middleware to dispatch an `IncrementAction` action.
 
-`put` is one example of what we call an *Effect*. Effects are plain JavaScript objects which contain instructions to be fulfilled by the middleware. When a middleware retrieves an Effect yielded by a Saga, the Saga is paused until the Effect is fulfilled.
+`Put` is one example of what we call an *Effect*. Effects are plain Dart objects which contain instructions to be fulfilled by the middleware. When a middleware retrieves an Effect yielded by a Saga, the Saga is paused until the Effect is fulfilled.
 
-So to summarize, the `incrementAsync` Saga sleeps for 1 second via the call to `delay(1000)`, then dispatches an `INCREMENT` action.
+So to summarize, the `incrementAsync` Saga sleeps for 1 second via the call to `delay(Duration(seconds: 1))`, then dispatches an `IncrementAction` action.
 
-Next, we created another Saga `watchIncrementAsync`. We use `takeEvery`, a helper function provided by `redux-saga`, to listen for dispatched `INCREMENT_ASYNC` actions and run `incrementAsync` each time.
+Next, we created another Saga `watchIncrementAsync`. We use `TakeEvery`, a helper function provided by `redux_saga`, to listen for dispatched `IncrementAsyncAction` actions and run `incrementAsync` each time.
 
-Now we have 2 Sagas, and we need to start them both at once. To do that, we'll add a `rootSaga` that is responsible for starting our other Sagas. In the same file `sagas.js`, refactor the file as follows:
+Now we have 2 Sagas, and we need to start them both at once. To do that, we'll add a `rootSaga` that is responsible for starting our other Sagas. In the same file `sagas.dart`, refactor the file as follows:
 
-```javascript
-import { put, takeEvery, all } from 'redux-saga/effects'
+```dart
+import 'package:redux_saga/redux_saga.dart';
+import 'actions.dart';
 
-const delay = (ms) => new Promise(res => setTimeout(res, ms))
-
-function* helloSaga() {
-  console.log('Hello Sagas!')
+helloSaga() sync* {
+  print('Hello Sagas!');
 }
 
-function* incrementAsync() {
-  yield delay(1000)
-  yield put({ type: 'INCREMENT' })
+Future delay(Duration duration) {
+  return Future.delayed(duration, () => true);
 }
 
-function* watchIncrementAsync() {
-  yield takeEvery('INCREMENT_ASYNC', incrementAsync)
+incrementAsync() sync* {
+  yield delay(Duration(seconds: 1));
+  yield Put(IncrementAction());
 }
 
-// notice how we now only export the rootSaga
+watchIncrementAsync() sync* {
+  yield TakeEvery(incrementAsync, pattern: IncrementAsyncAction);
+}
+
 // single entry point to start all Sagas at once
-export default function* rootSaga() {
-  yield all([
-    helloSaga(),
-    watchIncrementAsync()
-  ])
+rootSaga() sync* {
+  yield All({
+    #hello: helloSaga(),
+    #watch: watchIncrementAsync(),
+  });
 }
 ```
 
-This Saga yields an array with the results of calling our two sagas, `helloSaga` and `watchIncrementAsync`. This means the two resulting Generators will be started in parallel. Now we only have to invoke `sagaMiddleware.run` on the root Saga in `main.js`.
+This Saga yields an array with the results of calling our two sagas, `helloSaga` and `watchIncrementAsync`. This means the two resulting Generators will be started in parallel. Now we only have to invoke `sagaMiddleware.run` on the root Saga in `main.dart`.
 
-```javascript
+```dart
 // ...
-import rootSaga from './sagas'
 
-const sagaMiddleware = createSagaMiddleware()
-const store = ...
-sagaMiddleware.run(rootSaga)
+import 'sagas.dart';
+
+void main() {
+  var sagaMiddleware = createSagaMiddleware();
+
+  // Create store and apply middleware
+  final store = ...
+
+  sagaMiddleware.setStore(store);
+
+  sagaMiddleware.run(rootSaga);
+
+  runApp(MyApp(store: store));
+}
 
 // ...
+```
+
+To make clear we used a Future returning `delay` function in the tutorial. In a real app you use `yield Delay(Duration(seconds: 1));` instead. `Delay` is a pure saga effect.
+Now, lets remove the `delay` function and use effect. To use effect just change the `yield delay(Duration(seconds: 1))` to `Delay(Duration(seconds: 1))` in `incrementAsync` saga. By using effect instead also makes easier to write test for your sagas.
+
+```dart
+
+...
+
+incrementAsync() sync* {
+  yield Delay(Duration(seconds: 1));
+  yield Put(IncrementAction());
+}
+
+...
+
 ```
 
 ## Making our code testable
 
+First we need to add required packages to `pubspec.yaml`:
+
+```yaml
+dev_dependencies:
+...
+  test: ^1.14.4
+```
+
+Then in the command line, run to get packages:
+
+```sh
+$ pub get
+```
+
 We want to test our `incrementAsync` Saga to make sure it performs the desired task.
 
-Create another file `sagas.spec.js`:
+Create another file `test\sagas_test.dart`:
 
-```javascript
-import test from 'tape'
+```dart
+import 'package:redux_saga/redux_saga.dart';
+import 'package:redux_saga_beginner_tutorial/actions.dart';
+import 'package:redux_saga_beginner_tutorial/sagas.dart';
+import 'package:test/test.dart';
 
-import { incrementAsync } from './sagas'
+void main() {
+  group('Middleware Tests', () {
+    test('incrementAsync Saga test', () {
+      Iterable gen = incrementAsync();
 
-test('incrementAsync Saga test', (assert) => {
-  const gen = incrementAsync()
+      Iterator iterator = gen.iterator;
 
-  // now what ?
-})
+       // now what ?
+    });
+  });
+}
 ```
 
-`incrementAsync` is a generator function. When run, it returns an iterator object, and the iterator's `next` method returns an object with the following shape
+`incrementAsync` is a generator function. When run, it returns an iterator object, and the iterator's `moveNext` method iterates through effect on every invoke. Effects can be accessed by iterator's `current` method.
 
-```javascript
-gen.next() // => { done: boolean, value: any }
+```dart
+    iterator.moveNext();
+    var effect = iterator.current;
 ```
 
-The `value` field contains the yielded expression, i.e. the result of the expression after
-the `yield`. The `done` field indicates if the generator has terminated or if there are still
-more 'yield' expressions.
+The `current` method provides the yielded effect,
+if there are still more 'yield' expressions then `moveNext` returns true otherwise it returns false;
 
 In the case of `incrementAsync`, the generator yields 2 values consecutively:
 
-1. `yield delay(1000)`
-2. `yield put({type: 'INCREMENT'})`
+1. `yield Delay(Duration(seconds: 1))`
+2. `yield Put(IncrementAction())`
 
 So if we invoke the next method of the generator 3 times consecutively we get the following
 results:
 
-```javascript
-gen.next() // => { done: false, value: <result of calling delay(1000)> }
-gen.next() // => { done: false, value: <result of calling put({type: 'INCREMENT'})> }
-gen.next() // => { done: true, value: undefined }
+```dart
+    iterator.moveNext()       //true
+    iterator.current          //{type : Delay, duration : 0:00:01.000000, value : null, result : null, }
+    iterator.moveNext()       //true
+    iterator.current          //{type : Put, action : Instance of 'IncrementAction', channel : null, resolve : false, result : null, }
+    iterator.moveNext()       //false
+    iterator.current          //null
 ```
 
 The first 2 invocations return the results of the yield expressions. On the 3rd invocation
-since there is no more yield the `done` field is set to true. And since the `incrementAsync`
-Generator doesn't return anything (no `return` statement), the `value` field is set to
-`undefined`.
+since there is no more yield the `moveNext` method returns false. And since the `incrementAsync`
 
 So now, in order to test the logic inside `incrementAsync`, we'll have to iterate
 over the returned Generator and check the values yielded by the generator.
 
-```javascript
-import test from 'tape'
+```dart
+    ...
 
-import { incrementAsync } from './sagas'
+    test('incrementAsync Saga test', () {
+      Iterable gen = incrementAsync();
 
-test('incrementAsync Saga test', (assert) => {
-  const gen = incrementAsync()
+      Iterator iterator = gen.iterator;
 
-  assert.deepEqual(
-    gen.next(),
-    { done: false, value: ??? },
-    'incrementAsync should return a Promise that will resolve after 1 second'
-  )
-})
+      iterator.moveNext();
+
+      expect(iterator.current, TypeMatcher<Delay>(),
+          reason: 'incrementAsync should return a Delay effect');
+      expect(iterator.current.duration, Duration(seconds: 1),
+          reason: 'Delay effect must resolve after 1 second');
+
+
+    });
+
+    ...
 ```
 
-The issue is how do we test the return value of `delay`? We can't do a simple equality test
-on Promises. If `delay` returned a *normal* value, things would've been easier to test.
-
-Well, `redux-saga` provides a way to make the above statement possible. Instead of calling
-`delay(1000)` directly inside `incrementAsync`, we'll call it *indirectly* and export it
-to make a subsequent deep comparison possible:
-
-```javascript
-import { put, takeEvery, all, call } from 'redux-saga/effects'
-
-export const delay = (ms) => new Promise(res => setTimeout(res, ms))
-
-// ...
-
-export function* incrementAsync() {
-  // use the call Effect
-  yield call(delay, 1000)
-  yield put({ type: 'INCREMENT' })
-}
-```
-
-Instead of doing `yield delay(1000)`, we're now doing `yield call(delay, 1000)`. What's the difference?
-
-In the first case, the yield expression `delay(1000)` is evaluated before it gets passed to the caller of `next` (the caller could be the middleware when running our code. It could also be our test code which runs the Generator function and iterates over the returned Generator). So what the caller gets is a Promise, like in the test code above.
-
-In the second case, the yield expression `call(delay, 1000)` is what gets passed to the caller of `next`. `call` just like `put`, returns an Effect which instructs the middleware to call a given function with the given arguments. In fact, neither `put` nor `call` performs any dispatch or asynchronous call by themselves, they return plain JavaScript objects.
-
-```javascript
-put({type: 'INCREMENT'}) // => { PUT: {type: 'INCREMENT'} }
-call(delay, 1000)        // => { CALL: {fn: delay, args: [1000]}}
-```
-
-What happens is that the middleware examines the type of each yielded Effect then decides how to fulfill that Effect. If the Effect type is a `PUT` then it will dispatch an action to the Store. If the Effect is a `CALL` then it'll call the given function.
+What happens is that the middleware examines the type of each yielded Effect then decides how to fulfill that Effect. If the Effect type is a `Put` then it will dispatch an action to the Store.
 
 This separation between Effect creation and Effect execution makes it possible to test our Generator in a surprisingly easy way:
 
-```javascript
-import test from 'tape'
+```dart
+    ...
 
-import { put, call } from 'redux-saga/effects'
-import { incrementAsync, delay } from './sagas'
+    test('incrementAsync Saga test', () {
+      Iterable gen = incrementAsync();
 
-test('incrementAsync Saga test', (assert) => {
-  const gen = incrementAsync()
+      Iterator iterator = gen.iterator;
 
-  assert.deepEqual(
-    gen.next().value,
-    call(delay, 1000),
-    'incrementAsync Saga must call delay(1000)'
-  )
+      iterator.moveNext();
 
-  assert.deepEqual(
-    gen.next().value,
-    put({type: 'INCREMENT'}),
-    'incrementAsync Saga must dispatch an INCREMENT action'
-  )
+      expect(iterator.current, TypeMatcher<Delay>(),
+          reason: 'incrementAsync should return a Delay effect');
+      expect(iterator.current.duration, Duration(seconds: 1),
+          reason: 'Delay effect must resolve after 1 second');
 
-  assert.deepEqual(
-    gen.next(),
-    { done: true, value: undefined },
-    'incrementAsync Saga must be done'
-  )
+      iterator.moveNext();
 
-  assert.end()
-})
+      expect(iterator.current, TypeMatcher<Put>(),
+          reason: 'incrementAsync should return a Put effect');
+      expect(iterator.current.action, TypeMatcher<IncrementAction>(),
+          reason: 'incrementAsync Saga must dispatch an IncrementAction action');
+
+      expect(iterator.moveNext(), false, reason: 'incrementAsync Saga must be done');
+    });
+
+    ...
 ```
 
-Since `put` and `call` return plain objects, we can reuse the same functions in our test code. And to test the logic of `incrementAsync`, we iterate over the generator and do `deepEqual` tests on its values.
+Since `Delay` and `Put` return plain objects, we can reuse the same functions in our test code. And to test the logic of `incrementAsync`, we iterate over the generator and do tests on its values.
 
 In order to run the above test, run:
 
 ```sh
-$ npm test
+$ flutter test test/sagas_test.dart
 ```
 
 which should report the results on the console.
