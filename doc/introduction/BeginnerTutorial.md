@@ -353,12 +353,12 @@ So if we invoke the next method of the generator 3 times consecutively we get th
 results:
 
 ```dart
-    iterator.moveNext()       //true
-    iterator.current          //{type : Delay, duration : 0:00:01.000000, value : null, result : null, }
-    iterator.moveNext()       //true
-    iterator.current          //{type : Put, action : Instance of 'IncrementAction', channel : null, resolve : false, result : null, }
-    iterator.moveNext()       //false
-    iterator.current          //null
+iterator.moveNext()       //true
+iterator.current          //{type : Delay, duration : 0:00:01.000000, value : null, result : null, }
+iterator.moveNext()       //true
+iterator.current          //{type : Put, action : Instance of 'IncrementAction', channel : null, resolve : false, result : null, }
+iterator.moveNext()       //false
+iterator.current          //null
 ```
 
 The first 2 invocations return the results of the yield expressions. On the 3rd invocation
