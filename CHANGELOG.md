@@ -8,3 +8,7 @@ No changes yet.
 
 - CloneableGenerator and MockTask implementations completed.
 
+## 1.0.7
+
+- Effect combinators fixed.
+
