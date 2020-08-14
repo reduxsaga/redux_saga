@@ -35,7 +35,7 @@ part of redux_saga;
 ///
 class All extends EffectWithResult {
   /// Dictionary of all effect to run in parallel.
-  final Map<dynamic, Effect> effects;
+  final Map<dynamic, dynamic> effects;
 
   /// Creates an instance of a All effect.
   All(this.effects, {AllResult result}) : super(result: result);
@@ -44,7 +44,7 @@ class All extends EffectWithResult {
   void _run(_SagaMiddleware middleware, _TaskCallback cb,
       _ExecutingContext executingContext) {
     if (effects.isEmpty) {
-      cb.next(arg: <dynamic, Effect>{});
+      cb.next(arg: <dynamic, dynamic>{});
       return;
     }
 

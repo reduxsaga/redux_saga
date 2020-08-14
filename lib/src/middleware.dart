@@ -31,7 +31,7 @@ abstract class SagaMiddleware {
   /// retrieve the next Effect. The middleware then executes the yielded Effect
   /// as specified by the Effects API below. Meanwhile, the Generator will be
   /// suspended until the effect execution terminates. Upon receiving the result
-  /// of the execution, the middleware calls `mpveNext()` again. This process is repeated
+  /// of the execution, the middleware calls `moveNext()` again. This process is repeated
   /// until the Generator terminates normally or by throwing some error.
   ///
   /// If the execution results in an error (as specified by each Effect creator)

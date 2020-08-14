@@ -45,7 +45,7 @@ part of redux_saga;
 ///
 class Race extends EffectWithResult {
   /// Effects to Race
-  final Map<dynamic, Effect> effects;
+  final Map<dynamic, dynamic> effects;
 
   /// Creates an instance of a Race effect.
   Race(this.effects, {RaceResult result}) : super(result: result);
