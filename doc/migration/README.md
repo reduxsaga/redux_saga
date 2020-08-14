@@ -73,6 +73,8 @@ In Javascript we can return a value from an effect directly;
 export function* gen() {
     ...
     const posts = yield call(fetchPostsApi)
+
+    dosomething(posts);
     ...
 }
 ```
@@ -81,12 +83,17 @@ Its Dart equivalent is;
 
 ```dart
 gen() sync* {
+  ...
   var posts = Result();
   yield Call(fetchPostsApi, result: posts);
+
+  dosomething(posts.value);
+  ...
 }
 ```
 
-We use optional `result` effect parameter to handle this. First we create a variable and pass it to effect result.
+We use optional `result` effect parameter to handle this. First we create a variable and pass it to effect result argument. Now returned value is stored in the `value` property of result object.
+In this case `Call` effect returns value to the posts objects. Posts can be accessed through `posts.value`.
 
 ### try/catch/finally usage
 
