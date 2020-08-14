@@ -356,7 +356,8 @@ results:
 iterator.moveNext()       //true
 iterator.current          //{type : Delay, duration : 0:00:01.000000, value : null, result : null, }
 iterator.moveNext()       //true
-iterator.current          //{type : Put, action : Instance of 'IncrementAction', channel : null, resolve : false, result : null, }
+iterator.current          //{type : Put, action : Instance of 'IncrementAction',
+                          // channel : null, resolve : false, result : null, }
 iterator.moveNext()       //false
 iterator.current          //null
 ```
