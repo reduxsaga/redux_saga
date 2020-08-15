@@ -9,7 +9,7 @@ This guide does not introduce anything about philosophy of Reactive Programing, 
 ### Differences about the logic
 
 Redux_Saga uses the exactly same logic to its Javascript implementation. That means the behaviour is same. The middleware and all the effects are verified through its Javascript equivalent tests.
-Also additional test are provided. With nearly more than 250 unit tests, Redux_Saga provides a stable middleware.
+Also additional test are provided. With nearly more than +250 unit tests, Redux_Saga provides a stable middleware.
 
 ### Differences about the effects
 
@@ -131,7 +131,8 @@ checkout() sync* {
 }
 ```
 
-We use same blocks through yielding a `Try` effect. `Catch` and `Finally` are optional and you can use either of them you want.
+We use same blocks through yielding a `Try` effect. `Catch` and `Finally` are optional and you can use either of them you want. Not that functions can be either a generator or a normal function.
+
 
 ### Conclusion
 
