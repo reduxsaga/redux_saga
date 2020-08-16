@@ -86,7 +86,7 @@ There is another direction where the cancellation propagates to as well: the joi
 
 ## Testing generators with fork effect
 
-When `Fork` is called it starts the task in the background and also returns task object like we have learned previously. When testing this we can use utility class `CreateMockTask` if needed. Here is test for `mainSaga` generator which is on top of this page.
+When `Fork` is called it starts the task in the background and also returns task object like we have learned previously. When testing we can use utility class `CreateMockTask` if we need. Here is test for `mainSaga` generator which is on top of this page.
 
 ```dart
 test('main Saga test', () {
