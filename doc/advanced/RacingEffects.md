@@ -1,29 +1,30 @@
 ## Starting a race between multiple Effects
 
 Sometimes we start multiple tasks in parallel but we don't want to wait for all of them, we just need
-to get the *winner*: the first one that resolves (or rejects). The `race` Effect offers a way of
+to get the *winner*: the first one that resolves (or rejects). The `Race` Effect offers a way of
 triggering a race between multiple Effects.
 
 The following sample shows a task that triggers a remote fetch request, and constrains the response within a
 1 second timeout.
 
-```javascript
-import { race, call, put, delay } from 'redux-saga/effects'
+```dart
+fetchPostsWithTimeout() sync* {
+  var result = RaceResult();
 
-function* fetchPostsWithTimeout() {
-  const {posts, timeout} = yield race({
-    posts: call(fetchApi, '/posts'),
-    timeout: delay(1000)
-  })
+  yield Race({
+    #posts: Call(fetchApi, args: ['/posts']),
+    #timeout: Delay(Duration(seconds: 1))
+  });
 
-  if (posts)
-    yield put({type: 'POSTS_RECEIVED', posts})
-  else
-    yield put({type: 'TIMEOUT_ERROR'})
+  if (result.key == #posts) {
+    yield Put(PostsReceived(posts));
+  } else {
+    yield Put(TimeoutError());
+  }
 }
 ```
 
-Another useful feature of `race` is that it automatically cancels the loser Effects. For example,
+Another useful feature of `Race` is that it automatically cancels the loser Effects. For example,
 suppose we have 2 UI buttons:
 
 - The first starts a task in the background that runs in an endless loop `while (true)`
@@ -32,23 +33,23 @@ suppose we have 2 UI buttons:
 - Once the background task is started, we enable a second button which will cancel the task
 
 
-```javascript
-import { race, take, call } from 'redux-saga/effects'
-
-function* backgroundTask() {
-  while (true) { ... }
+```dart
+backgroundTask() sync* {
+  while (true) {
+  ...
+  }
 }
 
-function* watchStartBackgroundTask() {
+watchStartBackgroundTask() sync* {
   while (true) {
-    yield take('START_BACKGROUND_TASK')
-    yield race({
-      task: call(backgroundTask),
-      cancel: take('CANCEL_TASK')
-    })
+    yield Take(pattern: 'StartBackgroundTask');
+    yield Race({
+      #task: Call(backgroundTask),
+      #cancel: Take(pattern: 'CancelTask'),
+    });
   }
 }
 ```
 
-In the case a `CANCEL_TASK` action is dispatched, the `race` Effect will automatically cancel
+In the case a `CancelTask` action is dispatched, the `Race` Effect will automatically cancel
 `backgroundTask` by throwing a cancellation error inside it.
