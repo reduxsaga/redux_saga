@@ -2,23 +2,26 @@
 
 You can use the builtin `yield*` operator to compose multiple Sagas in a sequential way. This allows you to sequence your *macro-tasks* in a procedural style.
 
-```javascript
-function* playLevelOne() { ... }
+```dart
+playLevelOne() sync* { ... }
 
-function* playLevelTwo() { ... }
+playLevelTwo() sync* { ... }
 
-function* playLevelThree() { ... }
+playLevelThree() sync* { ... }
 
-function* game() {
-  const score1 = yield* playLevelOne()
-  yield put(showScore(score1))
+game() sync* {
+  var score1 = Result();
+  yield* playLevelOne(score1);
+  yield Put(ShowScore(score1));
 
-  const score2 = yield* playLevelTwo()
-  yield put(showScore(score2))
+  var score2 = Result();
+  yield* playLevelTwo(score2);
+  yield Put(ShowScore(score2));
 
-  const score3 = yield* playLevelThree()
-  yield put(showScore(score3))
+  var score3 = Result();
+  yield* playLevelThree(score3);
+  yield Put(ShowScore(score3));
 }
 ```
 
-Note that using `yield*` will cause the JavaScript runtime to *spread* the whole sequence. The resulting iterator (from `game()`) will yield all values from the nested iterators. A more powerful alternative is to use the more generic middleware composition mechanism.
+Note that using `yield*` will cause the Dart runtime to *spread* the whole sequence. The resulting iterator (from `game()`) will yield all values from the nested iterators. A more powerful alternative is to use the more generic middleware composition mechanism.
