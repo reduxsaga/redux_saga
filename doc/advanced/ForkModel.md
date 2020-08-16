@@ -136,7 +136,7 @@ If at a moment, for example, `fetchAll` is blocked on the `Delay(Duration(second
   - The *main task* (the body of `fetchAll`): cancelling it means cancelling the current Effect `Delay(Duration(seconds: 1))`
   - The other forked tasks which are still pending. i.e. `task2` in our example.
 
-- The `call(fetchAll)` will raise itself an error which will be caught in the `Catch` body of `mainSaga`
+- The `Call(fetchAll)` will raise itself an error which will be caught in the `Catch` body of `mainSaga`
 
 Note we're able to catch the error from `Call(fetchAll)` inside `mainSaga` only because we're using a blocking call. And that
 we can't catch the error directly from `fetchAll`. This is a rule of thumb, **you can't catch errors from forked tasks**. A failure
