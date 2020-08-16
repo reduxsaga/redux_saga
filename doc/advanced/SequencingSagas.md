@@ -12,15 +12,15 @@ playLevelThree() sync* { ... }
 game() sync* {
   var score1 = Result();
   yield* playLevelOne(score1);
-  yield Put(ShowScore(score1));
+  yield Put(ShowScore(score1.value));
 
   var score2 = Result();
   yield* playLevelTwo(score2);
-  yield Put(ShowScore(score2));
+  yield Put(ShowScore(score2.value));
 
   var score3 = Result();
   yield* playLevelThree(score3);
-  yield Put(ShowScore(score3));
+  yield Put(ShowScore(score3.value));
 }
 ```
 

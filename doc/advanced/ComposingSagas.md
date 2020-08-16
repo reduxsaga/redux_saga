@@ -8,16 +8,18 @@ While using `yield*` provides an idiomatic way of composing Sagas, this approach
 
 You can use `yield` to start one or more subtasks in parallel. When yielding a call to a generator, the Saga will wait for the generator to terminate before progressing, then resume with the returned value (or throws if an error propagates from the subtask).
 
-```javascript
-function* fetchPosts() {
-  yield put(actions.requestPosts())
-  const products = yield call(fetchApi, '/products')
-  yield put(actions.receivePosts(products))
+```dart
+fetchPosts() sync* {
+  yield Put(actions.requestPosts());
+  var products = Result();
+  yield Call(fetchApi, args: ['/products'], result: products);
+  yield Put(actions.receivePosts(products.value));
 }
 
-function* watchFetch() {
-  while (yield take(FETCH_POSTS)) {
-    yield call(fetchPosts) // waits for the fetchPosts task to terminate
+watchFetch() sync* {
+  while (true) {
+    yield Take(pattern: FetchPosts);
+    yield Call(fetchPosts); // waits for the fetchPosts task to terminate
   }
 }
 ```
@@ -25,10 +27,15 @@ function* watchFetch() {
 Yielding to an array of nested generators will start all the sub-generators in parallel, wait
 for them to finish, then resume with all the results
 
-```javascript
-function* mainSaga(getState) {
-  const results = yield all([call(task1), call(task2), ...])
-  yield put(showResults(results))
+```dart
+mainSaga(getState) sync* {
+  var results = AllResult();
+  yield All({
+    #task1: Call(task1),
+    #task2: Call(task2),
+    ...
+  });
+  yield Put(ShowResults(results.value));
 }
 ```
 
@@ -36,20 +43,22 @@ In fact, yielding Sagas is no different than yielding other effects (future acti
 
 For example, you may want the user to finish some game in a limited amount of time:
 
-```javascript
-function* game(getState) {
-  let finished
+```dart
+game(getState) sync* {
+  var finished = false;
   while (!finished) {
     // has to finish in 60 seconds
-    const {score, timeout} = yield race({
-      score: call(play, getState),
-      timeout: delay(60000)
-    })
+    var result = RaceResult();
+    yield Race({
+      #score: Call(play, args: [getState]),
+      #timeout: Delay(Duration(minutes: 1)),
+    }, result: result);
 
-    if (!timeout) {
-      finished = true
-      yield put(showScore(score))
+    if (result.key != #timeout) {
+      finished = true;
+      yield Put(ShowScore(result.keyValue));
     }
+    ;
   }
 }
 ```
