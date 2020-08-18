@@ -20,7 +20,7 @@ No changes yet.
 
 - Migration guide is available now.
 
-## 1.1.6
+## 1.1.7
 
 - Advanced docs avaliable now.
 

@@ -81,7 +81,7 @@ class CloneableGenerator implements Iterator<dynamic> {
 
   /// Sets current effect result
   ///
-  /// Effect must have a result argument. [effect] result value will be set as [value].
+  /// Effect must have a result argument. [current] effect result value will be set as [value].
   void setResult(dynamic value) {
     if (current == null) {
       throw Exception('Effect can not be null');

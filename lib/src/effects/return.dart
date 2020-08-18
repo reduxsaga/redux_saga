@@ -1,7 +1,7 @@
 part of redux_saga;
 
 /// Returns from a Generator function like a return statement in a normal function.
-/// Generator stops to instruct remaining statements and immediately returns with the provided [result] value.
+/// Generator stops to instruct remaining statements and immediately returns with the provided [resultValue] value.
 class Return extends Effect {
   /// Value to return.
   final dynamic resultValue;
