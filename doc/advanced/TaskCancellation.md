@@ -119,6 +119,10 @@ test('main Saga test', () {
 
   expect(iterator.current, equals(TypeMatcher<Cancel>()),
       reason: "should return Cancel effect");
+
+  iterator.moveNext();
+
+  expect(iterator.moveNext(), false, reason: 'Saga must be done');
 });
 ```
 

@@ -17,6 +17,7 @@
 | Call                 | :heavy_check_mark:                                          |
 | Apply                | :heavy_check_mark:                                          |
 | Try                  | :heavy_check_mark:                                          |
+| TryReturn            | :heavy_check_mark:                                          |
 | Cps                  | :heavy_check_mark:                                          |
 | Fork                 | :heavy_multiplication_x:                                    |
 | Spawn                | :heavy_multiplication_x:                                    |

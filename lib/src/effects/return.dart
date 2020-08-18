@@ -4,23 +4,23 @@ part of redux_saga;
 /// Generator stops to instruct remaining statements and immediately returns with the provided [result] value.
 class Return extends Effect {
   /// Value to return.
-  final dynamic result;
+  final dynamic resultValue;
 
   /// Creates an instance of a Return effect.
-  Return([this.result]) : super();
+  Return([this.resultValue]) : super();
 
   @override
   void _run(_SagaMiddleware middleware, _TaskCallback cb,
       _ExecutingContext executingContext) {
-    if (result is Future) {
-      _resolveFuture(result as Future, cb);
+    if (resultValue is Future) {
+      _resolveFuture(resultValue as Future, cb);
       return;
-    } else if (result is FutureWithCancel) {
-      _resolveFutureWithCancel(result as FutureWithCancel, cb);
+    } else if (resultValue is FutureWithCancel) {
+      _resolveFutureWithCancel(resultValue as FutureWithCancel, cb);
       return;
     }
 
-    cb.next(arg: result);
+    cb.next(arg: resultValue);
   }
 
   @override
@@ -32,7 +32,7 @@ class Return extends Effect {
   Map<String, dynamic> getDefinition() {
     var kv = <String, dynamic>{};
     kv['type'] = 'Return';
-    kv['result'] = result;
+    kv['result'] = resultValue;
     return kv;
   }
 }
