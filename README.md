@@ -1,4 +1,4 @@
-# Redux Saga Implementation
+# Redux Saga
 
 Redux Saga for Dart and Flutter is a library that aims to make application side effects (i.e. asynchronous things like data fetching and impure things like accessing the browser cache) easier to manage, more efficient to execute, easy to test, and better at handling failures.
 
