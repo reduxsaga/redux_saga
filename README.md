@@ -1,14 +1,14 @@
-# redux_saga
+# Redux Saga Implementation
 
-`redux_saga` for dart and flutter is a library that aims to make application side effects (i.e. asynchronous things like data fetching and impure things like accessing the browser cache) easier to manage, more efficient to execute, easy to test, and better at handling failures.
+Redux Saga for Dart and Flutter is a library that aims to make application side effects (i.e. asynchronous things like data fetching and impure things like accessing the browser cache) easier to manage, more efficient to execute, easy to test, and better at handling failures.
 
-The mental model is that a saga is like a separate thread in your application that's solely responsible for side effects. `redux_saga` is a redux middleware, which means this thread can be started, paused and cancelled from the main application with normal redux actions, it has access to the full redux application state and it can dispatch redux actions as well.
+The mental model is that a saga is like a separate thread in your application that's solely responsible for side effects. `Redux Saga` is a redux middleware, which means this thread can be started, paused and cancelled from the main application with normal redux actions, it has access to the full redux application state and it can dispatch redux actions as well.
 
 It uses synchronous generator functions to make those asynchronous flows easy to read, write and test. By doing so, these asynchronous flows look like your standard synchronous code. (kind of like `async`/`await`, but generators have a few more awesome features we need)
 
 You might've used `redux_thunk` before to handle your data fetching. Contrary to redux thunk, you don't end up in callback hell, you can test your asynchronous flows easily and your actions stay pure.
 
-`redux_saga` is ported and compatible with javascript redux-saga implementation and its documentation. If you use Javascript redux-saga before than you can check [Migration from Javascript](/doc/migration/README.md) documentation to get help about migration.
+`Redux Saga` is ported and compatible with javascript redux-saga implementation and its documentation. If you use Javascript redux-saga before than you can check [Migration from Javascript](/doc/migration/README.md) documentation to get help about migration.
 
 ### Usage Example
 
@@ -67,7 +67,7 @@ mySaga() sync* {
 
 ```
 
-To run our Saga, we'll have to connect it to the Redux Store using the `redux_saga` middleware.
+To run our Saga, we'll have to connect it to the Redux Store using the `Redux Saga` middleware.
 
 #### `main.dart`
 
