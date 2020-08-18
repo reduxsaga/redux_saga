@@ -32,7 +32,7 @@ class Return extends Effect {
   Map<String, dynamic> getDefinition() {
     var kv = <String, dynamic>{};
     kv['type'] = 'Return';
-    kv['result'] = resultValue;
+    kv['resultValue'] = resultValue;
     return kv;
   }
 }
