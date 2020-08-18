@@ -1,4 +1,5 @@
 part of redux_saga;
+
 /// An alias for [Try/Call] effect. It makes try/catch/finally code blocks more readable and returns value like [Return].
 /// If you want to return from a returned value from a Try/Catch/Finally block then use `TryReturn`.
 ///

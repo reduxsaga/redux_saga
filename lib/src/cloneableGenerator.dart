@@ -68,7 +68,8 @@ class CloneableGenerator implements Iterator<dynamic> {
 
   /// Clones the generator and both generator can resume from the same step.
   CloneableGenerator clone() {
-    var clonedGenerator = CloneableGenerator(fn, args: args, namedArgs: namedArgs);
+    var clonedGenerator =
+        CloneableGenerator(fn, args: args, namedArgs: namedArgs);
     for (var i = 0; i <= _currentStep; i++) {
       clonedGenerator.moveNext();
       if (_effectResults.containsKey(i)) {
