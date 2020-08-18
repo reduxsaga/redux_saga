@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:redux/redux.dart';
 import 'package:redux_saga/redux_saga.dart';
 import 'package:test/test.dart';

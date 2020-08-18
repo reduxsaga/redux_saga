@@ -5,6 +5,9 @@ class Result<T> {
   /// Value of result.
   T value;
 
+  /// Creates an instance of a Result type.
+  Result({this.value});
+
   @override
   String toString() {
     return '$value';

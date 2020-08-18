@@ -221,7 +221,7 @@ class _taskRunner {
         var returnEffect = false;
 
         if (invoker.effect != null && invoker.effect is Effect) {
-          if (invoker.effect is Return) {
+          if (invoker.effect is Return || invoker.effect is TryReturn) {
             returnEffect = true;
           }
         }

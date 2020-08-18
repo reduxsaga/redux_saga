@@ -133,6 +133,41 @@ checkout() sync* {
 
 We use same blocks through yielding a `Try` effect. `Catch` and `Finally` are optional and you can use either of them you want. Not that functions can be either a generator or a normal function.
 
+### Returning from a try/catch/finally
+
+If you want to return from a returned value from a Try/Catch/Finally block then use `TryReturn`.
+
+ In the following example the saga returns value returned
+```dart
+  saga() sync* {
+    yield TryReturn(() sync* { //returns saga
+      //...
+      yield Return(somevalue1); //returns from Try. Does not return from saga
+    }, Catch: (error) sync* {
+      //...
+      yield Return(somevalue2); //returns from Try. Does not return from saga
+    });
+  }
+```
+
+Equivalent code with `Try`
+
+```dart
+  saga() sync* {
+    var result = Result();
+    yield Try(() sync* {
+      //...
+      yield Return(somevalue1); //returns from Try. Does not return from saga
+    }, Catch: (error) sync* {
+      //...
+      yield Return(somevalue2); //returns from Try. Does not return from saga
+    }, result: result);
+    yield Return(result.value); //returns from saga
+  }
+```
+
+As you see `Return` effect only returns from its own code block. In the example, to return from whole saga you should use `TryReturn`.
+Since `Try` is an alias for `Call` effect, it is same as returning a value from a `Call` effect directly.
 
 ### Conclusion
 

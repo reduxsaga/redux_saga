@@ -17,7 +17,7 @@ abstract class Channel<T> {
   ///   channel
   /// - If an optional pattern is provided then take will be processed
   ///   only if the message matches the [matcher].
-  void take(TakeCallback<T> callback, [Matcher<T> matcher]);
+  void take(TakeCallback<T> callback, [PatternMatcher<T> matcher]);
 
   /// Used to put [message] on the buffer. The put will be handled using the
   /// following rules
@@ -55,7 +55,7 @@ class TakeCallback<T> {
   /// or on a channel close with [End]
   final DataCallback<T> onData;
   _CancelCallback _cancel;
-  Matcher<T> _matcher;
+  PatternMatcher<T> _matcher;
 
   /// Creates an instance of a [TakeCallback] class
   ///
@@ -129,7 +129,7 @@ class _Channel<T> implements Channel<T> {
   }
 
   @override
-  void take(TakeCallback<T> callback, [Matcher<T> matcher]) {
+  void take(TakeCallback<T> callback, [PatternMatcher<T> matcher]) {
     if (_isDebugMode) {
       _checkForbiddenStates();
     }
@@ -273,7 +273,7 @@ class _EventChannel<T> implements Channel<T> {
   }
 
   @override
-  void take(TakeCallback<T> callback, [Matcher<T> matcher]) {
+  void take(TakeCallback<T> callback, [PatternMatcher<T> matcher]) {
     _channel.take(callback);
   }
 }
@@ -442,7 +442,7 @@ class _MultiCastChannel<T> implements Channel<T> {
   }
 
   @override
-  void take(TakeCallback<T> callback, [Matcher<T> matcher]) {
+  void take(TakeCallback<T> callback, [PatternMatcher<T> matcher]) {
     if (_isDebugMode) {
       _checkForbiddenStates();
     }

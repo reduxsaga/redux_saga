@@ -12,11 +12,11 @@ void main() {
         yield base + 4;
       }
 
-      var gen = CloneableGenerator<int>(testGen, args: <dynamic>[0]);
+      var gen = CloneableGenerator(testGen, args: <dynamic>[0]);
 
-      var values = <int>[];
+      var values = <dynamic>[];
 
-      CloneableGenerator<int> gen1, gen2;
+      CloneableGenerator gen1, gen2;
 
       while (gen.moveNext()) {
         values.add(gen.current);

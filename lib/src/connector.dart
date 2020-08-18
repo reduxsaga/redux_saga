@@ -54,3 +54,26 @@ Middleware<State> applyMiddleware<State>(SagaMiddleware middleware) {
     throw InvalidOperation();
   }
 }
+
+/// Creates middleware for test purposes
+///
+/// Middleware is applied a Store<dynamic> and read to use test purposes.
+/// Mocking can be handled by attaching handlers to middleware's [SagaMiddleware.dispatch] and
+/// [SagaMiddleware.getState] methods.
+SagaMiddleware createTestMiddleware([Options options]) {
+  var testMiddleware = createSagaMiddleware(options);
+
+  var store = Store<dynamic>(
+    (dynamic state, dynamic action) {
+      return state;
+    },
+    initialState: 0,
+    middleware: [
+      applyMiddleware<dynamic>(testMiddleware),
+    ],
+  );
+
+  testMiddleware.setStore(store);
+
+  return testMiddleware;
+}
