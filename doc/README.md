@@ -21,7 +21,6 @@
   * [redux-saga's fork model](/doc/advanced/ForkModel.md)
   * [Common Concurrency Patterns](/doc/advanced/Concurrency.md)
   * [Examples of Testing Sagas](/doc/advanced/Testing.md)
-  * [Connecting Sagas to external Input/Output](/doc/advanced/UsingRunSaga.md)
   * [Using Channels](/doc/advanced/Channels.md)
   * [Root Saga Patterns](/doc/advanced/RootSaga.md)
 * [Effects](/doc/effects/README.md)
