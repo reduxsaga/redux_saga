@@ -1,6 +1,6 @@
 # Root Saga Patterns
 
-A root Saga aggregates multiple Sagas to a single entry point for the sagaMiddleware to run.
+A root Saga aggregates multiple Sagas to a single entry point for the SagaMiddleware to run.
 
 In the [beginner tutorial](../introduction/BeginnerTutorial.md), it is shown that your root saga will look something like this:
 

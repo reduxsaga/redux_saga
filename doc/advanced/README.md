@@ -12,6 +12,5 @@ In this section, we'll dig into more powerful Effects provided by the library.
 * [redux-saga's fork model](ForkModel.md)
 * [Common Concurrency Patterns](Concurrency.md)
 * [Examples of Testing Sagas](Testing.md)
-* [Connecting Sagas to external Input/Output](UsingRunSaga.md)
 * [Using Channels](Channels.md)
 * [Root Saga Patterns](RootSaga.md)
