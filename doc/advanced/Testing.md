@@ -286,7 +286,7 @@ void main() {
 
 See also: Repository Examples:
 
-https://github.com/reduxsaga/counter/test/middleware_test.dart
+https://github.com/reduxsaga/counter/blob/master/test/middleware_test.dart
 
 ## `effectMiddlewares`
 Provides a native way to perform integration like testing.
