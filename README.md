@@ -113,7 +113,7 @@ sagaMiddleware.run(mySaga);
   * [Sequencing Sagas using yield*](https://github.com/reduxsaga/redux_saga/blob/master/doc/advanced/SequencingSagas.md)
   * [Composing Sagas](https://github.com/reduxsaga/redux_saga/blob/master/doc/advanced/ComposingSagas.md)
   * [Task cancellation](https://github.com/reduxsaga/redux_saga/blob/master/doc/advanced/TaskCancellation.md)
-  * [redux-saga's fork model](https://github.com/reduxsaga/redux_saga/blob/master/doc/advanced/ForkModel.md)
+  * [Fork model](https://github.com/reduxsaga/redux_saga/blob/master/doc/advanced/ForkModel.md)
   * [Common Concurrency Patterns](https://github.com/reduxsaga/redux_saga/blob/master/doc/advanced/Concurrency.md)
   * [Examples of Testing Sagas](https://github.com/reduxsaga/redux_saga/blob/master/doc/advanced/Testing.md)
   * [Using Channels](https://github.com/reduxsaga/redux_saga/blob/master/doc/advanced/Channels.md)

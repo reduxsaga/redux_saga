@@ -18,7 +18,7 @@
   * [Sequencing Sagas using yield*](/doc/advanced/SequencingSagas.md)
   * [Composing Sagas](/doc/advanced/ComposingSagas.md)
   * [Task cancellation](/doc/advanced/TaskCancellation.md)
-  * [redux-saga's fork model](/doc/advanced/ForkModel.md)
+  * [Fork model](/doc/advanced/ForkModel.md)
   * [Common Concurrency Patterns](/doc/advanced/Concurrency.md)
   * [Examples of Testing Sagas](/doc/advanced/Testing.md)
   * [Using Channels](/doc/advanced/Channels.md)
