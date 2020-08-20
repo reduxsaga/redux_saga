@@ -10,6 +10,8 @@ You might've used `redux_thunk` before to handle your data fetching. Contrary to
 
 `Redux Saga` is ported and compatible with javascript redux-saga implementation and its documentation. If you use Javascript redux-saga before than you can check [Migration from Javascript](https://github.com/reduxsaga/redux_saga/blob/master/doc/migration/README.md) documentation to get help about migration.
 
+Package and installation details can be accessed from [pub.dev](https://pub.dev/packages/redux_saga).
+
 ### Usage Example
 
 Suppose we have a UI to fetch some user data from a remote server when a button is clicked. (For brevity, we'll just show the action triggering code.)
