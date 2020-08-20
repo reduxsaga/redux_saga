@@ -10,7 +10,7 @@ You might've used `redux_thunk` before to handle your data fetching. Contrary to
 
 `Redux Saga` is ported and compatible with javascript redux-saga implementation and its documentation. If you use Javascript redux-saga before than you can check [Migration from Javascript](https://github.com/reduxsaga/redux_saga/blob/master/doc/migration/README.md) documentation to get help about migration.
 
-Package and installation details can be accessed from [pub.dev](https://pub.dev/packages/redux_saga).
+Package and installation details can be found at [pub.dev](https://pub.dev/packages/redux_saga).
 
 ### Usage Example
 
