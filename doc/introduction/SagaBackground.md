@@ -1,7 +1,5 @@
 # Background on the Saga concept
 
-**WIP**
-
 For now, here are some useful links.
 
 ## External links

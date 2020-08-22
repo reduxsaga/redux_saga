@@ -152,9 +152,6 @@ Cancelling a Saga causes the cancellation of:
 
 - All attached forks that are still executing
 
-
-**WIP**
-
 ## Detached forks (using `Spawn`)
 
 Detached forks live in their own execution context. A parent doesn't wait for detached forks to terminate. Uncaught
@@ -163,5 +160,3 @@ forks (you need to cancel them explicitly).
 
 In short, detached forks behave like root Sagas started directly using the `middleware.run` API.
 
-
-**WIP**
