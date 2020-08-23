@@ -130,7 +130,7 @@ class _SagaMiddleware extends SagaMiddleware {
     final effectId = uniqueId.nextSagaId();
 
     if (monitoring) {
-      sagaMonitor.rootSagaStarted(effectId, saga, args, namedArgs);
+      sagaMonitor.rootSagaStarted(effectId, saga, args, namedArgs, 'root');
     }
 
     return immediately(() {

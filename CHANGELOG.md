@@ -24,5 +24,8 @@ No changes yet.
 
 - Advanced docs avaliable now.
 
+## 1.1.9
+
+- Saga monitor update.
 
 
