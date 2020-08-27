@@ -28,4 +28,8 @@ No changes yet.
 
 - Saga monitor update.
 
+## 1.1.10
+
+- Saga monitor test fix.
+
 
