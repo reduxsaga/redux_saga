@@ -5,52 +5,13 @@ import 'helpers/store.dart';
 
 void main() {
   group('monitoring tests', () {
-    SagaMonitor createSagaMonitor(
-        List<int> ids, Map<int, Map<String, dynamic>> effects, List<dynamic> actions) {
-      var monitor = SagaMonitor();
-
-      void set(int effectId, String key, dynamic value) {
-        if (effects[effectId] == null) {
-          effects[effectId] = <String, dynamic>{};
-        }
-        effects[effectId][key] = value;
-      }
-
-      monitor.actionDispatched = (dynamic action) {
-        actions.add(action);
-      };
-      monitor.rootSagaStarted =
-          (int effectId, Function saga, List<dynamic> args, Map<Symbol, dynamic> namedArgs) {
-        ids.add(effectId);
-        set(effectId, 'saga', saga);
-        set(effectId, 'args', args);
-        set(effectId, 'namedArgs', namedArgs);
-      };
-      monitor.effectResolved = (int effectId, dynamic result) {
-        set(effectId, 'result', result);
-      };
-      monitor.effectTriggered = (int effectId, int parentEffectId, dynamic label, dynamic effect) {
-        ids.add(effectId);
-        set(effectId, 'parentEffectId', parentEffectId);
-        set(effectId, 'label', label);
-        set(effectId, 'effect', effect);
-      };
-      monitor.effectRejected = (int effectId, dynamic error) {
-        set(effectId, 'error', error);
-      };
-      monitor.effectCancelled = (int effectId) {
-        set(effectId, 'cancelled', true);
-      };
-      return monitor;
-    }
-
     test('saga middleware monitoring', () {
       var ids = <int>[];
       var effects = <int, Map<String, dynamic>>{};
       var actions = <dynamic>[];
 
       var sagaMiddleware =
-          createMiddleware(options: Options(sagaMonitor: createSagaMonitor(ids, effects, actions)));
+          createMiddleware(options: Options(sagaMonitor: _TestMonitor(ids, effects, actions)));
       var store = createStore(sagaMiddleware);
       sagaMiddleware.setStore(store);
 
@@ -121,4 +82,55 @@ void main() {
           completion([TypeMatcher<TestActionA>(), TypeMatcher<TestActionB>()]));
     });
   });
+}
+
+class _TestMonitor implements SagaMonitor {
+  List<int> ids;
+  Map<int, Map<String, dynamic>> effects;
+  List<dynamic> actions;
+
+  _TestMonitor(this.ids,this.effects, this.actions);
+
+  @override
+  void actionDispatched(dynamic action) {
+    actions.add(action);
+  }
+
+  @override
+  void effectCancelled(int effectId) {
+    set(effectId, 'cancelled', true);
+  }
+
+  @override
+  void effectRejected(int effectId, dynamic error) {
+    set(effectId, 'error', error);
+  }
+
+  @override
+  void effectResolved(int effectId, dynamic result) {
+    set(effectId, 'result', result);
+  }
+
+  @override
+  void effectTriggered(int effectId, int parentEffectId, dynamic label, dynamic effect) {
+    ids.add(effectId);
+    set(effectId, 'parentEffectId', parentEffectId);
+    set(effectId, 'label', label);
+    set(effectId, 'effect', effect);
+  }
+
+  @override
+  void rootSagaStarted(int effectId, Function saga, List args, Map<Symbol, dynamic> namedArgs, String name) {
+  ids.add(effectId);
+  set(effectId, 'saga', saga);
+  set(effectId, 'args', args);
+  set(effectId, 'namedArgs', namedArgs);
+  }
+
+  void set(int effectId, String key, dynamic value) {
+    if (effects[effectId] == null) {
+      effects[effectId] = <String, dynamic>{};
+    }
+    effects[effectId][key] = value;
+  }
 }
