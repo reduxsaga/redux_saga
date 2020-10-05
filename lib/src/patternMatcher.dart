@@ -49,7 +49,9 @@ PatternMatcher<T> _matcher<T>(dynamic pattern) {
               ? _arrayMatcher<T>(pattern)
               : (pattern is Function)
                   ? _functionMatcher<T>(pattern)
-                  : (pattern is Type) ? _typeMatcher<T>(pattern) : null;
+                  : (pattern is Type)
+                      ? _typeMatcher<T>(pattern)
+                      : null;
 
   if (matcherCreator == null) throw InvalidPattern(pattern);
 

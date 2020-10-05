@@ -32,4 +32,7 @@ No changes yet.
 
 - Saga monitor test fix.
 
+## 1.1.14
+
+- Code formatting fix.
 
