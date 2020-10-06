@@ -36,3 +36,7 @@ No changes yet.
 
 - Code formatting fix.
 
+## 1.1.15
+
+- Documentation fix.
+

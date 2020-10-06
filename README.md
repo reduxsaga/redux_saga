@@ -40,7 +40,7 @@ import 'package:redux_saga/redux_saga.dart';
 import 'Api.dart';
 
 // worker Saga: will be fired on UserFetchRequested actions
-fetchUser(action) sync* {
+fetchUser({dynamic action}) sync* {
   yield Try(() sync* {
     var user = Result();
     yield Call(Api.fetchUser, args: [action.payload.userId], result: user);
