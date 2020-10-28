@@ -12,14 +12,9 @@ bool _isFunctionVoid(Function f) {
       closure.contains(') => Future<Null>');
 }
 
-bool _functionHasNamedArgument(Function f, String type, String name) {
-  if (f == null) throw CannotDetermineNullFunctionArguments();
-  var closure = f.toString();
-  return closure.contains('{$type $name}');
-}
-
 bool _functionHasActionArgument(Function f) {
-  return _functionHasNamedArgument(f, 'dynamic', 'action');
+  var closure = f.toString();
+  return closure.contains(' action}') || closure.contains(' action,');
 }
 
 dynamic _callFunctionWithArgument(Function f, List<dynamic> args,

@@ -1,3 +1,6 @@
+# Change Log
+All notable changes to this project will be documented in this file.
+
 ## 1.0.5
 
 - Initial version
@@ -40,3 +43,6 @@ No changes yet.
 
 - Documentation fix.
 
+## 1.1.16
+
+- Effect helpers action parameter can be dynamic or strict typed
