@@ -96,7 +96,8 @@ void main() {
 
       Iterable<Effect> root() sync* {
         var resultAll = AllResult();
-        yield All(<dynamic, Effect>{#a1: Take(pattern: _a1), #a2: Take(pattern: _a2)},
+        yield All(
+            <dynamic, Effect>{#a1: Take(pattern: _a1), #a2: Take(pattern: _a2)},
             result: resultAll);
         actual.add(resultAll.value);
       }
@@ -271,7 +272,8 @@ void main() {
 
         yield Put(TestActionD('ack-2'));
 
-        yield Take(channel: channel, pattern: _neverHappeningAction, result: result);
+        yield Take(
+            channel: channel, pattern: _neverHappeningAction, result: result);
       }
 
       sagaMiddleware.run(root);
@@ -356,7 +358,8 @@ void main() {
       var task = sagaMiddleware.run(root);
 
       // Sagas must take actions from each other (via buffered channel)
-      expect(task.toFuture().then((dynamic value) => actual), completion([1, 2, 3]));
+      expect(task.toFuture().then((dynamic value) => actual),
+          completion([1, 2, 3]));
     });
 
     test('inter-saga send/acknowledge handling', () {
@@ -551,7 +554,10 @@ void main() {
       }
 
       Iterable<Effect> takeTest2({dynamic action}) sync* {
-        yield All(<dynamic, Effect>{#fork1: Fork(forkedPut1), #fork2: Fork(forkedPut2)});
+        yield All(<dynamic, Effect>{
+          #fork1: Fork(forkedPut1),
+          #fork2: Fork(forkedPut2)
+        });
       }
 
       Iterable<Effect> root() sync* {
@@ -567,7 +573,8 @@ void main() {
       store.dispatch(End);
 
       // Sagas must take actions from each forked tasks doing Sync puts
-      expect(task.toFuture().then((dynamic value) => actual), completion([1, 2, 3]));
+      expect(task.toFuture().then((dynamic value) => actual),
+          completion([1, 2, 3]));
     });
 
     test('deeply nested forks/puts', () {
@@ -621,7 +628,9 @@ void main() {
 
           yield Put(_PING(newVal));
 
-          yield Take(pattern: (dynamic message) => message is _ACK && message.val == newVal);
+          yield Take(
+              pattern: (dynamic message) =>
+                  message is _ACK && message.val == newVal);
         }
 
         yield Put(_ACK(action.val as int));
@@ -639,7 +648,8 @@ void main() {
       store.dispatch(End);
 
       // Sagas must take actions from each forked tasks doing Sync puts
-      expect(task.toFuture().then((dynamic value) => actual), completion([1, 1]));
+      expect(
+          task.toFuture().then((dynamic value) => actual), completion([1, 1]));
     });
 
     test('put causing sync dispatch response in store subscriber', () {
@@ -663,7 +673,9 @@ void main() {
         while (true) {
           var race = RaceResult();
 
-          yield Race(<dynamic, Effect>{#a: Take(pattern: _a), #b: Take(pattern: _b)}, result: race);
+          yield Race(
+              <dynamic, Effect>{#a: Take(pattern: _a), #b: Take(pattern: _b)},
+              result: race);
 
           actual.add(race.keyValue);
 
@@ -684,10 +696,13 @@ void main() {
       store.dispatch(_a());
 
       //Sagas can't miss actions dispatched by store subscribers during put handling
-      expect(Future(() => actual), completion(([TypeMatcher<_a>(), TypeMatcher<_b>()])));
+      expect(Future(() => actual),
+          completion(([TypeMatcher<_a>(), TypeMatcher<_b>()])));
     });
 
-    test('action dispatched in root saga should get scheduled and taken by a "sibling" take', () {
+    test(
+        'action dispatched in root saga should get scheduled and taken by a "sibling" take',
+        () {
       var sagaMiddleware = createSagaMiddleware();
 
       var store = Store<_State2>(
@@ -705,7 +720,7 @@ void main() {
       sagaMiddleware.run(() sync* {
         yield All(<dynamic, Effect>{
           #put: Put(_FIRST()),
-          #takeEvery: TakeEvery(() sync* {
+          #takeEvery: TakeEvery(({dynamic action}) sync* {
             yield Put(_SECOND());
           }, pattern: _FIRST)
         });
@@ -716,7 +731,8 @@ void main() {
           completion(([TypeMatcher<_FIRST>(), TypeMatcher<_SECOND>()])));
     });
 
-    test('action dispatched synchronously in forked task should be taken a following sync take',
+    test(
+        'action dispatched synchronously in forked task should be taken a following sync take',
         () {
       var actual = <dynamic>[];
 
@@ -749,7 +765,8 @@ void main() {
         actual.add(result.value);
       });
 
-      expect(task.toFuture().then((dynamic value) => actual), completion([action]));
+      expect(task.toFuture().then((dynamic value) => actual),
+          completion([action]));
     });
   });
 }

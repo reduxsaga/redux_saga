@@ -10,7 +10,8 @@ void main() {
 
       var caughtErrors = <dynamic>[];
 
-      var sagaMiddleware = createMiddleware(options: Options(onError: (dynamic e, String s) {
+      var sagaMiddleware =
+          createMiddleware(options: Options(onError: (dynamic e, String s) {
         caughtErrors.add(e);
       }));
       var store = createStore(sagaMiddleware);
@@ -25,7 +26,7 @@ void main() {
           actual.add('start parent');
           yield Fork(immediatelyFailingFork);
           actual.add('success parent');
-        }, Catch: (dynamic e) {
+        }, Catch: (dynamic e, StackTrace s) {
           actual.add('parent caught ${e}');
         });
       }
@@ -35,7 +36,7 @@ void main() {
           actual.add('start main');
           yield Call(genParent);
           actual.add('success main');
-        }, Catch: (dynamic e) {
+        }, Catch: (dynamic e, StackTrace s) {
           actual.add('main caught $e');
         });
       }
@@ -43,10 +44,16 @@ void main() {
       var task = sagaMiddleware.run(main);
 
       // saga should fails the parent if a forked function fails synchronously
-      expect(task.toFuture().then((dynamic value) => actual),
-          completion(['start main', 'start parent', 'main caught immediatelyFailingFork']));
+      expect(
+          task.toFuture().then((dynamic value) => actual),
+          completion([
+            'start main',
+            'start parent',
+            'main caught immediatelyFailingFork'
+          ]));
       // all errors are caught. so caughtErrors is empty
-      expect(task.toFuture().then((dynamic value) => caughtErrors), completion(<dynamic>[]));
+      expect(task.toFuture().then((dynamic value) => caughtErrors),
+          completion(<dynamic>[]));
     });
 
     test('saga sync fork failures: functions/error bubbling', () {
@@ -56,7 +63,8 @@ void main() {
 
       var exception = Exception('immediatelyFailingFork');
 
-      var sagaMiddleware = createMiddleware(options: Options(onError: (dynamic e, String s) {
+      var sagaMiddleware =
+          createMiddleware(options: Options(onError: (dynamic e, String s) {
         caughtErrors.add(e);
       }));
       var store = createStore(sagaMiddleware);
@@ -71,7 +79,7 @@ void main() {
           actual.add('start parent');
           yield Fork(immediatelyFailingFork);
           actual.add('success parent');
-        }, Catch: (dynamic e) {
+        }, Catch: (dynamic e, StackTrace s) {
           actual.add('parent caught ${e}');
         });
       }
@@ -81,7 +89,7 @@ void main() {
           actual.add('start main');
           yield Fork(genParent);
           actual.add('success main');
-        }, Catch: (dynamic e) {
+        }, Catch: (dynamic e, StackTrace s) {
           actual.add('main caught $e');
         });
       }
@@ -114,7 +122,7 @@ void main() {
           actual.add('start parent');
           yield Fork(genChild);
           actual.add('success parent');
-        }, Catch: (dynamic e) {
+        }, Catch: (dynamic e, StackTrace s) {
           actual.add('parent caught ${e}');
         });
       }
@@ -124,7 +132,7 @@ void main() {
           actual.add('start main');
           yield Call(genParent);
           actual.add('success main');
-        }, Catch: (dynamic e) {
+        }, Catch: (dynamic e, StackTrace s) {
           actual.add('main caught $e');
         });
       }
@@ -143,7 +151,8 @@ void main() {
 
       var exception = Exception('gen error');
 
-      var sagaMiddleware = createMiddleware(options: Options(onError: (dynamic e, String s) {
+      var sagaMiddleware =
+          createMiddleware(options: Options(onError: (dynamic e, String s) {
         caughtErrors.add(e);
       }));
       var store = createStore(sagaMiddleware);
@@ -160,7 +169,7 @@ void main() {
           yield Spawn(genChild, name: 'genChild', result: spawnedTask);
           actual.add('spawn ' + spawnedTask.value.meta.name);
           actual.add('success main');
-        }, Catch: (dynamic e) {
+        }, Catch: (dynamic e, StackTrace s) {
           actual.add('main caught $e');
         });
       }
@@ -177,7 +186,8 @@ void main() {
 
       var failError = Exception('fail error');
 
-      var sagaMiddleware = createMiddleware(options: Options(onError: (dynamic e, String s) {
+      var sagaMiddleware =
+          createMiddleware(options: Options(onError: (dynamic e, String s) {
         actual.add(e);
       }));
       var store = createStore(sagaMiddleware);
@@ -213,7 +223,8 @@ void main() {
       ]);
 
       // saga should not fail a parent with errors from detached fork
-      expect(f.then((dynamic value) => actual), completion([0, 1, 2, failError, 4]));
+      expect(f.then((dynamic value) => actual),
+          completion([0, 1, 2, failError, 4]));
     });
   });
 }

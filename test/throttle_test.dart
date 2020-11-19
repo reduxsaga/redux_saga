@@ -73,9 +73,12 @@ void main() {
         sagaMiddleware.setStore(store);
 
         var mainTask = sagaMiddleware.run(() sync* {
-          yield Throttle(() {
+          yield Throttle(({dynamic action}) {
             called = true;
-          }, duration: Duration(milliseconds: delayMs), pattern: TestActionA, result: task);
+          },
+              duration: Duration(milliseconds: delayMs),
+              pattern: TestActionA,
+              result: task);
         });
 
         store.dispatch(End);

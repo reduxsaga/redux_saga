@@ -102,7 +102,10 @@ void main() {
             ]));
 
         //spawned task finished after main task
-        expect(spawnedTask.value.toFuture().then((dynamic value) => taskCompletion),
+        expect(
+            spawnedTask.value
+                .toFuture()
+                .then((dynamic value) => taskCompletion),
             completion([1, 0]));
 
         async.elapse(Duration(milliseconds: 100));
@@ -193,7 +196,9 @@ void main() {
           execution.add(2);
         });
 
-        spawnedTaskA.value.toFuture().then((dynamic v) => taskCompletion.add(0));
+        spawnedTaskA.value
+            .toFuture()
+            .then((dynamic v) => taskCompletion.add(0));
         task.toFuture().then((dynamic v) => taskCompletion.add(1));
 
         expect(
@@ -307,16 +312,18 @@ void main() {
             ]));
 
         expect(
-            spawnedTaskA.value.toFuture().catchError((dynamic error) => <dynamic>[
-                  error,
-                  spawnedTaskA.value.result,
-                  spawnedTaskA.value.isRunning,
-                  spawnedTaskA.value.isCancelled,
-                  spawnedTaskA.value.isAborted,
-                  execution,
-                  taskCompletion,
-                  values.toString()
-                ]),
+            spawnedTaskA.value
+                .toFuture()
+                .catchError((dynamic error) => <dynamic>[
+                      error,
+                      spawnedTaskA.value.result,
+                      spawnedTaskA.value.isRunning,
+                      spawnedTaskA.value.isCancelled,
+                      spawnedTaskA.value.isAborted,
+                      execution,
+                      taskCompletion,
+                      values.toString()
+                    ]),
             completion([
               exceptionToBeCaught,
               null,
@@ -361,7 +368,9 @@ void main() {
           }
         });
 
-        spawnedTaskA.value.toFuture().then((dynamic v) => taskCompletion.add(0));
+        spawnedTaskA.value
+            .toFuture()
+            .then((dynamic v) => taskCompletion.add(0));
         task
             .toFuture()
             .then((dynamic v) => taskCompletion.add(1))
@@ -448,7 +457,9 @@ void main() {
           execution.add(2);
         });
 
-        spawnedTaskA.value.toFuture().then((dynamic v) => taskCompletion.add(0));
+        spawnedTaskA.value
+            .toFuture()
+            .then((dynamic v) => taskCompletion.add(0));
         task.toFuture().then((dynamic v) => taskCompletion.add(1));
 
         expect(
@@ -540,8 +551,12 @@ void main() {
           execution.add(3);
         });
 
-        spawnedTaskA.value.toFuture().then((dynamic v) => taskCompletion.add(0));
-        spawnedTaskB.value.toFuture().then((dynamic v) => taskCompletion.add(1));
+        spawnedTaskA.value
+            .toFuture()
+            .then((dynamic v) => taskCompletion.add(0));
+        spawnedTaskB.value
+            .toFuture()
+            .then((dynamic v) => taskCompletion.add(1));
         task.toFuture().then((dynamic v) => taskCompletion.add(2));
 
         expect(
@@ -657,8 +672,12 @@ void main() {
           execution.add(3);
         });
 
-        spawnedTaskA.value.toFuture().then((dynamic v) => taskCompletion.add(0));
-        spawnedTaskB.value.toFuture().then((dynamic v) => taskCompletion.add(1));
+        spawnedTaskA.value
+            .toFuture()
+            .then((dynamic v) => taskCompletion.add(0));
+        spawnedTaskB.value
+            .toFuture()
+            .then((dynamic v) => taskCompletion.add(1));
         task.toFuture().then((dynamic v) => taskCompletion.add(2));
 
         expect(
@@ -774,8 +793,12 @@ void main() {
           execution.add(3);
         });
 
-        spawnedTaskA.value.toFuture().then((dynamic v) => taskCompletion.add(0));
-        spawnedTaskB.value.toFuture().then((dynamic v) => taskCompletion.add(1));
+        spawnedTaskA.value
+            .toFuture()
+            .then((dynamic v) => taskCompletion.add(0));
+        spawnedTaskB.value
+            .toFuture()
+            .then((dynamic v) => taskCompletion.add(1));
         task.toFuture().then((dynamic v) => taskCompletion.add(2));
 
         expect(
@@ -891,8 +914,12 @@ void main() {
           execution.add(3);
         });
 
-        spawnedTaskA.value.toFuture().then((dynamic v) => taskCompletion.add(0));
-        spawnedTaskB.value.toFuture().then((dynamic v) => taskCompletion.add(1));
+        spawnedTaskA.value
+            .toFuture()
+            .then((dynamic v) => taskCompletion.add(0));
+        spawnedTaskB.value
+            .toFuture()
+            .then((dynamic v) => taskCompletion.add(1));
         task.toFuture().then((dynamic v) => taskCompletion.add(2));
 
         expect(
@@ -1000,7 +1027,8 @@ void main() {
 
           execution.add(2);
 
-          yield Join(<dynamic, Task>{#spawnA: spawnedTaskA.value}, result: joinResult);
+          yield Join(<dynamic, Task>{#spawnA: spawnedTaskA.value},
+              result: joinResult);
 
           for (var i = 0; i < 10; i++) {
             values.write(i);
@@ -1011,8 +1039,12 @@ void main() {
           execution.add(3);
         });
 
-        spawnedTaskA.value.toFuture().then((dynamic v) => taskCompletion.add(0));
-        spawnedTaskB.value.toFuture().then((dynamic v) => taskCompletion.add(1));
+        spawnedTaskA.value
+            .toFuture()
+            .then((dynamic v) => taskCompletion.add(0));
+        spawnedTaskB.value
+            .toFuture()
+            .then((dynamic v) => taskCompletion.add(1));
         task.toFuture().then((dynamic v) => taskCompletion.add(2));
 
         expect(
@@ -1123,8 +1155,10 @@ void main() {
 
           execution.add(2);
 
-          yield Join(<dynamic, Task>{#spawnA: spawnedTaskA.value, #spawnB: spawnedTaskB.value},
-              result: joinResult);
+          yield Join(<dynamic, Task>{
+            #spawnA: spawnedTaskA.value,
+            #spawnB: spawnedTaskB.value
+          }, result: joinResult);
 
           for (var i = 0; i < 10; i++) {
             values.write(i);
@@ -1135,8 +1169,12 @@ void main() {
           execution.add(3);
         });
 
-        spawnedTaskA.value.toFuture().then((dynamic v) => taskCompletion.add(0));
-        spawnedTaskB.value.toFuture().then((dynamic v) => taskCompletion.add(1));
+        spawnedTaskA.value
+            .toFuture()
+            .then((dynamic v) => taskCompletion.add(0));
+        spawnedTaskB.value
+            .toFuture()
+            .then((dynamic v) => taskCompletion.add(1));
         task.toFuture().then((dynamic v) => taskCompletion.add(2));
 
         expect(
@@ -1253,8 +1291,10 @@ void main() {
 
           execution.add(4);
 
-          yield Join(<dynamic, Task>{#spawnA: spawnedTaskA.value, #spawnB: spawnedTaskB.value},
-              result: joinResult);
+          yield Join(<dynamic, Task>{
+            #spawnA: spawnedTaskA.value,
+            #spawnB: spawnedTaskB.value
+          }, result: joinResult);
 
           for (var i = 0; i < 10; i++) {
             values.write(i);
@@ -1267,8 +1307,12 @@ void main() {
           execution.add(6);
         });
 
-        spawnedTaskA.value.toFuture().then((dynamic v) => taskCompletion.add(0));
-        spawnedTaskB.value.toFuture().then((dynamic v) => taskCompletion.add(1));
+        spawnedTaskA.value
+            .toFuture()
+            .then((dynamic v) => taskCompletion.add(0));
+        spawnedTaskB.value
+            .toFuture()
+            .then((dynamic v) => taskCompletion.add(1));
         task.toFuture().then((dynamic v) => taskCompletion.add(2));
 
         //joined task cancel will cancel root also
@@ -1381,8 +1425,10 @@ void main() {
 
           execution.add(2);
 
-          yield Join(<dynamic, Task>{#spawnA: spawnedTaskA.value, #spawnB: spawnedTaskB.value},
-              result: joinResult);
+          yield Join(<dynamic, Task>{
+            #spawnA: spawnedTaskA.value,
+            #spawnB: spawnedTaskB.value
+          }, result: joinResult);
 
           for (var i = 0; i < 10; i++) {
             values.write(i);
@@ -1393,8 +1439,12 @@ void main() {
           execution.add(3);
         });
 
-        spawnedTaskA.value.toFuture().then((dynamic v) => taskCompletion.add(0));
-        spawnedTaskB.value.toFuture().then((dynamic v) => taskCompletion.add(1));
+        spawnedTaskA.value
+            .toFuture()
+            .then((dynamic v) => taskCompletion.add(0));
+        spawnedTaskB.value
+            .toFuture()
+            .then((dynamic v) => taskCompletion.add(1));
         task.toFuture().then((dynamic v) => taskCompletion.add(2));
 
         //joined task cancel will cancel root also

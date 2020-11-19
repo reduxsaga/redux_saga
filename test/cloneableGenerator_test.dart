@@ -36,7 +36,7 @@ void main() {
         values.add(gen2.current);
       }
 
-      expect(values,<int>[0, 1, 2, 3, 4, 3, 4, 4]);
+      expect(values, <int>[0, 1, 2, 3, 4, 3, 4, 4]);
     });
   });
 }

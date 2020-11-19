@@ -113,7 +113,7 @@ rootSaga() sync* {
           yield Try(() sync* {
             yield Call(saga);
             success = true;
-          }, Catch: (e) {
+          }, Catch: (e, s) {
             print(e);
           });
           if (success) break;

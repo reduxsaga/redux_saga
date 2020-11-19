@@ -6,7 +6,8 @@ import 'helpers/store.dart';
 
 void main() {
   group('fork test', () {
-    test('should not interpret returned effect. fork(() => effectCreator())', () {
+    test('should not interpret returned effect. fork(() => effectCreator())',
+        () {
       var sagaMiddleware = createMiddleware();
       var store = createStore(sagaMiddleware);
       sagaMiddleware.setStore(store);
@@ -26,7 +27,9 @@ void main() {
       expect(task.toFuture(), completion(call));
     });
 
-    test('should not interpret returned effect. yield fork(takeEvery, \'pattern\', fn)', () {
+    test(
+        'should not interpret returned effect. yield fork(takeEvery, \'pattern\', fn)',
+        () {
       var sagaMiddleware = createMiddleware();
       var store = createStore(sagaMiddleware);
       sagaMiddleware.setStore(store);
@@ -60,7 +63,9 @@ void main() {
       expect(task.toFuture(), completion('a'));
     });
 
-    test('should handle future that resolves undefined properly. fork(() => Future(()=>null))', () {
+    test(
+        'should handle future that resolves undefined properly. fork(() => Future(()=>null))',
+        () {
       var sagaMiddleware = createMiddleware();
       var store = createStore(sagaMiddleware);
       sagaMiddleware.setStore(store);
@@ -829,7 +834,8 @@ void main() {
 
           execution.add(2);
 
-          yield Join(<dynamic, Task>{#forkA: forkedTaskA.value}, result: joinResult);
+          yield Join(<dynamic, Task>{#forkA: forkedTaskA.value},
+              result: joinResult);
 
           for (var i = 0; i < 10; i++) {
             values.write(i);
@@ -953,8 +959,10 @@ void main() {
 
           execution.add(2);
 
-          yield Join(<dynamic, Task>{#forkA: forkedTaskA.value, #forkB: forkedTaskB.value},
-              result: joinResult);
+          yield Join(<dynamic, Task>{
+            #forkA: forkedTaskA.value,
+            #forkB: forkedTaskB.value
+          }, result: joinResult);
 
           for (var i = 0; i < 10; i++) {
             values.write(i);
@@ -1083,8 +1091,10 @@ void main() {
 
           execution.add(4);
 
-          yield Join(<dynamic, Task>{#forkA: forkedTaskA.value, #forkB: forkedTaskB.value},
-              result: joinResult);
+          yield Join(<dynamic, Task>{
+            #forkA: forkedTaskA.value,
+            #forkB: forkedTaskB.value
+          }, result: joinResult);
 
           for (var i = 0; i < 10; i++) {
             values.write(i);
@@ -1212,8 +1222,10 @@ void main() {
 
           execution.add(2);
 
-          yield Join(<dynamic, Task>{#forkA: forkedTaskA.value, #forkB: forkedTaskB.value},
-              result: joinResult);
+          yield Join(<dynamic, Task>{
+            #forkA: forkedTaskA.value,
+            #forkB: forkedTaskB.value
+          }, result: joinResult);
 
           for (var i = 0; i < 10; i++) {
             values.write(i);

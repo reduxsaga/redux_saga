@@ -20,7 +20,10 @@ void main() {
           var result = Result<dynamic>();
           yield Call(() => completers[idx].future, result: result);
           actual.add(<dynamic>[arg1, arg2, result.value]);
-        }, args: <dynamic>['a1', 'a2'], pattern: TestActionA, result: forkedTask);
+        },
+            args: <dynamic>['a1', 'a2'],
+            pattern: TestActionA,
+            result: forkedTask);
         yield Take(pattern: TestActionCancel);
         yield Cancel([forkedTask.value]);
       });
@@ -63,7 +66,7 @@ void main() {
       sagaMiddleware.setStore(store);
 
       var task = sagaMiddleware.run(() sync* {
-        yield TakeLeading(() sync* {
+        yield TakeLeading(({dynamic action}) sync* {
           called = true;
         }, pattern: TestActionA, result: forkedTask);
       });
@@ -73,7 +76,8 @@ void main() {
 
       expect(
           task.toFuture().then((dynamic value) => [
-                forkedTask.value.isRunning, // should finish takeLatest task on END
+                forkedTask
+                    .value.isRunning, // should finish takeLatest task on END
                 called // should not call function if finished with END
               ]),
           completion([false, false]));

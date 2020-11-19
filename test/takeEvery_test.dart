@@ -17,7 +17,10 @@ void main() {
 
         yield TakeEvery((dynamic arg1, dynamic arg2, {dynamic action}) sync* {
           actual.add(<dynamic>[arg1, arg2, action.payload]);
-        }, args: <dynamic>['a1', 'a2'], pattern: TestActionA, result: forkedTask);
+        },
+            args: <dynamic>['a1', 'a2'],
+            pattern: TestActionA,
+            result: forkedTask);
         yield Take(pattern: TestActionCancel);
         yield Cancel([forkedTask.value]);
       });
@@ -74,7 +77,8 @@ void main() {
 
       expect(
           task.toFuture().then((dynamic value) => [
-                forkedTask.value.isRunning, // should finish takeEvery task on END
+                forkedTask
+                    .value.isRunning, // should finish takeEvery task on END
                 called // should not call function if finished with END
               ]),
           completion([false, false]));

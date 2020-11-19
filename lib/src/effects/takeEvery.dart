@@ -33,7 +33,7 @@ part of redux_saga;
 ///
 ///  //...
 ///
-///  fetchUser(action) sync* {
+///  fetchUser({dynamic action}) sync* {
 ///    // ...
 ///  }
 ///
@@ -92,12 +92,10 @@ Iterable<Effect> _TakeEvery(Function saga,
 
     yield Fork(saga,
         args: args,
-        namedArgs: _functionHasActionArgument(saga)
-            ? <Symbol, dynamic>{
-                ...?namedArgs,
-                #action: action is Result ? action.value : action
-              }
-            : namedArgs,
+        namedArgs: <Symbol, dynamic>{
+          ...?namedArgs,
+          #action: action is Result ? action.value : action
+        },
         Catch: Catch,
         Finally: Finally,
         name: name);

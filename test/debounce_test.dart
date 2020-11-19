@@ -24,7 +24,10 @@ void main() {
           yield Debounce(({dynamic action}) sync* {
             called++;
             actual.add(<dynamic>[called, action.payload]);
-          }, duration: Duration(milliseconds: delayMs), pattern: TestActionC, result: forkedTask);
+          },
+              duration: Duration(milliseconds: delayMs),
+              pattern: TestActionC,
+              result: forkedTask);
           yield Take(pattern: TestActionCancel);
           yield Cancel([forkedTask.value]);
         });
@@ -70,7 +73,10 @@ void main() {
           yield Debounce(({dynamic action}) sync* {
             called++;
             actual.add(<dynamic>[called, action.payload]);
-          }, duration: Duration(milliseconds: delayMs), pattern: TestActionC, result: forkedTask);
+          },
+              duration: Duration(milliseconds: delayMs),
+              pattern: TestActionC,
+              result: forkedTask);
           yield Take(pattern: TestActionCancel);
           yield Cancel([forkedTask.value]);
         });
@@ -120,7 +126,10 @@ void main() {
           yield Debounce(({dynamic action}) sync* {
             called++;
             actual.add(<dynamic>[called, action.payload]);
-          }, duration: Duration(milliseconds: delayMs), pattern: TestActionC, result: forkedTask);
+          },
+              duration: Duration(milliseconds: delayMs),
+              pattern: TestActionC,
+              result: forkedTask);
           yield Take(pattern: TestActionCancel);
           yield Cancel([forkedTask.value]);
         });
@@ -158,7 +167,10 @@ void main() {
           yield Debounce(({dynamic action}) sync* {
             called++;
             actual.add(<dynamic>[called, action]);
-          }, duration: Duration(milliseconds: delayMs), channel: customChannel, result: forkedTask);
+          },
+              duration: Duration(milliseconds: delayMs),
+              channel: customChannel,
+              result: forkedTask);
           yield Take(pattern: TestActionCancel);
           yield Cancel([forkedTask.value]);
         });
@@ -202,7 +214,10 @@ void main() {
         sagaMiddleware.run(() sync* {
           yield Debounce(({dynamic action}) sync* {
             called++;
-          }, duration: Duration(milliseconds: delayMs), channel: customChannel, result: forkedTask);
+          },
+              duration: Duration(milliseconds: delayMs),
+              channel: customChannel,
+              result: forkedTask);
         });
 
         var f = ResolveSequentially([
@@ -212,7 +227,8 @@ void main() {
 
         expect(
             f.then((dynamic value) => <dynamic>[
-                  forkedTask.value.isRunning, // should finish debounce task on END
+                  forkedTask
+                      .value.isRunning, // should finish debounce task on END
                   called // should not call function if finished with END
                 ]),
             completion([false, 0]));
@@ -237,7 +253,10 @@ void main() {
         sagaMiddleware.run(() sync* {
           yield Debounce(({dynamic action}) sync* {
             called++;
-          }, duration: Duration(milliseconds: delayMs), pattern: TestActionC, result: forkedTask);
+          },
+              duration: Duration(milliseconds: delayMs),
+              pattern: TestActionC,
+              result: forkedTask);
         });
 
         var f = ResolveSequentially([
@@ -247,7 +266,8 @@ void main() {
 
         expect(
             f.then((dynamic value) => <dynamic>[
-                  forkedTask.value.isRunning, // should finish debounce task on END
+                  forkedTask
+                      .value.isRunning, // should finish debounce task on END
                   called // should not call function if finished with END
                 ]),
             completion([false, 0]));
@@ -272,7 +292,10 @@ void main() {
         sagaMiddleware.run(() sync* {
           yield Debounce(({dynamic action}) sync* {
             called++;
-          }, duration: Duration(milliseconds: delayMs), pattern: TestActionC, result: forkedTask);
+          },
+              duration: Duration(milliseconds: delayMs),
+              pattern: TestActionC,
+              result: forkedTask);
         });
 
         var f = ResolveSequentially([
@@ -284,7 +307,8 @@ void main() {
 
         expect(
             f.then((dynamic value) => <dynamic>[
-                  forkedTask.value.isRunning, // should finish debounce task on END
+                  forkedTask
+                      .value.isRunning, // should finish debounce task on END
                   called // should interrupt race on END
                 ]),
             completion([false, 0]));

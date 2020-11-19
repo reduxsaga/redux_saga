@@ -36,8 +36,8 @@ part of redux_saga;
 ///        result: response,
 ///      );
 ///      yield Put(RequestSuccess(payload: response.value));
-///    }, Catch: (error) sync* {
-///      yield Put(RequestFail(payload: error));
+///    }, Catch: (e, s) sync* {
+///      yield Put(RequestFail(payload: e));
 ///    });
 ///  }
 ///```
@@ -77,7 +77,8 @@ Iterable<Effect> _Retry(Function fn,
   var triesLeft = maxTries;
   while (true) {
     var failed = false;
-    yield Call(fn, args: args, namedArgs: namedArgs, Catch: () {
+    yield Call(fn, args: args, namedArgs: namedArgs,
+        Catch: (dynamic e, StackTrace s) {
       triesLeft--;
       if (triesLeft <= 0) {
         throw sagaError;

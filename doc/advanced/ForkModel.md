@@ -123,7 +123,7 @@ fetchResource(resource) sync* {
 mainSaga() sync* {
   yield Try(() sync* {
     yield Call(fetchAll);
-  }, Catch: (e) sync* {
+  }, Catch: (e, s) sync* {
     // handle fetchAll errors
   });
 }

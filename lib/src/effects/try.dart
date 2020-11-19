@@ -23,7 +23,7 @@ part of redux_saga;
 ///      yield Select(selector: getCart, result: cart);
 ///      yield Call(buyProductsAPI, args: [cart.value]);
 ///      yield Put(CheckoutSuccess(cart.value));
-///    }, Catch: (error) sync* {
+///    }, Catch: (e, s) sync* {
 ///      yield Put(CheckoutFailure(error));
 ///    });
 ///  }

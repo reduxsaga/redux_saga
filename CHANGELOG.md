@@ -46,3 +46,50 @@ No changes yet.
 ## 1.1.16
 
 - Effect helpers action parameter can be dynamic or strict typed
+
+## 2.0.0
+
+- Flutter web build errors fixed. After minification the function closures are changing.
+In order to avoid dart mirrors usage (also not avaliable) some changes are made.
+Codes are written at previous versions of the library must be migrated to this version.
+Please use the following instructions;
+
+1. If you use one of the effects Debounce, TakeEvery, TakeLatest, TakeLeading or Throttle then you must add named `action` parameter to the saga.
+Otherwise a parameter mismatch error may occured like the following;
+
+Dynamic call with unexpected named argument 'action'.
+
+Proper usage example :
+
+```
+fetchUser({dynamic action}) sync* { //add `{dynamic action}` as parameter
+    //...
+}
+
+mySaga() sync* {
+  yield TakeEvery(fetchUser, pattern: UserFetchRequested);
+}
+```
+
+2. Catch saga of Try effect must have error and stackTrace arguments.
+Otherwise a parameter mismatch error may occured like the following;
+
+Dynamic call with too many arguments.
+Receiver: Instance of '() => Iterable<Null>'
+Arguments: [Instance of '_Exception', Instance of '_StackTrace']
+
+
+Proper usage example :
+
+```
+  //...
+
+  yield Try(() sync* {
+
+  }, Catch: (e, s) sync* {  //add e and s parameters to saga
+
+  });
+
+  //...
+```
+

@@ -199,7 +199,7 @@ Future<bool> delay(Duration duration) {
 }
 
 // Our worker Saga: will perform the async increment task
-incrementAsync() sync* {
+incrementAsync({dynamic action}) sync* {
   yield delay(Duration(seconds: 1));
   yield Put(IncrementAction());
 }
@@ -238,7 +238,7 @@ Future delay(Duration duration) {
   return Future.delayed(duration, () => true);
 }
 
-incrementAsync() sync* {
+incrementAsync({dynamic action}) sync* {
   yield delay(Duration(seconds: 1));
   yield Put(IncrementAction());
 }
@@ -286,7 +286,7 @@ Now, lets remove the `delay` function and use effect. To use effect just change 
 
 ...
 
-incrementAsync() sync* {
+incrementAsync({dynamic action}) sync* {
   yield Delay(Duration(seconds: 1));
   yield Put(IncrementAction());
 }

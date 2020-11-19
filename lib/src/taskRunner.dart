@@ -131,8 +131,7 @@ class _taskRunner {
       clearCurrentExecution(ncb);
       onErrorExecuted = true;
       codeBlock = _CodeBlock.errorCode;
-      processFunctionReturn(ncb, _callErrorFunction(onError, currentException),
-          !_isFunctionVoid(onError));
+      processFunctionReturn(ncb, _callErrorFunction(onError, currentException));
     } catch (e, s) {
       ncb.next(arg: _createSagaException(e, s), isErr: true);
     }
@@ -143,21 +142,16 @@ class _taskRunner {
       clearCurrentExecution(callback);
       onFinallyExecuted = true;
       codeBlock = _CodeBlock.finallyCode;
-      processFunctionReturn(callback, _callFinallyFunction(onFinally),
-          !_isFunctionVoid(onFinally));
+      processFunctionReturn(callback, _callFinallyFunction(onFinally));
     } catch (e, s) {
       callback.next(arg: _createSagaException(e, s), isErr: true);
     }
   }
 
-  void processFunctionReturn(
-      _TaskCallback callback, dynamic fr, bool assignTaskResult) {
+  void processFunctionReturn(_TaskCallback callback, dynamic fr) {
     if (fr is Future || fr is FutureWithCancel) {
       var tcb =
           _TaskCallback(({_TaskCallback invoker, dynamic arg, bool isErr}) {
-        if (!isErr) {
-          if (assignTaskResult) mainTask.task.taskResult = arg;
-        }
         callback.next(arg: arg, isErr: isErr);
       }, () {
         callback.cancel();
@@ -173,7 +167,6 @@ class _taskRunner {
       iterator = fr.iterator;
       callback.next();
     } else {
-      if (assignTaskResult) mainTask.task.taskResult = fr;
       callback.next(arg: fr);
     }
   }

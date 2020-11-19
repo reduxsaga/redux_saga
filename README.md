@@ -45,7 +45,7 @@ fetchUser({dynamic action}) sync* {
     var user = Result();
     yield Call(Api.fetchUser, args: [action.payload.userId], result: user);
     yield Put(UserFetchSuceeded(user: user.value));
-  }, Catch: (e) sync* {
+  }, Catch: (e, s) sync* {
     yield Put(UserFetchFailed(message: e.message));
   });
 }
