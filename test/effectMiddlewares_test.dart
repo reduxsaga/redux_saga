@@ -32,14 +32,15 @@ void main() {
         yield Return(result);
       }
 
-      var sagaMiddleware =
-          createMiddleware(options: Options(effectMiddlewares: [effectMiddleware]));
+      var sagaMiddleware = createMiddleware(
+          options: Options(effectMiddlewares: [effectMiddleware]));
       var store = createStore(sagaMiddleware);
       sagaMiddleware.setStore(store);
 
       var task = sagaMiddleware.run(() sync* {
         var all = AllResult();
-        yield All(<dynamic, Effect>{#call: Call(fnA), #apiCall: apiCall}, result: all);
+        yield All(<dynamic, Effect>{#call: Call(fnA), #apiCall: apiCall},
+            result: all);
         actual.add(all.value);
       });
 
@@ -99,7 +100,8 @@ void main() {
       var callA = Call(fnA, result: Result<dynamic>());
 
       var sagaMiddleware = createMiddleware(
-          options: Options(effectMiddlewares: [effectMiddleware1, effectMiddleware2]));
+          options: Options(
+              effectMiddlewares: [effectMiddleware1, effectMiddleware2]));
       var store = createStore(sagaMiddleware);
       sagaMiddleware.setStore(store);
 
@@ -183,8 +185,8 @@ void main() {
         yield Return('result');
       }
 
-      var sagaMiddleware =
-          createMiddleware(options: Options(effectMiddlewares: [effectMiddleware]));
+      var sagaMiddleware = createMiddleware(
+          options: Options(effectMiddlewares: [effectMiddleware]));
       var store = createStore(sagaMiddleware);
       sagaMiddleware.setStore(store);
 

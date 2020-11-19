@@ -37,8 +37,8 @@ authorize(user, password) sync* {
     yield Call(Api.authorize, args: [user, password], result: token);
     yield Put(LoginSuccess(token.value));
     yield Return(token);
-  }, Catch: (error) sync* {
-    yield Put(LoginError(error));
+  }, Catch: (e, s) sync* {
+    yield Put(LoginError(e));
   });
 }
 
@@ -146,8 +146,8 @@ authorize(user, password) sync* {
     yield Put(LoginSuccess(token.value));
     yield Call(Api.storeItem, args: [token.value]);
     yield Return(token);
-  }, Catch: (error) sync* {
-    yield Put(LoginError(error));
+  }, Catch: (e, s) sync* {
+    yield Put(LoginError(e));
   });
 }
 
@@ -221,8 +221,8 @@ authorize(user, password) sync* {
     yield Put(LoginSuccess(token.value));
     yield Call(Api.storeItem, args: [token.value]);
     yield Return(token);
-  }, Catch: (error) sync* {
-    yield Put(LoginError(error));
+  }, Catch: (e, s) sync* {
+    yield Put(LoginError(e));
   }, Finally: () sync* {
     var cancelled = Result<bool>();
     yield Cancelled(result: cancelled);

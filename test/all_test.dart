@@ -56,7 +56,8 @@ void main() {
       });
 
       // saga must fulfill parallel effects
-      expect(task.toFuture().then((dynamic value) => all.value), completion(<Symbol, dynamic>{}));
+      expect(task.toFuture().then((dynamic value) => all.value),
+          completion(<Symbol, dynamic>{}));
     });
 
     test('saga parallel effect: handling errors', () {
@@ -80,14 +81,15 @@ void main() {
           #call1: Call(() => comps[0].future),
           #call2: Call(() => comps[1].future),
         }, result: all);
-      }, Catch: (dynamic e) {
+      }, Catch: (dynamic e, StackTrace s) {
         caught = e;
       });
 
       //saga must catch the first error in parallel effects
       expect(task.toFuture().then<dynamic>((dynamic value) => caught),
           completion(exceptionToBeCaught));
-      expect(task.toFuture().then((dynamic value) => all.value), completion(null));
+      expect(
+          task.toFuture().then((dynamic value) => all.value), completion(null));
     });
 
     test('saga parallel effect: handling END', () {
@@ -110,11 +112,14 @@ void main() {
         onfinally = true;
       });
 
-      ResolveSequentially([callF(() => comp.complete(1)), callF(() => store.dispatch(End))]);
+      ResolveSequentially(
+          [callF(() => comp.complete(1)), callF(() => store.dispatch(End))]);
 
       //saga must end Parallel Effect if one of the effects resolve with END
-      expect(task.toFuture().then((dynamic value) => onfinally), completion(true));
-      expect(task.toFuture().then((dynamic value) => all.value), completion(null));
+      expect(
+          task.toFuture().then((dynamic value) => onfinally), completion(true));
+      expect(
+          task.toFuture().then((dynamic value) => all.value), completion(null));
     });
 
     test('all test', () {

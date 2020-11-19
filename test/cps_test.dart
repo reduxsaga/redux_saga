@@ -21,13 +21,14 @@ void main() {
             cb.callback(err: 'err');
           });
           actual.add('call 2');
-        }, Catch: (dynamic error) sync* {
-          actual.add('call $error');
+        }, Catch: (dynamic e, StackTrace s) sync* {
+          actual.add('call $e');
         });
       });
 
       //saga must fulfill cps call effects
-      expect(task.toFuture().then((dynamic value) => actual), completion(['call 1', 'call err']));
+      expect(task.toFuture().then((dynamic value) => actual),
+          completion(['call 1', 'call err']));
     });
 
     test('saga synchronous cps failures handling', () {
@@ -55,7 +56,7 @@ void main() {
             throw Exception('child error');
           });
           yield Put(TestActionC('success child'));
-        }, Catch: (dynamic e) sync* {
+        }, Catch: (dynamic e, StackTrace s) sync* {
           yield Put(TestActionC('failure child'));
         });
       }
@@ -65,7 +66,7 @@ void main() {
           yield Put(TestActionC('start parent'));
           yield Call(genFnChild);
           yield Put(TestActionC('success parent'));
-        }, Catch: (dynamic e) sync* {
+        }, Catch: (dynamic e, StackTrace s) sync* {
           yield Put(TestActionC('failure parent'));
         });
       }
@@ -73,8 +74,14 @@ void main() {
       var task = sagaMiddleware.run(genFnParent);
 
       //saga should inject call error into generator
-      expect(task.toFuture().then((dynamic value) => actual),
-          completion(['start parent', 'startChild', 'failure child', 'success parent']));
+      expect(
+          task.toFuture().then((dynamic value) => actual),
+          completion([
+            'start parent',
+            'startChild',
+            'failure child',
+            'success parent'
+          ]));
     });
 
     test('saga cps cancellation handling', () {
@@ -100,7 +107,8 @@ void main() {
       });
 
       //saga should call cancellation function on callback
-      expect(task.toFuture().then((dynamic value) => cancelled), completion(true));
+      expect(
+          task.toFuture().then((dynamic value) => cancelled), completion(true));
     });
 
     test('cps test', () {

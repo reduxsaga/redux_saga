@@ -19,33 +19,44 @@ void main() {
           yield Take(result: result); // take all actions
           actual.add(result.value);
 
-          yield Take(pattern: _Action1, result: result); // take only actions of type 'action-1'
-          actual.add(result.value);
-
-          yield Take(pattern: [_Action2, _Action2222], result: result); // take either type
+          yield Take(
+              pattern: _Action1,
+              result: result); // take only actions of type 'action-1'
           actual.add(result.value);
 
           yield Take(
-              pattern: (dynamic action) => action is _ActionP && action.isAction,
+              pattern: [_Action2, _Action2222],
+              result: result); // take either type
+          actual.add(result.value);
+
+          yield Take(
+              pattern: (dynamic action) =>
+                  action is _ActionP && action.isAction,
               result: result); // take if match predicate
           actual.add(result.value);
 
           yield Take(pattern: [
             _Action3,
-            (dynamic action) => action is _ActionWP && action.isMixedWithPredicate
+            (dynamic action) =>
+                action is _ActionWP && action.isMixedWithPredicate
           ], result: result); // take if match any from the mixed array
           actual.add(result.value);
 
           yield Take(pattern: [
             _Action3,
-            (dynamic action) => action is _ActionWP && action.isMixedWithPredicate
+            (dynamic action) =>
+                action is _ActionWP && action.isMixedWithPredicate
           ], result: result); // take if match any from the mixed array
           actual.add(result.value);
 
-          yield Take(pattern: 'Symbol', result: result); // take only actions of a Symbol type
+          yield Take(
+              pattern: 'Symbol',
+              result: result); // take only actions of a Symbol type
           actual.add(result.value);
 
-          yield Take(pattern: _NeverHappeningAction, result: result); //  should get END
+          yield Take(
+              pattern: _NeverHappeningAction,
+              result: result); //  should get END
           actual.add(result.value);
         }, Finally: () {
           actual.add('auto ended');
@@ -114,7 +125,8 @@ void main() {
       ]);
 
       // saga must fulfill take Effects from a provided channel
-      expect(f.then((dynamic value) => actual), completion([1, 2, 3, 4, End, End]));
+      expect(f.then((dynamic value) => actual),
+          completion([1, 2, 3, 4, End, End]));
     });
 
     test('saga take from eventChannel', () {
@@ -144,7 +156,7 @@ void main() {
 
           yield Take(channel: channel, result: result);
           actual.add(result.value);
-        }, Catch: (dynamic e) sync* {
+        }, Catch: (dynamic e, StackTrace s) sync* {
           actual.add('in-catch-block');
           actual.add(e);
         });
@@ -158,8 +170,10 @@ void main() {
       ]);
 
       // saga must take payloads from the eventChannel, and errors from eventChannel will make the saga jump to the catch block
-      expect(f.then((dynamic value) => actual),
-          completion(['action-1', 'action-2', 'in-catch-block', exceptionToBeCaught]));
+      expect(
+          f.then((dynamic value) => actual),
+          completion(
+              ['action-1', 'action-2', 'in-catch-block', exceptionToBeCaught]));
     });
 
     test('take test', () {
@@ -286,13 +300,15 @@ void main() {
             completion([exceptionToBeCaught, null, false, false, true]));
 
         expect(
-            forkedTaskA.value.toFuture().catchError((dynamic error) => <dynamic>[
-                  error,
-                  forkedTaskA.value.result,
-                  forkedTaskA.value.isRunning,
-                  forkedTaskA.value.isCancelled,
-                  forkedTaskA.value.isAborted,
-                ]),
+            forkedTaskA.value
+                .toFuture()
+                .catchError((dynamic error) => <dynamic>[
+                      error,
+                      forkedTaskA.value.result,
+                      forkedTaskA.value.isRunning,
+                      forkedTaskA.value.isCancelled,
+                      forkedTaskA.value.isAborted,
+                    ]),
             completion([exceptionToBeCaught, null, false, false, true]));
         async.elapse(Duration(milliseconds: 100));
       });
@@ -389,7 +405,8 @@ void main() {
           takes.add(result.value.payload);
 
           yield Take(
-              pattern: (dynamic action) => action is TestActionA && action.payload == 4,
+              pattern: (dynamic action) =>
+                  action is TestActionA && action.payload == 4,
               result: result);
           takes.add(result.value.payload);
 

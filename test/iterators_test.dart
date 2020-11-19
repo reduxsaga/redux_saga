@@ -43,7 +43,7 @@ void main() {
       Iterable<Effect> main() sync* {
         yield Try(() sync* {
           yield* child();
-        }, Catch: (dynamic e) {
+        }, Catch: (dynamic e, StackTrace s) {
           actual.add('caught $e');
         });
       }

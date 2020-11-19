@@ -22,7 +22,9 @@ final value3 = SampleTestObject('Value3');
 
 SagaMiddleware createMiddleware({Options options}) {
   var sagaMiddleware = createSagaMiddleware(
-    options ?? Options(onError: (dynamic e, String s) {}), //don't log errors to console
+    options ??
+        Options(
+            onError: (dynamic e, String s) {}), //don't log errors to console
   );
   return sagaMiddleware;
 }

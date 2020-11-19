@@ -8,7 +8,8 @@ void main() {
     test('saga must handle context in dynamic scoping manner', () {
       var actual = <dynamic>[];
 
-      var sagaMiddleware = createMiddleware(options: Options(context: <dynamic, dynamic>{#a: 1}));
+      var sagaMiddleware = createMiddleware(
+          options: Options(context: <dynamic, dynamic>{#a: 1}));
       var store = createStore(sagaMiddleware);
       sagaMiddleware.setStore(store);
 
@@ -35,7 +36,8 @@ void main() {
       });
 
       //saga must handle context in dynamic scoping manner
-      expect(task.toFuture().then((dynamic value) => actual), completion([1, 1, 2, 3, null]));
+      expect(task.toFuture().then((dynamic value) => actual),
+          completion([1, 1, 2, 3, null]));
     });
   });
 }

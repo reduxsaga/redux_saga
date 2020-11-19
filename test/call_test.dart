@@ -44,10 +44,13 @@ void main() {
       });
 
       //saga must fulfill declarative call effects
-      expect(task.toFuture().then((dynamic value) => actual), completion([1, 2, 3, #four]));
+      expect(task.toFuture().then((dynamic value) => actual),
+          completion([1, 2, 3, #four]));
     });
 
-    test('saga handles call effects and throw the rejected values inside the generator', () {
+    test(
+        'saga handles call effects and throw the rejected values inside the generator',
+        () {
       var actual = <dynamic>[];
 
       Future<dynamic> fail(dynamic msg) {
@@ -73,15 +76,18 @@ void main() {
         yield Put(_Action('start'));
         yield Call(fail, args: <dynamic>['failure']);
         yield Put(_Action('success'));
-      }, Catch: (dynamic e) sync* {
+      }, Catch: (dynamic e, StackTrace s) sync* {
         yield Put(_Action(e));
       });
 
       //saga dispatches appropriate actions
-      expect(task.toFuture().then((dynamic value) => actual), completion(['start', 'failure']));
+      expect(task.toFuture().then((dynamic value) => actual),
+          completion(['start', 'failure']));
     });
 
-    test('saga handles call\'s synchronous failures and throws in the calling generator (1)', () {
+    test(
+        'saga handles call\'s synchronous failures and throws in the calling generator (1)',
+        () {
       var actual = <dynamic>[];
 
       void failfn() {
@@ -110,20 +116,28 @@ void main() {
           yield Put(_Action('start child'));
           yield Call(failfn);
           yield Put(_Action('success child'));
-        }, Catch: (dynamic e) sync* {
+        }, Catch: (dynamic e, StackTrace s) sync* {
           yield Put(_Action('failure child'));
         });
         yield Put(_Action('success parent'));
-      }, Catch: (dynamic e) sync* {
+      }, Catch: (dynamic e, StackTrace s) sync* {
         yield Put(_Action('failure parent'));
       });
 
       //saga dispatches appropriate actions
-      expect(task.toFuture().then((dynamic value) => actual),
-          completion(['start parent', 'start child', 'failure child', 'success parent']));
+      expect(
+          task.toFuture().then((dynamic value) => actual),
+          completion([
+            'start parent',
+            'start child',
+            'failure child',
+            'success parent'
+          ]));
     });
 
-    test('saga handles call\'s synchronous failures and throws in the calling generator (2)', () {
+    test(
+        'saga handles call\'s synchronous failures and throws in the calling generator (2)',
+        () {
       var actual = <dynamic>[];
 
       void failfn() {
@@ -152,21 +166,29 @@ void main() {
           yield Put(_Action('start child'));
           yield Call(failfn);
           yield Put(_Action('success child'));
-        }, Catch: (dynamic e) sync* {
+        }, Catch: (dynamic e, StackTrace s) sync* {
           yield Put(_Action('failure child'));
           throw e;
         });
         yield Put(_Action('success parent'));
-      }, Catch: (dynamic e) sync* {
+      }, Catch: (dynamic e, StackTrace s) sync* {
         yield Put(_Action('failure parent'));
       });
 
       //saga dispatches appropriate actions
-      expect(task.toFuture().then((dynamic value) => actual),
-          completion(['start parent', 'start child', 'failure child', 'failure parent']));
+      expect(
+          task.toFuture().then((dynamic value) => actual),
+          completion([
+            'start parent',
+            'start child',
+            'failure child',
+            'failure parent'
+          ]));
     });
 
-    test('saga handles call\'s synchronous failures and throws in the calling generator (3)', () {
+    test(
+        'saga handles call\'s synchronous failures and throws in the calling generator (3)',
+        () {
       var actual = <dynamic>[];
 
       Iterable<Effect> failGen() sync* {
@@ -193,7 +215,7 @@ void main() {
         //call child generator
         yield Call(failGen);
         yield Put(_Action('success parent'));
-      }, Catch: (dynamic e) sync* {
+      }, Catch: (dynamic e, StackTrace s) sync* {
         yield Put(_Action(e));
         yield Put(_Action('failure parent'));
       });
@@ -223,7 +245,7 @@ void main() {
 
         yield Return(result.value);
         execution.add(3);
-      }, Catch: () {
+      }, Catch: (dynamic e, StackTrace s) {
         execution.add(4);
       }, Finally: () {
         execution.add(5);
@@ -591,9 +613,9 @@ void main() {
         yield Call(() sync* {
           execution.add(1);
           yield Return(value1);
-        }, Finally: () {
+        }, Finally: () sync* {
           execution.add(2);
-          return value2;
+          yield Return(value2);
         }, result: result);
 
         execution.add(3);
@@ -676,9 +698,9 @@ void main() {
         yield Call(() sync* {
           execution.add(1);
           yield Return(value1);
-        }, Finally: () async {
+        }, Finally: () sync* {
           execution.add(2);
-          return value2;
+          yield Return(value2);
         }, result: result);
 
         execution.add(3);
@@ -848,7 +870,7 @@ void main() {
         yield Call(() sync* {
           execution.add(1);
           yield Return(value1);
-        }, Catch: () sync* {
+        }, Catch: (dynamic e, StackTrace s) sync* {
           execution.add(2);
         }, Finally: () sync* {
           execution.add(3);
@@ -892,7 +914,7 @@ void main() {
         yield Call(() sync* {
           execution.add(1);
           throw exceptionToBeCaught;
-        }, Catch: () sync* {
+        }, Catch: (dynamic e, StackTrace s) sync* {
           execution.add(2);
         }, Finally: () sync* {
           execution.add(3);
@@ -936,7 +958,7 @@ void main() {
         yield Call(() {
           execution.add(1);
           throw exceptionToBeCaught;
-        }, Catch: () {
+        }, Catch: (dynamic e, StackTrace s) {
           execution.add(2);
         }, Finally: () {
           execution.add(3);
@@ -980,7 +1002,7 @@ void main() {
         yield Call(() async {
           execution.add(1);
           throw exceptionToBeCaught;
-        }, Catch: () async {
+        }, Catch: (dynamic e, StackTrace s) async {
           execution.add(2);
         }, Finally: () async {
           execution.add(3);
@@ -1024,7 +1046,7 @@ void main() {
         yield Call(() sync* {
           execution.add(1);
           throw exceptionToBeCaught;
-        }, Catch: (dynamic e) sync* {
+        }, Catch: (dynamic e, StackTrace s) sync* {
           caught = e;
           execution.add(2);
         }, Finally: () sync* {
@@ -1224,7 +1246,7 @@ void main() {
           execution.add(1);
           yield Cancel();
           yield Return(value1);
-        }, Catch: () async {
+        }, Catch: (dynamic e, StackTrace s) async {
           execution.add(2);
         }, Finally: () async {
           execution.add(3);
@@ -1267,7 +1289,7 @@ void main() {
         yield Call(() sync* {
           execution.add(1);
           yield Return(value1);
-        }, Catch: () sync* {
+        }, Catch: (dynamic e, StackTrace s) sync* {
           execution.add(2);
         }, Finally: () sync* {
           execution.add(3);

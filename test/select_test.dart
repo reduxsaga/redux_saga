@@ -66,7 +66,8 @@ void main() {
       ]);
 
       // should resolve getState and select effects
-      expect(task.toFuture().then((dynamic value) => actual), completion([0, 0, 2, 1, 1]));
+      expect(task.toFuture().then((dynamic value) => actual),
+          completion([0, 0, 2, 1, 1]));
     });
 
     test('select test', () {

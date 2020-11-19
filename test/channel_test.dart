@@ -34,11 +34,13 @@ void main() {
       expect(actual, equals([End, End]));
 
       actual.clear();
-      chan.take(TakeCallback<dynamic>(logger)); // closed channel must resolve new takers with END
+      chan.take(TakeCallback<dynamic>(
+          logger)); // closed channel must resolve new takers with END
 
       expect(actual, equals([End]));
 
-      chan.put('action-after-end'); // channel must reject messages after being closed
+      chan.put(
+          'action-after-end'); // channel must reject messages after being closed
 
       expect(actual, equals([End]));
     });
@@ -66,7 +68,8 @@ void main() {
       // channel must queue pending takers if there are no buffered messages
       chan.take(t1);
 
-      expect([called['t1'], log, spyBuffer.buffer], equals([false, <dynamic>[], <dynamic>[]]));
+      expect([called['t1'], log, spyBuffer.buffer],
+          equals([false, <dynamic>[], <dynamic>[]]));
 
       final t2 = taker('t2');
       chan.take(t2);
@@ -95,7 +98,8 @@ void main() {
           ]));
 
       final t3 = taker('t3');
-      chan.take(t3); // channel must resolve new takers if there are buffered messages
+      chan.take(
+          t3); // channel must resolve new takers if there are buffered messages
 
       expect(
           [called['t3'], spyBuffer.buffer, log],
@@ -109,11 +113,13 @@ void main() {
 
       chan.close();
       chan.put('hi');
-      chan.put('I said hi'); // putting on an already closed channel should be noop
+      chan.put(
+          'I said hi'); // putting on an already closed channel should be noop
 
       expect(spyBuffer.buffer, equals([4]));
 
-      chan.take(taker('t4')); // closed channel must resolve new takers with any buffered message
+      chan.take(taker(
+          't4')); // closed channel must resolve new takers with any buffered message
 
       expect(
           [log, spyBuffer.buffer],
@@ -148,7 +154,8 @@ void main() {
           buffer: Buffers.expanding<dynamic>(10));
 
       final actual = <dynamic>[];
-      chan.take(TakeCallback<dynamic>((dynamic message) => actual.add(message)));
+      chan.take(
+          TakeCallback<dynamic>((dynamic message) => actual.add(message)));
       _emitter('action-1'); // eventChannel must notify takers on a new action
 
       expect(actual, equals(['action-1']));
@@ -158,19 +165,22 @@ void main() {
       expect(actual, equals(['action-1']));
 
       // eventChannel must notify takers if messages are buffered
-      chan.take(TakeCallback<dynamic>((dynamic message) => actual.add(message)));
+      chan.take(
+          TakeCallback<dynamic>((dynamic message) => actual.add(message)));
 
       expect(actual, equals(['action-1', 'action-1']));
 
       actual.clear();
-      chan.take(TakeCallback<dynamic>((dynamic message) => actual.add(message)));
+      chan.take(
+          TakeCallback<dynamic>((dynamic message) => actual.add(message)));
       chan.close(); // eventChannel must notify all pending takers on END
 
       expect(actual, equals([End]));
 
       actual.clear();
       // eventChannel must notify all new takers if closed
-      chan.take(TakeCallback<dynamic>((dynamic message) => actual.add(message)));
+      chan.take(
+          TakeCallback<dynamic>((dynamic message) => actual.add(message)));
 
       expect(actual, equals([End]));
     });
@@ -202,7 +212,8 @@ void main() {
 
       // should emit END event
       expect(messageCompleter.future, completion(End));
-      expect(messageCompleter.future.then((dynamic value) => unsubscribed), completion(true));
+      expect(messageCompleter.future.then((dynamic value) => unsubscribed),
+          completion(true));
     });
 
     test('Expanding buffer', () {

@@ -31,7 +31,8 @@ class AppState {
   int get hashCode => x.hashCode;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AppState && x == other.x;
+  bool operator ==(Object other) =>
+      identical(this, other) || other is AppState && x == other.x;
 
   dynamic toJson() => {
         'x': x,

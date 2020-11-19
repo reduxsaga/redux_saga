@@ -70,8 +70,15 @@ void main() {
       expect(task.toFuture(), completion(TaskCancel));
 
       //cancelled call effect must throw exception inside called subroutine
-      expect(task.toFuture().then((dynamic value) => actual),
-          completion(['start', 'subroutine start', 'cancel', 'subroutine cancelled', 'cancelled']));
+      expect(
+          task.toFuture().then((dynamic value) => actual),
+          completion([
+            'start',
+            'subroutine start',
+            'cancel',
+            'subroutine cancelled',
+            'cancelled'
+          ]));
     });
 
     test('saga cancellation: forked children', () {
@@ -363,7 +370,8 @@ void main() {
           ]));
     });
 
-    test('saga cancellation: join effect (join from the same task\'s parent)', () {
+    test('saga cancellation: join effect (join from the same task\'s parent)',
+        () {
       var actual = <dynamic>[];
 
       var startComp = Completer<String>();
@@ -435,8 +443,15 @@ void main() {
       //since cancellation is noop on an already terminated task the deadlock wont happen
 
       //cancelled routine must cancel proper joiners
-      expect(task.toFuture().then((dynamic value) => actual),
-          completion(['start', 'subroutine start', 'cancel', 'cancelled', 'subroutine cancelled']));
+      expect(
+          task.toFuture().then((dynamic value) => actual),
+          completion([
+            'start',
+            'subroutine start',
+            'cancel',
+            'cancelled',
+            'subroutine cancelled'
+          ]));
     });
 
     test('saga cancellation: parallel effect', () {
@@ -492,8 +507,10 @@ void main() {
 
         yield Try(() sync* {
           var all = AllResult();
-          yield All(<dynamic, Effect>{#call1: Call(subroutine1), #call2: Call(subroutine2)},
-              result: all);
+          yield All(<dynamic, Effect>{
+            #call1: Call(subroutine1),
+            #call2: Call(subroutine2)
+          }, result: all);
           actual.add(all.value);
         }, Finally: () sync* {
           var cancelled = Result<bool>();
@@ -584,9 +601,10 @@ void main() {
 
         yield Try(() sync* {
           var race = RaceResult();
-          yield Race(
-              <dynamic, Effect>{#subroutine1: Call(subroutine1), #subroutine2: Call(subroutine2)},
-              result: race);
+          yield Race(<dynamic, Effect>{
+            #subroutine1: Call(subroutine1),
+            #subroutine2: Call(subroutine2)
+          }, result: race);
           actual.add(race.value);
         }, Finally: () sync* {
           var cancelled = Result<bool>();
@@ -665,9 +683,12 @@ void main() {
 
       Iterable<Effect> main() sync* {
         yield Try(() sync* {
-          yield All(<dynamic, Effect>{#call1: Call(subtask1), #call2: Call(subtask2)});
-        }, Catch: (dynamic error) sync* {
-          actual.add('caught $error');
+          yield All(<dynamic, Effect>{
+            #call1: Call(subtask1),
+            #call2: Call(subtask2)
+          });
+        }, Catch: (dynamic e, StackTrace s) sync* {
+          actual.add('caught $e');
         });
       }
 
@@ -682,8 +703,12 @@ void main() {
       //saga must cancel parallel sub-effects on rejection
       expect(
           task.toFuture().then((dynamic value) => actual),
-          completion(
-              ['subtask_1', 'subtask_2', 'subtask 2 cancelled', 'caught subtask_1 rejection']));
+          completion([
+            'subtask_1',
+            'subtask_2',
+            'subtask 2 cancelled',
+            'caught subtask_1 rejection'
+          ]));
     });
 
     test('saga cancellation: automatic race competitor cancellation', () {
@@ -755,7 +780,10 @@ void main() {
 
       Iterable<Effect> main() sync* {
         yield All(<dynamic, Effect>{
-          #race: Race(<dynamic, Effect>{#winner: Call(winnerSubtask), #loser: Call(loserSubtask)}),
+          #race: Race(<dynamic, Effect>{
+            #winner: Call(winnerSubtask),
+            #loser: Call(loserSubtask)
+          }),
           #parallelSubtask: Call(parallelSubtask)
         });
       }
@@ -835,8 +863,10 @@ void main() {
       expect(task.toFuture(), completion(null));
 
       //saga must cancel forked tasks
-      expect(task.toFuture().then((dynamic value) => actual),
-          completion(['signIn', 'expire_1', 'expire_2', 'signOut', 'task cancelled']));
+      expect(
+          task.toFuture().then((dynamic value) => actual),
+          completion(
+              ['signIn', 'expire_1', 'expire_2', 'signOut', 'task cancelled']));
     });
 
     test('saga cancellation: nested task cancellation', () {
@@ -899,7 +929,10 @@ void main() {
           yield Call(() => subtaskComps[0].future, result: result);
           actual.add(result.value);
 
-          yield All(<dynamic, Effect>{#call1: Call(nestedTask1), #call2: Call(nestedTask2)});
+          yield All(<dynamic, Effect>{
+            #call1: Call(nestedTask1),
+            #call2: Call(nestedTask2)
+          });
 
           yield Call(() => subtaskComps[1].future, result: result);
           actual.add(result.value);
@@ -1076,7 +1109,8 @@ void main() {
       expect(task.toFuture(), completion(null));
 
       //it must be possible to cancel multiple tasks at once
-      expect(task.toFuture().then((dynamic value) => actual), completion([0, 1, 2]));
+      expect(task.toFuture().then((dynamic value) => actual),
+          completion([0, 1, 2]));
     });
 
     test('cancel should support for self cancellation', () {
@@ -1107,7 +1141,8 @@ void main() {
       expect(task.toFuture(), completion(null));
 
       //it must be possible to cancel multiple tasks at once
-      expect(task.toFuture().then((dynamic value) => actual), completion(['self cancellation']));
+      expect(task.toFuture().then((dynamic value) => actual),
+          completion(['self cancellation']));
     });
 
     test('should bubble an exception thrown during cancellation', () {
@@ -1128,7 +1163,8 @@ void main() {
         }
 
         dynamic caughtMiddlewareError;
-        var sagaMiddleware = createMiddleware(options: Options(onError: (dynamic e, String s) {
+        var sagaMiddleware =
+            createMiddleware(options: Options(onError: (dynamic e, String s) {
           caughtMiddlewareError = e;
         }));
         var store = createStore(sagaMiddleware);
@@ -1137,7 +1173,8 @@ void main() {
         var task = sagaMiddleware.run(main);
 
         expect(task.toFuture(), throwsA(exceptionToBeCaught));
-        expect(task.toFuture().catchError((dynamic e) => e), completion(exceptionToBeCaught));
+        expect(task.toFuture().catchError((dynamic e) => e),
+            completion(exceptionToBeCaught));
         expect(task.toFuture().catchError((dynamic e) => caughtMiddlewareError),
             completion(exceptionToBeCaught));
 
@@ -1165,9 +1202,8 @@ void main() {
         var task = sagaMiddleware.run(main);
 
         expect(
-            task
-                .toFuture()
-                .then((dynamic value) => [task.isCancelled, task.isRunning, task.isAborted]),
+            task.toFuture().then((dynamic value) =>
+                [task.isCancelled, task.isRunning, task.isAborted]),
             completion([true, false, false]));
 
         async.elapse(Duration(milliseconds: 500));

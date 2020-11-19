@@ -120,9 +120,7 @@ Iterable<Effect> _Debounce(Function saga,
       if (raceResult.key == #debounced) {
         yield Fork(saga,
             args: args,
-            namedArgs: _functionHasActionArgument(saga)
-                ? <Symbol, dynamic>{...?namedArgs, #action: action}
-                : namedArgs,
+            namedArgs: <Symbol, dynamic>{...?namedArgs, #action: action},
             Catch: Catch,
             Finally: Finally,
             name: name);

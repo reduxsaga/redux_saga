@@ -123,8 +123,8 @@ checkout() sync* {
     yield Select(selector: getCart, result: cart);
     yield Call(buyProductsAPI, args: [cart.value]);
     yield Put(CheckoutSuccess(cart.value));
-  }, Catch: (error) sync* {
-    yield Put(CheckoutFailure(error));
+  }, Catch: (e, s) sync* {
+    yield Put(CheckoutFailure(e, s));
   }, Finally: () sync* {
     yield Put(CheckoutEnd());
   });
@@ -143,7 +143,7 @@ If you want to return from a returned value from a Try/Catch/Finally block then 
     yield TryReturn(() sync* { //returns saga
       //...
       yield Return(somevalue1); //returns from Try. Does not return from saga
-    }, Catch: (error) sync* {
+    }, Catch: (e, s) sync* {
       //...
       yield Return(somevalue2); //returns from Try. Does not return from saga
     });
@@ -158,7 +158,7 @@ Equivalent code with `Try`
     yield Try(() sync* {
       //...
       yield Return(somevalue1); //returns from Try. Does not return from saga
-    }, Catch: (error) sync* {
+    }, Catch: (e, s) sync* {
       //...
       yield Return(somevalue2); //returns from Try. Does not return from saga
     }, result: result);

@@ -14,13 +14,13 @@ First we create the task that will perform the asynchronous action:
 import 'package:redux_saga/redux_saga.dart';
 import 'api.dart';
 
-fetchData(action) sync* {
+fetchData({dynamic action}) sync* {
   yield Try(() sync* {
     var data = Result();
     yield Call(Api.fetchUser, args: [action.payload.url], result: data);
     yield Put(FetchSucceed(data.value));
-  }, Catch: (error) sync* {
-    yield Put(FetchFailed(error));
+  }, Catch: (e, s) sync* {
+    yield Put(FetchFailed(e));
   });
 }
 ```
@@ -57,10 +57,10 @@ For example:
 import 'package:redux_saga/redux_saga.dart';
 
 // FetchUsers
-fetchUsers(action) sync* { ... }
+fetchUsers({dynamic action}) sync* { ... }
 
 // CreateUser
-createUser(action) sync* { ... }
+createUser({dynamic action}) sync* { ... }
 
 // use them in parallel
 rootSaga() sync* {

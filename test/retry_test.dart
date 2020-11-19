@@ -20,7 +20,10 @@ void main() {
           called++;
           actual.add(<dynamic>[arg1, called]);
           throw exceptionToBeCaught;
-        }, args: <dynamic>['a'], maxTries: 3, duration: Duration(milliseconds: delayMs));
+        },
+            args: <dynamic>['a'],
+            maxTries: 3,
+            duration: Duration(milliseconds: delayMs));
       });
 
       //should rethrow Error if failed more than the defined number of times
@@ -54,7 +57,10 @@ void main() {
             throw exceptionToBeCaught;
           }
           return returnedValue;
-        }, maxTries: 3, duration: Duration(milliseconds: delayMs), result: result);
+        },
+            maxTries: 3,
+            duration: Duration(milliseconds: delayMs),
+            result: result);
       });
 
       // should return a result of called function

@@ -16,7 +16,7 @@ watchFetchProducts() sync* {
   yield TakeEvery(fetchProducts, pattern: ProductsRequested);
 }
 
-fetchProducts() sync* {
+fetchProducts({dynamic action}) sync* {
   var products = Result();
   yield Call(() => Api.fetch('/products'), result: products);
   print(products.value);
@@ -66,7 +66,7 @@ For this reason, the library provides a different way to perform asynchronous ca
 import 'package:redux_saga/redux_saga.dart';
 import 'api.dart';
 
-fetchProducts() sync* {
+fetchProducts({dynamic action}) sync* {
   var products = Result();
   yield Call(Api.fetch, args: ['/products'], result: products);
   // ...

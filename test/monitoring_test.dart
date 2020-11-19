@@ -10,8 +10,8 @@ void main() {
       var effects = <int, Map<String, dynamic>>{};
       var actions = <dynamic>[];
 
-      var sagaMiddleware =
-          createMiddleware(options: Options(sagaMonitor: _TestMonitor(ids, effects, actions)));
+      var sagaMiddleware = createMiddleware(
+          options: Options(sagaMonitor: _TestMonitor(ids, effects, actions)));
       var store = createStore(sagaMiddleware);
       sagaMiddleware.setStore(store);
 
@@ -37,19 +37,28 @@ void main() {
 
       Iterable<Effect> main() sync* {
         yield Call(api, args: <dynamic>[0]);
-        yield Race(<String, Effect>{'action': Take(pattern: 'action'), 'call': Call(child)});
+        yield Race(<String, Effect>{
+          'action': Take(pattern: 'action'),
+          'call': Call(child)
+        });
       }
 
-      var task = sagaMiddleware.run(main, Catch: () {});
+      var task = sagaMiddleware.run(main, Catch: (dynamic e, StackTrace s) {});
 
-      expect(task.toFuture().then((dynamic value) => ids), completion([1, 2, 3, 4, 5, 6, 7]));
+      expect(task.toFuture().then((dynamic value) => ids),
+          completion([1, 2, 3, 4, 5, 6, 7]));
 
       //sagaMiddleware must notify the saga monitor of Effect creation and resolution
       expect(
           task.toFuture().then((dynamic value) => effects),
           completion({
             1: {'saga': main, 'args': null, 'namedArgs': null, 'result': task},
-            2: {'parentEffectId': 1, 'label': '', 'effect': TypeMatcher<Call>(), 'result': 'api1'},
+            2: {
+              'parentEffectId': 1,
+              'label': '',
+              'effect': TypeMatcher<Call>(),
+              'result': 'api1'
+            },
             3: {
               'parentEffectId': 1,
               'label': '',
@@ -68,7 +77,12 @@ void main() {
               'effect': TypeMatcher<Call>(),
               'error': exceptionToBeCaught
             },
-            6: {'parentEffectId': 5, 'label': '', 'effect': TypeMatcher<Call>(), 'result': 'api2'},
+            6: {
+              'parentEffectId': 5,
+              'label': '',
+              'effect': TypeMatcher<Call>(),
+              'result': 'api2'
+            },
             7: {
               'parentEffectId': 5,
               'label': '',
@@ -89,7 +103,7 @@ class _TestMonitor implements SagaMonitor {
   Map<int, Map<String, dynamic>> effects;
   List<dynamic> actions;
 
-  _TestMonitor(this.ids,this.effects, this.actions);
+  _TestMonitor(this.ids, this.effects, this.actions);
 
   @override
   void actionDispatched(dynamic action) {
@@ -112,7 +126,8 @@ class _TestMonitor implements SagaMonitor {
   }
 
   @override
-  void effectTriggered(int effectId, int parentEffectId, dynamic label, dynamic effect) {
+  void effectTriggered(
+      int effectId, int parentEffectId, dynamic label, dynamic effect) {
     ids.add(effectId);
     set(effectId, 'parentEffectId', parentEffectId);
     set(effectId, 'label', label);
@@ -120,11 +135,12 @@ class _TestMonitor implements SagaMonitor {
   }
 
   @override
-  void rootSagaStarted(int effectId, Function saga, List args, Map<Symbol, dynamic> namedArgs, String name) {
-  ids.add(effectId);
-  set(effectId, 'saga', saga);
-  set(effectId, 'args', args);
-  set(effectId, 'namedArgs', namedArgs);
+  void rootSagaStarted(int effectId, Function saga, List args,
+      Map<Symbol, dynamic> namedArgs, String name) {
+    ids.add(effectId);
+    set(effectId, 'saga', saga);
+    set(effectId, 'args', args);
+    set(effectId, 'namedArgs', namedArgs);
   }
 
   void set(int effectId, String key, dynamic value) {

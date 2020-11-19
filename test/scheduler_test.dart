@@ -17,7 +17,8 @@ void main() {
       expect(actual, equals(['1', '2', '3']));
     });
 
-    test('scheduler when suspended queues up and executes all tasks on flush', () {
+    test('scheduler when suspended queues up and executes all tasks on flush',
+        () {
       final actual = <String>[];
       immediately(() {
         asap(() {

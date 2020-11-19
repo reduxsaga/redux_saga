@@ -76,7 +76,7 @@ part of redux_saga;
 ///      if (result.value == deny) {
 ///        yield Cancel();
 ///      }
-///    }, Catch: (e) {
+///    }, Catch: (e, s) {
 ///      // handle failure
 ///    }, Finally: () sync* {
 ///      var cancelled = Result();

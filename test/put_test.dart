@@ -40,8 +40,8 @@ void main() {
       var task = sagaMiddleware.run(genFn, args: <dynamic>['arg']);
 
       // saga must handle generator puts
-      expect(
-          task.toFuture().then((dynamic value) => actual), completion(<dynamic>[action1, action2]));
+      expect(task.toFuture().then((dynamic value) => actual),
+          completion(<dynamic>[action1, action2]));
     });
 
     test('saga put in a channel', () {
@@ -95,8 +95,8 @@ void main() {
       var task = sagaMiddleware.run(genFn, args: <dynamic>['arg']);
 
       // saga must handle async responses of generator put effects
-      expect(
-          task.toFuture().then((dynamic value) => actual), completion(<dynamic>[action1, action2]));
+      expect(task.toFuture().then((dynamic value) => actual),
+          completion(<dynamic>[action1, action2]));
     });
 
     test('saga error put\'s response handling', () {
@@ -122,8 +122,8 @@ void main() {
       Iterable<Effect> genFn(dynamic arg) sync* {
         yield Try(() sync* {
           yield Put(_Action(arg, true));
-        }, Catch: (dynamic error) sync* {
-          actual.add(error);
+        }, Catch: (dynamic e, StackTrace s) sync* {
+          actual.add(e);
         });
       }
 
@@ -147,15 +147,16 @@ void main() {
         yield Try(() sync* {
           error = Exception('error $arg');
           yield PutResolve(Future(() => throw error));
-        }, Catch: (dynamic error) sync* {
-          actual.add(error);
+        }, Catch: (dynamic e, StackTrace s) sync* {
+          actual.add(e);
         });
       }
 
       var task = sagaMiddleware.run(genFn, args: <dynamic>['arg']);
 
       // saga must bubble thrown errors of generator putResolve effects
-      expect(task.toFuture().then((dynamic value) => actual), completion(<dynamic>[error]));
+      expect(task.toFuture().then((dynamic value) => actual),
+          completion(<dynamic>[error]));
     });
 
     test('saga nested puts handling', () {
@@ -177,17 +178,20 @@ void main() {
       }
 
       Iterable<Effect> root() sync* {
-        yield Fork(genB); // forks genB first to be ready to take before genA starts putting
+        yield Fork(
+            genB); // forks genB first to be ready to take before genA starts putting
         yield Fork(genA);
       }
 
       var task = sagaMiddleware.run(root);
 
       // saga must order nested puts by executing them after the outer puts complete
-      expect(task.toFuture().then((dynamic value) => actual), completion(['put a', 'put b']));
+      expect(task.toFuture().then((dynamic value) => actual),
+          completion(['put a', 'put b']));
     });
 
-    test('puts emitted while dispatching saga need not to cause stack overflow', () {
+    test('puts emitted while dispatching saga need not to cause stack overflow',
+        () {
       var channel = _TestChannel();
 
       var sagaMiddleware = createMiddleware(options: Options(channel: channel));
@@ -218,15 +222,16 @@ void main() {
         yield Try(() sync* {
           error = Exception('error $arg');
           yield PutResolve(Future(() => throw error));
-        }, Catch: (dynamic error) sync* {
-          actual.add(error);
+        }, Catch: (dynamic e, StackTrace s) sync* {
+          actual.add(e);
         });
       }
 
       var task = sagaMiddleware.run(genFn, args: <dynamic>['arg']);
 
       // saga must bubble thrown errors of generator putResolve effects
-      expect(task.toFuture().then((dynamic value) => actual), completion(<dynamic>[error]));
+      expect(task.toFuture().then((dynamic value) => actual),
+          completion(<dynamic>[error]));
     });
 
     test(
@@ -267,7 +272,8 @@ void main() {
 
       store.dispatch(_ActionA());
 
-      expect(task.toFuture().then((dynamic value) => actual), completion(['didn\'t get missed']));
+      expect(task.toFuture().then((dynamic value) => actual),
+          completion(['didn\'t get missed']));
     });
 
     test('END should reach tasks created after it gets dispatched', () {

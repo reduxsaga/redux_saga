@@ -22,7 +22,8 @@ void main() {
       var forkedTask2 = Result<Task>();
 
       var task = sagaMiddleware.run(() sync* {
-        yield Fork(subGen, args: <dynamic>[1], name: 'subGen', result: forkedTask);
+        yield Fork(subGen,
+            args: <dynamic>[1], name: 'subGen', result: forkedTask);
         yield Fork(inst.gen, result: forkedTask2);
       });
 
@@ -48,7 +49,8 @@ void main() {
       var comps = createArrayOfCompleters<dynamic>(2);
 
       Iterable<Effect> subGen(dynamic arg) sync* {
-        yield Call(() => comps[1].future); // will be resolved after the action-1
+        yield Call(
+            () => comps[1].future); // will be resolved after the action-1
         yield Return(arg);
       }
 
@@ -65,7 +67,8 @@ void main() {
         actual.add(result.value);
 
         var joinResult = JoinResult();
-        yield Join(<dynamic, Task>{#task: forkedTask.value}, result: joinResult);
+        yield Join(<dynamic, Task>{#task: forkedTask.value},
+            result: joinResult);
         actual.add(joinResult.value);
       }
 
@@ -126,10 +129,12 @@ void main() {
         actual.add(result.value);
 
         var joinResult = JoinResult();
-        yield Join(<dynamic, Task>{#task: forkedTask.value}, result: joinResult);
+        yield Join(<dynamic, Task>{#task: forkedTask.value},
+            result: joinResult);
         actual.add(joinResult.value);
 
-        yield Join(<dynamic, Task>{#task: forkedSyncTask.value}, result: joinResult);
+        yield Join(<dynamic, Task>{#task: forkedSyncTask.value},
+            result: joinResult);
         actual.add(joinResult.value);
       }
 
@@ -194,7 +199,8 @@ void main() {
       var task = sagaMiddleware.run(root);
 
       // parent task must wait for all forked tasks before terminating
-      expect(task.toFuture().then((dynamic value) => actual), completion([0, 2, 3, 1]));
+      expect(task.toFuture().then((dynamic value) => actual),
+          completion([0, 2, 3, 1]));
     });
 
     test('saga auto cancel forks on error', () {
@@ -275,7 +281,7 @@ void main() {
           var result = Result<dynamic>();
           yield Call(() => mainComp.future, result: result);
           actual.add(result.value);
-        }, Catch: (dynamic e) sync* {
+        }, Catch: (dynamic e, StackTrace s) sync* {
           actual.add(e);
           throw e;
         }, Finally: () sync* {
@@ -292,7 +298,7 @@ void main() {
           var result = Result<dynamic>();
           yield Call(main, result: result);
           actual.add(result.value);
-        }, Catch: (dynamic e) sync* {
+        }, Catch: (dynamic e, StackTrace s) sync* {
           actual.add('root caught $e');
         });
       }
@@ -413,7 +419,7 @@ void main() {
           actual.add(result.value);
 
           yield Cancel([forkedTask.value]);
-        }, Catch: (dynamic e) sync* {
+        }, Catch: (dynamic e, StackTrace s) sync* {
           actual.add('root caught $e');
         });
       }
@@ -462,10 +468,10 @@ void main() {
           var result = Result<dynamic>();
           yield Call(() => comps[idx].future, result: result);
           actual.add(result.value);
-        }, Catch: ((dynamic e) sync* {
+        }, Catch: (dynamic e, StackTrace s) sync* {
           actual.add(e);
           throw e;
-        }), Finally: () sync* {
+        }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
           if (cancelled.value) {
@@ -531,7 +537,7 @@ void main() {
           var result = Result<dynamic>();
           yield Call(main, result: result);
           actual.add(result.value);
-        }, Catch: (dynamic e) sync* {
+        }, Catch: (dynamic e, StackTrace s) sync* {
           actual.add('root caught $e');
         });
       }
@@ -580,10 +586,10 @@ void main() {
           var result = Result<dynamic>();
           yield Call(() => comps[idx].future, result: result);
           actual.add(result.value);
-        }, Catch: ((dynamic e) sync* {
+        }, Catch: (dynamic e, StackTrace s) sync* {
           actual.add(e);
           throw e;
-        }), Finally: () sync* {
+        }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
           if (cancelled.value) {
@@ -635,7 +641,7 @@ void main() {
           yield Call(() => mainComp.future, result: result);
           actual.add(result.value);
           yield Return('main returned');
-        }, Catch: (dynamic e) sync* {
+        }, Catch: (dynamic e, StackTrace s) sync* {
           actual.add(e);
           throw e;
         }, Finally: () sync* {
@@ -652,7 +658,7 @@ void main() {
           var result = Result<dynamic>();
           yield Call(main, result: result);
           actual.add(result.value);
-        }, Catch: (dynamic e) sync* {
+        }, Catch: (dynamic e, StackTrace s) sync* {
           actual.add('root caught $e');
         });
       }
@@ -697,8 +703,11 @@ void main() {
         var task3 = Result<Task>();
         yield Fork(worker, args: <dynamic>[2], result: task3);
 
-        yield Join(<dynamic, Task>{#task1: task1.value, #task2: task2.value, #task3: task3.value},
-            result: actual);
+        yield Join(<dynamic, Task>{
+          #task1: task1.value,
+          #task2: task2.value,
+          #task3: task3.value
+        }, result: actual);
       }
 
       var task = sagaMiddleware.run(root);

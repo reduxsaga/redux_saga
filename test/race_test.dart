@@ -18,19 +18,25 @@ void main() {
       sagaMiddleware.setStore(store);
 
       var task = sagaMiddleware.run(() sync* {
-        yield Race(
-            <Symbol, Effect>{#event: Take(pattern: TestActionA), #timeout: Call(() => comp.future)},
-            result: race);
+        yield Race(<Symbol, Effect>{
+          #event: Take(pattern: TestActionA),
+          #timeout: Call(() => comp.future)
+        }, result: race);
       });
 
       var action = TestActionA(2);
 
       var f = ResolveSequentially(
-        [callF(() => comp.complete(1)), callF(() => store.dispatch(action)), () => task.toFuture()],
+        [
+          callF(() => comp.complete(1)),
+          callF(() => store.dispatch(action)),
+          () => task.toFuture()
+        ],
       );
 
       //saga must fulfill race between effects
-      expect(f.then((dynamic value) => race.value), completion(<Symbol, dynamic>{#timeout: 1}));
+      expect(f.then((dynamic value) => race.value),
+          completion(<Symbol, dynamic>{#timeout: 1}));
     });
 
     test('saga race between effects: handle END', () {
@@ -46,13 +52,17 @@ void main() {
 
       var task = sagaMiddleware.run(() sync* {
         called = true;
-        yield Race(
-            <Symbol, Effect>{#event: Take(pattern: TestActionA), #timeout: Call(() => comp.future)},
-            result: race);
+        yield Race(<Symbol, Effect>{
+          #event: Take(pattern: TestActionA),
+          #timeout: Call(() => comp.future)
+        }, result: race);
       });
 
-      var f = ResolveSequentially(
-          [callF(() => store.dispatch(End)), callF(() => comp.complete(1)), () => task.toFuture()]);
+      var f = ResolveSequentially([
+        callF(() => store.dispatch(End)),
+        callF(() => comp.complete(1)),
+        () => task.toFuture()
+      ]);
 
       //should run saga
       expect(f.then((dynamic value) => called), completion(true));
@@ -79,8 +89,10 @@ void main() {
 
         yield Take(pattern: _Start);
 
-        yield Race(<Symbol, Effect>{#x: Take(channel: xChan.value), #y: Take(channel: yChan.value)},
-            result: race);
+        yield Race(<Symbol, Effect>{
+          #x: Take(channel: xChan.value),
+          #y: Take(channel: yChan.value)
+        }, result: race);
 
         // waiting for next tick
         yield Call(() => Future<int>.value(0));
@@ -102,9 +114,12 @@ void main() {
       ]);
 
       //saga must not run effects when already completed
-      expect(f.then<dynamic>((dynamic value) => xflush.value), completion(<_X>[]));
-      expect(f.then<dynamic>((dynamic value) => yflush.value), completion(<_Y>[y]));
-      expect(f.then((dynamic value) => race.value), completion(<Symbol, dynamic>{#x: x}));
+      expect(
+          f.then<dynamic>((dynamic value) => xflush.value), completion(<_X>[]));
+      expect(f.then<dynamic>((dynamic value) => yflush.value),
+          completion(<_Y>[y]));
+      expect(f.then((dynamic value) => race.value),
+          completion(<Symbol, dynamic>{#x: x}));
     });
 
     test('saga race cancelling joined tasks', () {
@@ -126,7 +141,8 @@ void main() {
         }, result: fork2);
 
         yield Race(<Symbol, Effect>{
-          #join: Join(<dynamic, Task>{#fork1: fork1.value, #fork2: fork2.value}),
+          #join:
+              Join(<dynamic, Task>{#fork1: fork1.value, #fork2: fork2.value}),
           #timeout: Delay(Duration(milliseconds: 50))
         }, result: race);
       });
@@ -146,20 +162,27 @@ void main() {
         sagaMiddleware.setStore(store);
 
         var task = sagaMiddleware.run(() sync* {
-          yield Race(<dynamic, Effect>{#delay: Delay(Duration(milliseconds: 100)), #take: Take()},
-              result: result1);
-          yield Race(<dynamic, Effect>{#delay: Delay(Duration(milliseconds: 1)), #take: Take()},
-              result: result2);
+          yield Race(<dynamic, Effect>{
+            #delay: Delay(Duration(milliseconds: 100)),
+            #take: Take()
+          }, result: result1);
+          yield Race(<dynamic, Effect>{
+            #delay: Delay(Duration(milliseconds: 1)),
+            #take: Take()
+          }, result: result2);
         });
 
         var action1 = TestActionA(0);
         var action2 = TestActionA(0);
 
-        Future<dynamic>.delayed(Duration(milliseconds: 1), () => store.dispatch(action1));
-        Future<dynamic>.delayed(Duration(milliseconds: 100), () => store.dispatch(action2));
+        Future<dynamic>.delayed(
+            Duration(milliseconds: 1), () => store.dispatch(action1));
+        Future<dynamic>.delayed(
+            Duration(milliseconds: 100), () => store.dispatch(action2));
 
         expect(
-            task.toFuture().then((dynamic value) => <dynamic>[result1.value, result2.value]),
+            task.toFuture().then(
+                (dynamic value) => <dynamic>[result1.value, result2.value]),
             completion([
               {#take: action1},
               {#delay: true}

@@ -55,7 +55,10 @@ void main() {
       expect(task.toFuture(), completion(TypeMatcher<Channel>()));
 
       //saga must queue dispatched actions
-      expect(task.toFuture().then((dynamic value) => buffer.flush().map((e) => e.payload)),
+      expect(
+          task
+              .toFuture()
+              .then((dynamic value) => buffer.flush().map((e) => e.payload)),
           completion([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]));
     });
 
@@ -94,7 +97,14 @@ void main() {
                   task.isAborted,
                   values
                 ]),
-            completion([null, null, false, false, false, Iterable<int>.generate(10).toList()]));
+            completion([
+              null,
+              null,
+              false,
+              false,
+              false,
+              Iterable<int>.generate(10).toList()
+            ]));
 
         async.elapse(Duration(milliseconds: 500));
       });
@@ -136,7 +146,14 @@ void main() {
                   task.isAborted,
                   values
                 ]),
-            completion([null, null, false, false, false, Iterable<int>.generate(10).toList()]));
+            completion([
+              null,
+              null,
+              false,
+              false,
+              false,
+              Iterable<int>.generate(10).toList()
+            ]));
 
         async.elapse(Duration(milliseconds: 500));
       });

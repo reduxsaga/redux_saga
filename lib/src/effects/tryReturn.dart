@@ -12,7 +12,7 @@ part of redux_saga;
 ///    yield TryReturn(() sync* { //returns saga
 ///      //...
 ///      yield Return(somevalue1); //returns Try
-///    }, Catch: (error) sync* {
+///    }, Catch: (e, s) sync* {
 ///      //...
 ///      yield Return(somevalue2); //returns Try
 ///    });
@@ -27,7 +27,7 @@ part of redux_saga;
 ///    yield Try(() sync* {
 ///      //...
 ///      yield Return(somevalue1); //returns Try. Does not return saga
-///    }, Catch: (error) sync* {
+///    }, Catch: (e, s) sync* {
 ///      //...
 ///      yield Return(somevalue2); //returns Try. Does not return saga
 ///    }, result: result);
@@ -51,7 +51,7 @@ part of redux_saga;
 ///      yield Select(selector: getCart, result: cart);
 ///      yield Call(buyProductsAPI, args: [cart.value]);
 ///      yield Return(CheckoutSuccess(cart.value));
-///    }, Catch: (error) sync* {
+///    }, Catch: (e, s) sync* {
 ///      yield Return(CheckoutFailure(error));
 ///    });
 ///  }

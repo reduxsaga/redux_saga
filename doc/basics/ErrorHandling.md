@@ -17,8 +17,8 @@ fetchProducts() sync* {
     var products = Result();
     yield Call(Api.fetch, args: ['/products'], result: products);
     yield Put(ProductsReceived(products.value));
-  }, Catch: (error) sync* {
-    yield Put(ProductsRequestFailed(error));
+  }, Catch: (e, s) sync* {
+    yield Put(ProductsRequestFailed(e));
   });
 }
 ```
@@ -70,7 +70,7 @@ void main() {
       expect(iteratorTry.moveNext(), false, reason: 'fetchProducts Try Saga must be done');
 
       //get Catch iterator with a fake error
-      var iteratorCatch = iterator.current.Catch(Exception('fake')).iterator;
+      var iteratorCatch = iterator.current.Catch(Exception('fake'), null).iterator;
 
       iteratorCatch.moveNext();
 

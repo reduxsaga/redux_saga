@@ -36,7 +36,8 @@ void main() {
       store.dispatch(End);
 
       // Sagas must take consecutive actions dispatched synchronously on an action channel even if it performs blocking calls
-      expect(task.toFuture().then((dynamic value) => actual), completion([0, 1, 2]));
+      expect(task.toFuture().then((dynamic value) => actual),
+          completion([0, 1, 2]));
     });
 
     test('error check when constructing actionChannels', () {

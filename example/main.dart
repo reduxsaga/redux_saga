@@ -21,7 +21,7 @@ class DecrementAction {}
 class IncrementAsyncAction {}
 
 //incrementAsync Saga increasing count delayed
-Iterable incrementAsync() sync* {
+Iterable incrementAsync({dynamic action}) sync* {
   yield Delay(Duration(seconds: 1));
   yield Put(IncrementAction());
 }

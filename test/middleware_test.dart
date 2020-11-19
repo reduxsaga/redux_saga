@@ -77,7 +77,7 @@ void main() {
 
       var task = sagaMiddleware.run(() sync* {
         execution.add(0);
-      }, Catch: () sync* {
+      }, Catch: (dynamic e, StackTrace s) sync* {
         execution.add(1); //no error. will not execute
       }, Finally: () sync* {
         execution.add(2);
@@ -138,7 +138,7 @@ void main() {
       var task = sagaMiddleware.run(() sync* {
         execution.add(0);
         throw exceptionToBeCaught;
-      }, Catch: () sync* {
+      }, Catch: (dynamic e, StackTrace s) sync* {
         execution.add(1);
       });
 
@@ -171,7 +171,7 @@ void main() {
       var task = sagaMiddleware.run(() sync* {
         execution.add(0);
         throw exceptionToBeCaught;
-      }, Catch: () sync* {
+      }, Catch: (dynamic e, StackTrace s) sync* {
         execution.add(1);
         throw sagaError;
       });
@@ -205,7 +205,7 @@ void main() {
       var task = sagaMiddleware.run(() sync* {
         execution.add(0);
         throw exceptionToBeCaught;
-      }, Catch: (dynamic e) sync* {
+      }, Catch: (dynamic e, StackTrace s) sync* {
         execution.add(1);
         throw e;
       });
@@ -277,7 +277,7 @@ void main() {
       var task = sagaMiddleware.run(() sync* {
         execution.add(0);
         throw exceptionToBeCaught;
-      }, Catch: () sync* {
+      }, Catch: (dynamic e, StackTrace s) sync* {
         execution.add(1);
       }, Finally: () sync* {
         execution.add(2);
@@ -312,7 +312,7 @@ void main() {
       var task = sagaMiddleware.run(() sync* {
         execution.add(0);
         throw exceptionToBeCaught;
-      }, Catch: () sync* {
+      }, Catch: (dynamic e, StackTrace s) sync* {
         execution.add(1);
         throw sagaError;
       }, Finally: () sync* {
@@ -348,7 +348,7 @@ void main() {
       var task = sagaMiddleware.run(() sync* {
         execution.add(0);
         throw exceptionToBeCaught;
-      }, Catch: (dynamic e) sync* {
+      }, Catch: (dynamic e, StackTrace s) sync* {
         execution.add(1);
         throw e;
       }, Finally: () sync* {
@@ -697,7 +697,7 @@ void main() {
         execution.add(0);
         yield Return(value1);
         execution.add(1);
-      }, Catch: () sync* {
+      }, Catch: (dynamic e, StackTrace s) sync* {
         execution.add(2); //no error. will not execute
       }, Finally: () sync* {
         execution.add(3);
@@ -733,7 +733,7 @@ void main() {
         execution.add(0);
         yield Return(value1);
         execution.add(1);
-      }, Catch: () sync* {
+      }, Catch: (dynamic e, StackTrace s) sync* {
         execution.add(2); //no error. will not execute
       }, Finally: () sync* {
         execution.add(3);
@@ -770,7 +770,7 @@ void main() {
       var task = sagaMiddleware.run(() sync* {
         execution.add(0);
         throw exceptionToBeCaught;
-      }, Catch: () sync* {
+      }, Catch: (dynamic e, StackTrace s) sync* {
         execution.add(1);
         yield Return(value1);
         execution.add(2);
@@ -807,7 +807,7 @@ void main() {
       var task = sagaMiddleware.run(() sync* {
         execution.add(0);
         throw exceptionToBeCaught;
-      }, Catch: () sync* {
+      }, Catch: (dynamic e, StackTrace s) sync* {
         execution.add(1);
         yield Return(value1);
         execution.add(2);
@@ -846,7 +846,7 @@ void main() {
       var task = sagaMiddleware.run(() sync* {
         execution.add(0);
         throw exceptionToBeCaught;
-      }, Catch: () sync* {
+      }, Catch: (dynamic e, StackTrace s) sync* {
         execution.add(1);
         throw sagaError;
       }, Finally: () sync* {
@@ -885,7 +885,7 @@ void main() {
         execution.add(0);
         yield Cancel(); //must cancel from here
         execution.add(1);
-      }, Catch: () sync* {
+      }, Catch: (dynamic e, StackTrace s) sync* {
         execution.add(2); //no error. will not execute
       }, Finally: () sync* {
         execution.add(3);
@@ -923,7 +923,7 @@ void main() {
         execution.add(0);
         yield Return(value1);
         execution.add(1);
-      }, Catch: () sync* {
+      }, Catch: (dynamic e, StackTrace s) sync* {
         execution.add(2); //no error. will not execute
       }, Finally: () sync* {
         execution.add(3);
@@ -960,7 +960,7 @@ void main() {
       var task = sagaMiddleware.run(() sync* {
         execution.add(0);
         throw exceptionToBeCaught;
-      }, Catch: () sync* {
+      }, Catch: (dynamic e, StackTrace s) sync* {
         execution.add(1);
         yield Cancel();
         execution.add(2);
@@ -1000,7 +1000,7 @@ void main() {
         execution.add(0);
         yield Return(value1);
         execution.add(1);
-      }, Catch: () {
+      }, Catch: (dynamic e, StackTrace s) {
         execution.add(2);
       }, Finally: () {
         execution.add(3);
@@ -1036,7 +1036,7 @@ void main() {
         execution.add(0);
         yield Return(value1);
         execution.add(1);
-      }, Catch: () {
+      }, Catch: (dynamic e, StackTrace s) {
         execution.add(2);
       }, Finally: () {
         execution.add(3);
@@ -1073,11 +1073,11 @@ void main() {
         execution.add(0);
         yield Return(value1);
         execution.add(1);
-      }, Catch: () {
+      }, Catch: (dynamic e, StackTrace s) {
         execution.add(2);
-      }, Finally: () {
+      }, Finally: () sync* {
         execution.add(3);
-        return value2;
+        yield Return(value2);
       });
 
       expect(
@@ -1110,7 +1110,7 @@ void main() {
         execution.add(0);
         yield Return(value1);
         execution.add(1);
-      }, Catch: () {
+      }, Catch: (dynamic e, StackTrace s) {
         execution.add(2);
       }, Finally: () {
         execution.add(3);
@@ -1146,7 +1146,7 @@ void main() {
         execution.add(0);
         yield Return(value1);
         execution.add(1);
-      }, Catch: () {
+      }, Catch: (dynamic e, StackTrace s) {
         execution.add(2);
       }, Finally: () async {
         execution.add(3);
@@ -1182,11 +1182,11 @@ void main() {
         execution.add(0);
         yield Return(value1);
         execution.add(1);
-      }, Catch: () {
+      }, Catch: (dynamic e, StackTrace s) {
         execution.add(2);
-      }, Finally: () async {
+      }, Finally: () sync* {
         execution.add(3);
-        return value2;
+        yield Return(value2);
       });
 
       expect(
@@ -1219,7 +1219,7 @@ void main() {
         execution.add(0);
         yield Return(value1);
         execution.add(1);
-      }, Catch: () {
+      }, Catch: (dynamic e, StackTrace s) {
         execution.add(2);
       }, Finally: () async {
         execution.add(3);
@@ -1255,7 +1255,7 @@ void main() {
       var task = sagaMiddleware.run(() sync* {
         execution.add(0);
         throw exceptionToBeCaught;
-      }, Catch: () {
+      }, Catch: (dynamic e, StackTrace s) {
         execution.add(1);
       }, Finally: () {
         execution.add(2);
@@ -1290,7 +1290,7 @@ void main() {
       var task = sagaMiddleware.run(() sync* {
         execution.add(0);
         throw exceptionToBeCaught;
-      }, Catch: () {
+      }, Catch: (dynamic e, StackTrace s) {
         execution.add(1);
         throw sagaError;
       }, Finally: () {
@@ -1327,7 +1327,7 @@ void main() {
       var task = sagaMiddleware.run(() sync* {
         execution.add(0);
         throw exceptionToBeCaught;
-      }, Catch: () {
+      }, Catch: (dynamic e, StackTrace s) {
         execution.add(1);
         throw sagaError;
       }, Finally: () {
@@ -1364,7 +1364,7 @@ void main() {
       var task = sagaMiddleware.run(() sync* {
         execution.add(0);
         throw exceptionToBeCaught;
-      }, Catch: () async {
+      }, Catch: (dynamic e, StackTrace s) async {
         execution.add(1);
         throw sagaError;
       }, Finally: () async {
@@ -1401,7 +1401,7 @@ void main() {
       var task = sagaMiddleware.run(() sync* {
         execution.add(0);
         throw exceptionToBeCaught;
-      }, Catch: () async {
+      }, Catch: (dynamic e, StackTrace s) async {
         execution.add(1);
         throw sagaError;
       }, Finally: () {
@@ -1438,12 +1438,12 @@ void main() {
       var task = sagaMiddleware.run(() sync* {
         execution.add(0);
         throw exceptionToBeCaught;
-      }, Catch: () {
+      }, Catch: (dynamic e, StackTrace s) sync* {
         execution.add(1);
-        return value1;
-      }, Finally: () {
+        yield Return(value1);
+      }, Finally: () sync* {
         execution.add(2);
-        return value2;
+        yield Return(value2);
       });
 
       expect(
@@ -1475,12 +1475,12 @@ void main() {
       var task = sagaMiddleware.run(() sync* {
         execution.add(0);
         throw exceptionToBeCaught;
-      }, Catch: () async {
+      }, Catch: (dynamic e, StackTrace s) sync* {
         execution.add(1);
-        return value1;
-      }, Finally: () {
+        yield Return(value1);
+      }, Finally: () sync* {
         execution.add(2);
-        return value2;
+        yield Return(value2);
       });
 
       expect(
@@ -1512,12 +1512,12 @@ void main() {
       var task = sagaMiddleware.run(() sync* {
         execution.add(0);
         throw exceptionToBeCaught;
-      }, Catch: () async {
+      }, Catch: (dynamic e, StackTrace s) sync* {
         execution.add(1);
-        return value1;
-      }, Finally: () async {
+        yield Return(value1);
+      }, Finally: () sync* {
         execution.add(2);
-        return value2;
+        yield Return(value2);
       });
 
       expect(
@@ -1554,7 +1554,8 @@ void main() {
       );
 
       //middleware.run must throw when executed before store property set
-      expect(() => sagaMiddleware.run(() sync* {}), throwsA(TypeMatcher<SagaStoreMustBeSet>()));
+      expect(() => sagaMiddleware.run(() sync* {}),
+          throwsA(TypeMatcher<SagaStoreMustBeSet>()));
 
       sagaMiddleware.setStore(store);
 
@@ -1573,8 +1574,8 @@ void main() {
       }
 
       //middleware.run must return a Task
-      expect(
-          sagaMiddleware.run(saga, args: <dynamic>[value1]), equals(TypeMatcher<Task<dynamic>>()));
+      expect(sagaMiddleware.run(saga, args: <dynamic>[value1]),
+          equals(TypeMatcher<Task<dynamic>>()));
 
       //middleware must run the Saga and provides it with the given arguments
       expect(actual, equals(value1));
@@ -1583,7 +1584,8 @@ void main() {
     test('middleware options', () {
       dynamic actual;
 
-      var sagaMiddleware = createSagaMiddleware(Options(onError: (dynamic e, String s) {
+      var sagaMiddleware =
+          createSagaMiddleware(Options(onError: (dynamic e, String s) {
         actual = e;
       }));
       var store = createStore(sagaMiddleware);

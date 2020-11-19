@@ -47,7 +47,8 @@ void main() {
     test('saga error handling', () {
       dynamic error;
 
-      var sagaMiddleware = createMiddleware(options: Options(onError: (dynamic e, String s) {
+      var sagaMiddleware =
+          createMiddleware(options: Options(onError: (dynamic e, String s) {
         error = e;
       }));
       var store = createStore(sagaMiddleware);
@@ -71,7 +72,8 @@ void main() {
       expect(task1.toFuture().catchError((dynamic e) => <dynamic>[e, error]),
           completion([exceptionToBeCaught, exceptionToBeCaught]));
 
-      expect(task1.toFuture().catchError((dynamic e) => e), completion(exceptionToBeCaught));
+      expect(task1.toFuture().catchError((dynamic e) => e),
+          completion(exceptionToBeCaught));
 
       //try + catch + finally
       var actual = <dynamic>[];
@@ -121,7 +123,8 @@ void main() {
       }, args: <dynamic>['arg']);
 
       //saga must handle generator output
-      expect(task.toFuture().then((dynamic value) => actual), completion(['arg', 2]));
+      expect(task.toFuture().then((dynamic value) => actual),
+          completion(['arg', 2]));
     });
   });
 }

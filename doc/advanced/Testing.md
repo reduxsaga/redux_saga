@@ -174,7 +174,7 @@ callApi(url) sync* {
     yield Call(myApi, args: [url, someValue.value], result: resultJson);
     yield Put(SuccessAction(resultJson.value.json()));
     yield Return(resultJson.value.status);
-  }, Catch: (e) sync* {
+  }, Catch: (e, s) sync* {
     yield Put(ErrorAction(e));
     yield Return(-1);
   });
@@ -245,7 +245,7 @@ callApi(url) sync* {
     yield Call(myApi, args: [url, someValue.value], result: resultJson);
     yield Put(SuccessAction(resultJson.value.json()));
     yield Return(resultJson.value.status);
-  }, Catch: (e) sync* {
+  }, Catch: (e, s) sync* {
     yield Put(ErrorAction(e));
     yield Return(-1);
   });
