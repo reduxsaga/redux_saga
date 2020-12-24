@@ -93,3 +93,7 @@ Proper usage example :
   //...
 ```
 
+## 2.0.1
+
+- Fixed deprecated usages
+

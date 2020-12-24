@@ -53,7 +53,7 @@ class _RingBuffer<T> implements Buffer<T> {
   _RingBuffer(int limit, _overflowActions overflowAction) {
     _limit = limit;
     _overflowAction = overflowAction;
-    _arr = List<T>(_limit);
+    _arr = List<T>.filled(_limit, null, growable: true);
   }
 
   void _push(T it) {
