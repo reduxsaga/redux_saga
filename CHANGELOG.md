@@ -97,3 +97,9 @@ Proper usage example :
 
 - Fixed deprecated usages
 
+## 2.0.2
+
+- Readme changed. ci badge added
+
+
+
