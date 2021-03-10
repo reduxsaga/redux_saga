@@ -101,5 +101,10 @@ Proper usage example :
 
 - Readme changed. ci badge added
 
+## 2.1.0
+
+- Redux 5.0.0 and version upgrades.
+
+
 
 
