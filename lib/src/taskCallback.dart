@@ -1,6 +1,6 @@
 part of redux_saga;
 
-void _noopNext({_TaskCallback invoker, dynamic arg, bool isErr = false}) {}
+void _noopNext({_TaskCallback? invoker, dynamic arg, bool isErr = false}) {}
 
 final _TaskCallback _noopTaskCallback = _TaskCallback(_noopNext, _noop);
 
@@ -9,7 +9,7 @@ typedef _NextHandler = void Function(
 
 class _TaskCallback {
   _NextHandler nextHandler;
-  Callback cancelHandler;
+  Callback? cancelHandler;
   dynamic effect;
 
   _TaskCallback(this.nextHandler, [this.cancelHandler]);
@@ -19,6 +19,6 @@ class _TaskCallback {
   }
 
   void cancel() {
-    cancelHandler();
+    if (cancelHandler!=null) cancelHandler!();
   }
 }

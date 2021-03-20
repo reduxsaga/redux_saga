@@ -29,7 +29,7 @@ void main() {
               pattern: TestActionC,
               result: forkedTask);
           yield Take(pattern: TestActionCancel);
-          yield Cancel([forkedTask.value]);
+          yield Cancel([forkedTask.value!]);
         });
 
         var f = ResolveSequentially([
@@ -78,7 +78,7 @@ void main() {
               pattern: TestActionC,
               result: forkedTask);
           yield Take(pattern: TestActionCancel);
-          yield Cancel([forkedTask.value]);
+          yield Cancel([forkedTask.value!]);
         });
 
         var f = ResolveSequentially([
@@ -131,7 +131,7 @@ void main() {
               pattern: TestActionC,
               result: forkedTask);
           yield Take(pattern: TestActionCancel);
-          yield Cancel([forkedTask.value]);
+          yield Cancel([forkedTask.value!]);
         });
 
         var f = ResolveSequentially([
@@ -172,7 +172,7 @@ void main() {
               channel: customChannel,
               result: forkedTask);
           yield Take(pattern: TestActionCancel);
-          yield Cancel([forkedTask.value]);
+          yield Cancel([forkedTask.value!]);
         });
 
         var f = ResolveSequentially([
@@ -228,7 +228,7 @@ void main() {
         expect(
             f.then((dynamic value) => <dynamic>[
                   forkedTask
-                      .value.isRunning, // should finish debounce task on END
+                      .value!.isRunning, // should finish debounce task on END
                   called // should not call function if finished with END
                 ]),
             completion([false, 0]));
@@ -267,7 +267,7 @@ void main() {
         expect(
             f.then((dynamic value) => <dynamic>[
                   forkedTask
-                      .value.isRunning, // should finish debounce task on END
+                      .value!.isRunning, // should finish debounce task on END
                   called // should not call function if finished with END
                 ]),
             completion([false, 0]));
@@ -308,7 +308,7 @@ void main() {
         expect(
             f.then((dynamic value) => <dynamic>[
                   forkedTask
-                      .value.isRunning, // should finish debounce task on END
+                      .value!.isRunning, // should finish debounce task on END
                   called // should interrupt race on END
                 ]),
             completion([false, 0]));

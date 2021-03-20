@@ -23,13 +23,13 @@ class Put extends EffectWithResult {
   final dynamic action;
 
   /// Channel to dispatch action.
-  final Channel channel;
+  final Channel? channel;
 
   /// If true effect will block until resolve.
   final bool resolve;
 
   /// Creates an instance of a Put effect.
-  Put(this.action, {this.channel, this.resolve = false, Result result})
+  Put(this.action, {this.channel, this.resolve = false, Result? result})
       : super(result: result);
 
   @override
@@ -42,9 +42,9 @@ class Put extends EffectWithResult {
       dynamic result;
       try {
         if (channel == null) {
-          result = middleware.dispatch(action);
+          result = middleware.dispatch!(action);
         } else {
-          channel.put(action);
+          channel!.put(action);
         }
       } catch (e, s) {
         cb.next(arg: _createSagaException(e, s), isErr: true);

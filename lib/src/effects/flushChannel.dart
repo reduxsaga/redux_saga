@@ -33,18 +33,15 @@ class FlushChannel extends EffectWithResult {
   final Channel channel;
 
   /// Creates an instance of FlushChannel effect.
-  FlushChannel(this.channel, {Result result}) : super(result: result);
+  FlushChannel(this.channel, {Result? result}) : super(result: result);
 
   @override
   void _run(_SagaMiddleware middleware, _TaskCallback cb,
       _ExecutingContext executingContext) {
-    if (channel == null) {
-      cb.next(arg: null);
-    } else {
-      channel.flush(TakeCallback<List<dynamic>>((dynamic input) {
-        cb.next(arg: input);
-      }));
-    }
+
+    channel.flush(TakeCallback<List<dynamic>>((dynamic input) {
+      cb.next(arg: input);
+    }));
   }
 
   @override

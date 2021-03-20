@@ -7,7 +7,7 @@ void main() {
   group('onerror tests', () {
     test('saga onError is optional', () {
       dynamic error;
-      String stack;
+      String? stack;
 
       var sagaMiddleware =
           createMiddleware(options: Options(onError: (dynamic e, String s) {
@@ -33,9 +33,9 @@ void main() {
       expect(
           task.toFuture().catchError((dynamic e) =>
               stack != null &&
-              stack
+              stack!
                   .contains('#0      The above error occurred in task child') &&
-              stack.contains('#1       created by main')),
+              stack!.contains('#1       created by main')),
           completion(true));
     });
 

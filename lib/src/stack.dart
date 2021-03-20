@@ -33,7 +33,7 @@ class _SagaErrorStack {
             : ' when executing effect ${frame.crashedEffect}';
         if (i == 0) {
           lines.add(
-              'The above error occurred in task ${frame.meta} ${effectDesc}');
+              'The above error occurred in task ${frame.meta} $effectDesc');
         } else {
           lines.add(' created by ${frame.meta}');
         }
@@ -66,20 +66,20 @@ class _SagaFrame {
 }
 
 _SagaInternalException _createSagaException(dynamic error,
-    [StackTrace stackTrace]) {
+    [StackTrace? stackTrace]) {
   if (error is _SagaInternalException) return error;
-  return _SagaInternalException(error, stackTrace);
+  return _SagaInternalException(error, stackTrace ?? StackTrace.empty);
 }
 
 class _SagaInternalException implements Exception {
   final dynamic message;
-  final StackTrace stackTrace;
+  final StackTrace? stackTrace;
 
   _SagaInternalException([this.message, this.stackTrace]);
 
   @override
   String toString() {
-    return message == null ? 'Error' : message.toString();
+    return message?.toString() ?? 'Error';
   }
 }
 

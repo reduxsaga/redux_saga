@@ -55,16 +55,16 @@ part of redux_saga;
 /// Note that, `debounce` is a high-level API built using [Take], [Delay], [Race] and [Fork].
 ///
 Fork Debounce(Function saga,
-    {List<dynamic> args,
-    Map<Symbol, dynamic> namedArgs,
-    Function Catch,
-    Function Finally,
-    Channel channel,
+    {List<dynamic>? args,
+    Map<Symbol, dynamic>? namedArgs,
+    Function? Catch,
+    Function? Finally,
+    Channel? channel,
     dynamic pattern,
-    Duration duration,
+    Duration? duration,
     bool detached = false,
-    String name,
-    Result result}) {
+    String? name,
+    Result? result}) {
   return Fork(_Debounce,
       args: <dynamic>[saga],
       namedArgs: <Symbol, dynamic>{
@@ -82,21 +82,21 @@ Fork Debounce(Function saga,
 }
 
 Iterable<Effect> _Debounce(Function saga,
-    {List<dynamic> args,
-    Map<Symbol, dynamic> namedArgs,
-    Function Catch,
-    Function Finally,
-    Channel channel,
+    {List<dynamic>? args,
+    Map<Symbol, dynamic>? namedArgs,
+    Function? Catch,
+    Function? Finally,
+    Channel? channel,
     dynamic pattern,
-    Duration duration,
-    String name}) sync* {
+    Duration? duration,
+    String? name}) sync* {
   Channel debounceChannel;
 
   if (channel == null) {
     var channelResult = Result<Channel>();
     yield ActionChannel(pattern,
         buffer: Buffers.sliding<dynamic>(1), result: channelResult);
-    debounceChannel = channelResult.value;
+    debounceChannel = channelResult.value!;
   } else {
     debounceChannel = channel;
   }

@@ -2,7 +2,7 @@ part of redux_saga;
 
 void _logError(dynamic e, String stack) {
   print('$e');
-  if (stack != null) print('$stack');
+  print('$stack');
 }
 
 void _logErrorEmpty(dynamic e, String stack) {}
@@ -73,7 +73,7 @@ class SagaMiddlewareGetStateMustBeSet implements Exception {
 
 /// Thrown when [Take] effects matcher pattern is invalid
 class InvalidPattern implements Exception {
-  String _message;
+  late String _message;
 
   /// Creates an instance of InvalidPattern
   ///

@@ -45,7 +45,7 @@ class SagaContext {
   /// Creates an instance of a [SagaContext].
   ///
   /// Context can be initiated by passing [objects] parameter.
-  SagaContext([Map<dynamic, dynamic> objects]) {
+  SagaContext([Map<dynamic, dynamic>? objects]) {
     this.objects = objects ?? <dynamic, dynamic>{};
   }
 
@@ -69,10 +69,8 @@ class SagaContext {
   List<dynamic> get keys => objects.keys.toList();
 
   void _extend(Map<dynamic, dynamic> context) {
-    if (context != null) {
-      for (var kv in context.entries) {
-        objects[kv.key] = kv.value;
-      }
+    for (var kv in context.entries) {
+      objects[kv.key] = kv.value;
     }
   }
 

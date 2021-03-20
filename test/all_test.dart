@@ -10,11 +10,11 @@ void main() {
     test('saga parallel effects handling', () {
       var comp = Completer<int>();
 
-      Map<Symbol, dynamic> cpsCB;
+      Map<Symbol, dynamic>? cpsCB;
 
-      void cps(int val, {CPSCallback cb}) {
+      void cps(int val, {CPSCallback? cb}) {
         cpsCB = <Symbol, dynamic>{#val: val, #cb: cb};
-        cb.cancel = () {};
+        cb!.cancel = () {};
       }
 
       var sagaMiddleware = createMiddleware();
@@ -35,7 +35,7 @@ void main() {
 
       ResolveSequentially([
         callF(() => comp.complete(1)),
-        callF(() => cpsCB[#cb].callback(res: cpsCB[#val])),
+        callF(() => cpsCB![#cb].callback(res: cpsCB![#val])),
         callF(() => store.dispatch(action))
       ]);
 
@@ -97,7 +97,7 @@ void main() {
 
       var all = AllResult();
 
-      bool onfinally;
+      var onfinally = false;
 
       var sagaMiddleware = createMiddleware();
       var store = createStore(sagaMiddleware);
@@ -167,8 +167,8 @@ void main() {
           execution.add(2);
         });
 
-        forkedTaskA.value.toFuture().then((dynamic v) => taskCompletion.add(0));
-        forkedTaskB.value.toFuture().then((dynamic v) => taskCompletion.add(1));
+        forkedTaskA.value!.toFuture().then((dynamic v) => taskCompletion.add(0));
+        forkedTaskB.value!.toFuture().then((dynamic v) => taskCompletion.add(1));
         task.toFuture().then((dynamic v) => taskCompletion.add(2));
 
         expect(
@@ -182,8 +182,8 @@ void main() {
                   taskCompletion,
                   values.toString(),
                   all.value,
-                  forkedTaskA.value.result,
-                  forkedTaskB.value.result
+                  forkedTaskA.value!.result,
+                  forkedTaskB.value!.result
                 ]),
             completion([
               value1,
@@ -248,8 +248,8 @@ void main() {
           execution.add(2);
         });
 
-        forkedTaskA.value.toFuture().then((dynamic v) => taskCompletion.add(0));
-        forkedTaskB.value.toFuture().then((dynamic v) => taskCompletion.add(1));
+        forkedTaskA.value!.toFuture().then((dynamic v) => taskCompletion.add(0));
+        forkedTaskB.value!.toFuture().then((dynamic v) => taskCompletion.add(1));
         task.toFuture().then((dynamic v) => taskCompletion.add(2));
 
         expect(
@@ -263,8 +263,8 @@ void main() {
                   taskCompletion,
                   values.toString(),
                   all.value,
-                  forkedTaskA.value.result,
-                  forkedTaskB.value.result
+                  forkedTaskA.value!.result,
+                  forkedTaskB.value!.result
                 ]),
             completion([
               value1,

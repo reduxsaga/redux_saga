@@ -20,7 +20,7 @@ final value1 = SampleTestObject('Value1');
 final value2 = SampleTestObject('Value2');
 final value3 = SampleTestObject('Value3');
 
-SagaMiddleware createMiddleware({Options options}) {
+SagaMiddleware createMiddleware({Options? options}) {
   var sagaMiddleware = createSagaMiddleware(
     options ??
         Options(
@@ -68,7 +68,7 @@ class TestActionB {
 }
 
 class TestActionC {
-  final String payload;
+  final String? payload;
 
   TestActionC(this.payload);
 
@@ -97,19 +97,19 @@ class TestActionCancel {
 }
 
 int selectCounter(AppState state) {
-  return state.x;
+  return state.x!;
 }
 
-void testCPS1(List<int> execution, {CPSCallback cb}) {
+void testCPS1(List<int> execution, {CPSCallback? cb}) {
   execution.add(1);
-  cb.cancel = () {};
+  cb!.cancel = () {};
   cb.callback(res: value1);
 }
 
-void testCPS2(List<int> execution, {CPSCallback cb}) {
+void testCPS2(List<int> execution, {CPSCallback? cb}) {
   execution.add(1);
   var c = Completer<dynamic>();
-  cb.cancel = () {
+  cb!.cancel = () {
     c.complete(null);
   };
 
@@ -118,26 +118,23 @@ void testCPS2(List<int> execution, {CPSCallback cb}) {
   Future.delayed(Duration(milliseconds: 1), () => c.complete(value1));
 }
 
-void testCPS3(List<int> execution, {CPSCallback cb}) {
+void testCPS3(List<int> execution, {CPSCallback? cb}) {
   execution.add(2);
 
   //this timer will be cancelled
   var timer = Timer(Duration(seconds: 1), () {
     execution.add(5);
-    cb.callback(res: value1);
+    cb!.callback(res: value1);
   });
 
-  cb.cancel = () {
+  cb!.cancel = () {
     execution.add(4);
     timer.cancel();
   };
 }
 
 List<Completer<T>> createArrayOfCompleters<T>(int length) {
-  var list = List<Completer<T>>(length);
-  for (var i = 0; i < length; i++) {
-    list[i] = Completer<T>();
-  }
+  var list = List<Completer<T>>.generate(length,(_) => Completer<T>());
   return list;
 }
 

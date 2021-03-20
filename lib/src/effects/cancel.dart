@@ -91,7 +91,7 @@ part of redux_saga;
 ///
 class Cancel extends Effect {
   /// List of tasks to cancel.
-  final List<Task> tasks;
+  final List<Task>? tasks;
 
   /// Creates an instance of a Cancel effect.
   Cancel([this.tasks]) : super();
@@ -102,7 +102,7 @@ class Cancel extends Effect {
     if (tasks == null) {
       _cancelSingleTask(executingContext.task);
     } else {
-      tasks.forEach(_cancelSingleTask);
+      tasks!.forEach(_cancelSingleTask);
     }
     cb.next();
     // cancel effects are non cancellables

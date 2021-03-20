@@ -9,7 +9,7 @@ class CPSCallback {
   final CPSCallbackHandler callback;
 
   /// Callback to cancel [CPS] effect.
-  Callback cancel;
+  Callback? cancel;
 
   /// Creates an instance of a [CPS] effect callback.
   CPSCallback(this.callback);
@@ -35,19 +35,19 @@ class CPSCallback {
 ///
 class CPS extends EffectWithResult {
   /// Meta name of function
-  final String name;
+  final String? name;
 
   /// A Generator function or a normal function to call.
   final Function fn;
 
   /// Arguments of the function to call
-  final List<dynamic> args;
+  final List<dynamic>? args;
 
   /// Named arguments of the function to call
-  final Map<Symbol, dynamic> namedArgs;
+  final Map<Symbol, dynamic>? namedArgs;
 
   /// Creates an instance of a CPS effect.
-  CPS(this.fn, {this.args, this.namedArgs, this.name, Result result})
+  CPS(this.fn, {this.args, this.namedArgs, this.name, Result? result})
       : super(result: result);
 
   @override
@@ -67,9 +67,7 @@ class CPS extends EffectWithResult {
       });
 
       var namedArgs = <Symbol, dynamic>{};
-      if (namedArgs != null) {
-        namedArgs.addAll(namedArgs);
-      }
+      namedArgs.addAll(namedArgs);
       namedArgs[#cb] = cpsCb;
 
       _callFunction(fn, args, namedArgs);

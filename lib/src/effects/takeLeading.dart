@@ -51,15 +51,15 @@ part of redux_saga;
 ///  `TakeLeading` is a high-level API built using [Take] and [Fork].
 ///
 Fork TakeLeading(Function saga,
-    {List<dynamic> args,
-    Map<Symbol, dynamic> namedArgs,
-    Function Catch,
-    Function Finally,
-    Channel channel,
+    {List<dynamic>? args,
+    Map<Symbol, dynamic>? namedArgs,
+    Function? Catch,
+    Function? Finally,
+    Channel? channel,
     dynamic pattern,
     bool detached = false,
-    String name,
-    Result result}) {
+    String? name,
+    Result? result}) {
   return Fork(_TakeLeading,
       args: <dynamic>[saga],
       namedArgs: <Symbol, dynamic>{
@@ -76,13 +76,13 @@ Fork TakeLeading(Function saga,
 }
 
 Iterable<Effect> _TakeLeading(Function saga,
-    {List<dynamic> args,
-    Map<Symbol, dynamic> namedArgs,
-    Function Catch,
-    Function Finally,
-    Channel channel,
+    {List<dynamic>? args,
+    Map<Symbol, dynamic>? namedArgs,
+    Function? Catch,
+    Function? Finally,
+    Channel? channel,
     dynamic pattern,
-    String name}) sync* {
+    String? name}) sync* {
   while (true) {
     var action = Result<dynamic>();
     yield Take(pattern: pattern, channel: channel, result: action);

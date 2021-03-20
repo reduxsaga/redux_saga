@@ -8,7 +8,7 @@ import 'helpers/utils.dart';
 void main() {
   group('base tests', () {
     test('saga iteration', () {
-      var actual = <int>[];
+      var actual = <int?>[];
 
       var sagaMiddleware = createMiddleware();
       var store = createStore(sagaMiddleware);

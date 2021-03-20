@@ -27,24 +27,24 @@ enum _CodeBlock { mainCode, errorCode, finallyCode }
 class _taskRunner {
   _SagaMiddleware middleware;
 
-  Iterator iterator;
+  Iterator? iterator;
 
   SagaContext parentContext;
   int parentEffectId;
   SagaMeta meta;
   bool isRoot;
 
-  _TaskCallback continueCallback;
+  _TaskCallback? continueCallback;
 
-  final Function onError;
+  final Function? onError;
   bool onErrorExecuted = false;
 
-  final Function onFinally;
+  final Function? onFinally;
   bool onFinallyExecuted = false;
 
   var codeBlock = _CodeBlock.mainCode;
 
-  _RunEffectHandler finalRunEffect;
+  late _RunEffectHandler finalRunEffect;
 
   _taskRunner(
       this.middleware,
@@ -57,10 +57,10 @@ class _taskRunner {
       this.isRoot,
       this.continueCallback);
 
-  _InternalTask mainTask;
-  _ExecutingContext executingContext;
+  late _InternalTask mainTask;
+  late _ExecutingContext executingContext;
 
-  _Task _task;
+  late _Task _task;
 
   _Task createTask() {
     finalRunEffect = middleware.getRunEffectFinalizer()(runEffect);
@@ -93,7 +93,7 @@ class _taskRunner {
     //attaches cancellation logic to this task's continuation
     //this will permit cancellation to propagate down the call chain
     if (continueCallback != null) {
-      continueCallback.cancelHandler = () {
+      continueCallback!.cancelHandler = () {
         _task.cancel();
       };
     }
@@ -104,12 +104,12 @@ class _taskRunner {
     return _task;
   }
 
-  _SagaInternalException currentException;
+  _SagaInternalException? currentException;
 
-  String currentSagaStack;
+  String? currentSagaStack;
   bool throwException = false;
   dynamic sendAfterFinally;
-  bool sendAfterFinallyErr;
+  bool sendAfterFinallyErr = false;
 
   void storeException(_SagaInternalException e) {
     currentException = e;
@@ -131,7 +131,7 @@ class _taskRunner {
       clearCurrentExecution(ncb);
       onErrorExecuted = true;
       codeBlock = _CodeBlock.errorCode;
-      processFunctionReturn(ncb, _callErrorFunction(onError, currentException));
+      processFunctionReturn(ncb, _callErrorFunction(onError!, currentException!));
     } catch (e, s) {
       ncb.next(arg: _createSagaException(e, s), isErr: true);
     }
@@ -142,7 +142,7 @@ class _taskRunner {
       clearCurrentExecution(callback);
       onFinallyExecuted = true;
       codeBlock = _CodeBlock.finallyCode;
-      processFunctionReturn(callback, _callFinallyFunction(onFinally));
+      processFunctionReturn(callback, _callFinallyFunction(onFinally!));
     } catch (e, s) {
       callback.next(arg: _createSagaException(e, s), isErr: true);
     }
@@ -151,7 +151,7 @@ class _taskRunner {
   void processFunctionReturn(_TaskCallback callback, dynamic fr) {
     if (fr is Future || fr is FutureWithCancel) {
       var tcb =
-          _TaskCallback(({_TaskCallback invoker, dynamic arg, bool isErr}) {
+          _TaskCallback(({_TaskCallback? invoker, dynamic arg, bool isErr = false}) {
         callback.next(arg: arg, isErr: isErr);
       }, () {
         callback.cancel();
@@ -174,13 +174,13 @@ class _taskRunner {
   /// This is the generator driver
   /// It's a recursive async/continuation function which calls itself
   /// until the generator terminates or throws
-  void next({_TaskCallback invoker, dynamic arg, bool isErr = false}) {
+  void next({_TaskCallback? invoker, dynamic arg, bool isErr = false}) {
     try {
       bool done;
       dynamic returnValue;
 
       if (isErr) {
-        throw arg;
+        throw arg as Object;
       } else if (_shouldCancel(arg)) {
         //getting TaskCancel automatically cancels the main task
         //We can get this value here
@@ -190,7 +190,7 @@ class _taskRunner {
         mainTask.status = _TaskStatus.Cancelled;
 
         //Cancels the current effect; this will propagate the cancellation down to any called tasks
-        invoker.cancel();
+        invoker!.cancel();
 
         if (shouldRunOnFinally()) {
           sendAfterFinally = arg;
@@ -205,7 +205,7 @@ class _taskRunner {
         if (shouldRunOnFinally()) {
           sendAfterFinally = arg;
           sendAfterFinallyErr = isErr;
-          switchToOnFinally(invoker);
+          switchToOnFinally(invoker!);
           return;
         }
         done = true;
@@ -213,14 +213,14 @@ class _taskRunner {
       } else {
         var returnEffect = false;
 
-        if (invoker.effect != null && invoker.effect is Effect) {
+        if (invoker!.effect != null && invoker.effect is Effect) {
           if (invoker.effect is Return || invoker.effect is TryReturn) {
             returnEffect = true;
           }
         }
 
         var iterating =
-            (!returnEffect) && (iterator != null) && iterator.moveNext();
+            (!returnEffect) && (iterator != null) && iterator!.moveNext();
 
         done = !iterating;
 
@@ -229,7 +229,7 @@ class _taskRunner {
             clearException();
           } else if (codeBlock == _CodeBlock.finallyCode) {
             if (throwException) {
-              throw currentException;
+              throw currentException!;
             } else if (sendAfterFinally != null) {
               invoker.next(arg: sendAfterFinally, isErr: sendAfterFinallyErr);
               return;
@@ -242,32 +242,32 @@ class _taskRunner {
           }
         }
 
-        returnValue = iterating ? iterator.current : null;
+        returnValue = iterating ? iterator!.current : null;
       }
 
       if (!done) {
-        digestEffect(returnValue, parentEffectId, invoker);
+        digestEffect(returnValue, parentEffectId, invoker!);
       } else {
         if (mainTask.status == _TaskStatus.Cancelled) {
-          mainTask.continueCallback.next(arg: TaskCancel);
+          mainTask.continueCallback!.next(arg: TaskCancel);
         } else {
           //not cancelled
           mainTask.status = _TaskStatus.Done;
-          mainTask.continueCallback.next(arg: _task.result);
+          mainTask.continueCallback!.next(arg: _task.result);
         }
       }
     } catch (e, s) {
       if (!isSagaError(e)) storeException(_createSagaException(e, s));
 
       if (shouldRunOnError()) {
-        switchToOnError(invoker);
+        switchToOnError(invoker!);
       } else if (shouldRunOnFinally()) {
         throwException = true;
-        switchToOnFinally(invoker);
+        switchToOnFinally(invoker!);
       } else {
         if (mainTask.status == _TaskStatus.Cancelled) {
           if (isSagaError(e)) {
-            throw currentException;
+            throw currentException!;
           } else {
             rethrow;
           }
@@ -275,7 +275,7 @@ class _taskRunner {
 
         mainTask.status = _TaskStatus.Aborted;
 
-        mainTask.continueCallback.next(
+        mainTask.continueCallback!.next(
             arg: isSagaError(e) ? currentException : _createSagaException(e, s),
             isErr: true);
       }
@@ -307,29 +307,27 @@ class _taskRunner {
   void digestEffect(dynamic effect, int parentEffectId, _TaskCallback callback,
       [dynamic label = '']) {
     var effectId = middleware.uniqueId.nextSagaId();
-    if (middleware.monitoring) {
-      middleware.sagaMonitor
-          .effectTriggered(effectId, parentEffectId, label, effect);
-    }
+
+    middleware.sagaMonitor
+          ?.effectTriggered(effectId, parentEffectId, label, effect);
 
     var effectSettled = false;
 
     // Completion callback passed to the appropriate effect runner
     var currentCallback = _TaskCallback((
-        {_TaskCallback invoker, dynamic arg, bool isErr = false}) {
+        {_TaskCallback? invoker, dynamic arg, bool isErr = false}) {
       if (effectSettled) {
         return;
       }
 
       effectSettled = true;
       callback.cancelHandler = _noop; // defensive measure
-      if (middleware.monitoring) {
-        if (isErr) {
-          middleware.sagaMonitor.effectRejected(
-              effectId, arg is _SagaInternalException ? arg.message : arg);
-        } else {
-          middleware.sagaMonitor.effectResolved(effectId, arg);
-        }
+
+      if (isErr) {
+        middleware.sagaMonitor?.effectRejected(
+            effectId, arg is _SagaInternalException ? arg.message : arg);
+      } else {
+        middleware.sagaMonitor?.effectResolved(effectId, arg);
       }
 
       if (isErr) {
@@ -358,12 +356,10 @@ class _taskRunner {
 
       effectSettled = true;
 
-      currentCallback.cancelHandler(); // propagates cancel downward
+      currentCallback.cancelHandler!(); // propagates cancel downward
       currentCallback.cancelHandler = _noop; // defensive measure
 
-      if (middleware.monitoring) {
-        middleware.sagaMonitor.effectCancelled(effectId);
-      }
+      middleware.sagaMonitor?.effectCancelled(effectId);
     };
 
     callback.effect = effect;

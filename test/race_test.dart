@@ -44,7 +44,7 @@ void main() {
 
       var race = RaceResult();
 
-      bool called;
+      var called = false;
 
       var sagaMiddleware = createMiddleware();
       var store = createStore(sagaMiddleware);
@@ -97,9 +97,9 @@ void main() {
         // waiting for next tick
         yield Call(() => Future<int>.value(0));
 
-        yield FlushChannel(xChan.value, result: xflush);
+        yield FlushChannel(xChan.value!, result: xflush);
 
-        yield FlushChannel(yChan.value, result: yflush);
+        yield FlushChannel(yChan.value!, result: yflush);
       });
 
       var x = _X();
@@ -142,7 +142,7 @@ void main() {
 
         yield Race(<Symbol, Effect>{
           #join:
-              Join(<dynamic, Task>{#fork1: fork1.value, #fork2: fork2.value}),
+              Join(<dynamic, Task>{#fork1: fork1.value!, #fork2: fork2.value!}),
           #timeout: Delay(Duration(milliseconds: 50))
         }, result: race);
       });

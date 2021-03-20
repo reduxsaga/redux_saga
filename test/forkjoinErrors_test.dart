@@ -27,7 +27,7 @@ void main() {
           yield Fork(immediatelyFailingFork);
           actual.add('success parent');
         }, Catch: (dynamic e, StackTrace s) {
-          actual.add('parent caught ${e}');
+          actual.add('parent caught $e');
         });
       }
 
@@ -80,7 +80,7 @@ void main() {
           yield Fork(immediatelyFailingFork);
           actual.add('success parent');
         }, Catch: (dynamic e, StackTrace s) {
-          actual.add('parent caught ${e}');
+          actual.add('parent caught $e');
         });
       }
 
@@ -123,7 +123,7 @@ void main() {
           yield Fork(genChild);
           actual.add('success parent');
         }, Catch: (dynamic e, StackTrace s) {
-          actual.add('parent caught ${e}');
+          actual.add('parent caught $e');
         });
       }
 
@@ -167,7 +167,7 @@ void main() {
           actual.add('start main');
           var spawnedTask = Result<Task>();
           yield Spawn(genChild, name: 'genChild', result: spawnedTask);
-          actual.add('spawn ' + spawnedTask.value.meta.name);
+          actual.add('spawn ' + spawnedTask.value!.meta.name!);
           actual.add('success main');
         }, Catch: (dynamic e, StackTrace s) {
           actual.add('main caught $e');

@@ -2,10 +2,10 @@ part of redux_saga;
 
 /// Main task and its forked tasks
 class _ForkedTasks {
-  List<dynamic> tasks;
+  late List<dynamic> tasks;
   _TaskCallback continueCallback;
   Callback onAbort;
-  bool completed;
+  late bool completed;
   dynamic result;
   _InternalTask mainTask;
 
@@ -46,7 +46,7 @@ class _ForkedTasks {
   void addTask(dynamic task) {
     tasks.add(task);
     task.continueCallback = _TaskCallback((
-        {_TaskCallback invoker, dynamic arg, bool isErr = false}) {
+        {_TaskCallback? invoker, dynamic arg, bool isErr = false}) {
       if (completed) {
         return;
       }

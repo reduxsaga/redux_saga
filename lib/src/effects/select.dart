@@ -76,16 +76,16 @@ part of redux_saga;
 ///  And if we now change the state shape, we need only to update `getCart`.
 class Select extends EffectWithResult {
   /// A function returning a slice of the current Store's state.
-  final Function selector;
+  final Function? selector;
 
   /// Arguments of the function to call
-  final List<dynamic> args;
+  final List<dynamic>? args;
 
   /// Named arguments of the function to call
-  final Map<Symbol, dynamic> namedArgs;
+  final Map<Symbol, dynamic>? namedArgs;
 
   /// Creates an instance of a Select effect.
-  Select({this.selector, this.args, this.namedArgs, Result result})
+  Select({this.selector, this.args, this.namedArgs, Result? result})
       : super(result: result);
 
   @override
@@ -93,10 +93,10 @@ class Select extends EffectWithResult {
       _ExecutingContext executingContext) {
     try {
       if (selector == null) {
-        cb.next(arg: middleware.getState());
+        cb.next(arg: middleware.getState!());
       } else {
         dynamic state = _callFunctionWithArgument(
-            selector, args, namedArgs, middleware.getState());
+            selector!, args, namedArgs, middleware.getState!());
         cb.next(arg: state);
       }
     } catch (e, s) {

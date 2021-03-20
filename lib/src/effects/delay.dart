@@ -9,7 +9,7 @@ class Delay extends EffectWithResult {
   final dynamic value;
 
   /// Creates an instance of a Delay effect.
-  Delay(this.duration, {this.value, Result result}) : super(result: result);
+  Delay(this.duration, {this.value, Result? result}) : super(result: result);
 
   @override
   void _run(_SagaMiddleware middleware, _TaskCallback cb,

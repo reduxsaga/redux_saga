@@ -205,7 +205,7 @@ void main() {
       var task = sagaMiddleware.run(() sync* {
         execution.add(0);
         throw exceptionToBeCaught;
-      }, Catch: (dynamic e, StackTrace s) sync* {
+      }, Catch: (Object e, StackTrace s) sync* {
         execution.add(1);
         throw e;
       });
@@ -231,7 +231,6 @@ void main() {
 
     test('Throw exception with catch and finally rethrowed', () {
       var execution = <int>[];
-      bool stackTraceNull;
 
       var sagaMiddleware = createMiddleware();
       var store = createStore(sagaMiddleware);
@@ -240,9 +239,8 @@ void main() {
       var task = sagaMiddleware.run(() sync* {
         execution.add(0);
         throw exceptionToBeCaught;
-      }, Catch: (dynamic e, StackTrace s) sync* {
+      }, Catch: (Object e, StackTrace s) sync* {
         execution.add(1);
-        stackTraceNull = s == null;
         throw e;
       });
 
@@ -254,7 +252,6 @@ void main() {
                 task.isCancelled,
                 task.isAborted,
                 execution,
-                stackTraceNull,
               ]),
           completion([
             exceptionToBeCaught,
@@ -263,7 +260,6 @@ void main() {
             false,
             true,
             [0, 1],
-            false,
           ]));
     });
 
@@ -348,7 +344,7 @@ void main() {
       var task = sagaMiddleware.run(() sync* {
         execution.add(0);
         throw exceptionToBeCaught;
-      }, Catch: (dynamic e, StackTrace s) sync* {
+      }, Catch: (Object e, StackTrace s) sync* {
         execution.add(1);
         throw e;
       }, Finally: () sync* {
@@ -376,7 +372,6 @@ void main() {
 
     test('Throw exception with catch and finally rethrowed', () {
       var execution = <int>[];
-      bool stackTraceNull;
 
       var sagaMiddleware = createMiddleware();
       var store = createStore(sagaMiddleware);
@@ -385,9 +380,8 @@ void main() {
       var task = sagaMiddleware.run(() sync* {
         execution.add(0);
         throw exceptionToBeCaught;
-      }, Catch: (dynamic e, StackTrace s) sync* {
+      }, Catch: (Object e, StackTrace s) sync* {
         execution.add(1);
-        stackTraceNull = s == null;
         throw e;
       }, Finally: () sync* {
         execution.add(2);
@@ -401,7 +395,6 @@ void main() {
                 task.isCancelled,
                 task.isAborted,
                 execution,
-                stackTraceNull,
               ]),
           completion([
             exceptionToBeCaught,
@@ -410,7 +403,6 @@ void main() {
             false,
             true,
             [0, 1, 2],
-            false
           ]));
     });
 
@@ -1558,10 +1550,6 @@ void main() {
           throwsA(TypeMatcher<SagaStoreMustBeSet>()));
 
       sagaMiddleware.setStore(store);
-
-      //middleware.run must throw when saga is null
-      expect(() => sagaMiddleware.run(null),
-          throwsA(TypeMatcher<SagaFunctionMustBeNonNullException>()));
 
       //middleware.run must throw when saga is not generator
       expect(() => sagaMiddleware.run(() {}),

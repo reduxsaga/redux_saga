@@ -38,7 +38,7 @@ class Take extends EffectWithResult {
   ///
   /// If [maybe] is true, it does not automatically terminate the Saga on an [End] action.
   /// Instead all Sagas blocked on a Take Effect will get the [End] object. Check [TakeMaybe] also.
-  final Channel channel;
+  final Channel? channel;
 
   /// Actions only matching pattern is taken.
   final dynamic pattern;
@@ -48,7 +48,7 @@ class Take extends EffectWithResult {
   final bool maybe;
 
   /// Creates an instance of a Take effect.
-  Take({this.pattern, this.channel, this.maybe = false, Result result})
+  Take({this.pattern, this.channel, this.maybe = false, Result? result})
       : super(result: result);
 
   @override

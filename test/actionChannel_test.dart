@@ -58,7 +58,7 @@ void main() {
       expect(
           task
               .toFuture()
-              .then((dynamic value) => buffer.flush().map((e) => e.payload)),
+              .then((dynamic value) => buffer.flush().map((e) => e!.payload)),
           completion([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]));
     });
 
@@ -126,9 +126,9 @@ void main() {
 
           var result = Result<List<dynamic>>();
 
-          yield FlushChannel(channel.value, result: result);
+          yield FlushChannel(channel.value!, result: result);
 
-          result.value.forEach((dynamic v) {
+          result.value!.forEach((dynamic v) {
             values.add(v.payload as int);
           });
         });

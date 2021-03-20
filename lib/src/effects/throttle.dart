@@ -60,16 +60,16 @@ part of redux_saga;
 /// Note that, `Throttle` is a high-level API built using [Take], [Fork] and [ActionChannel].
 ///
 Fork Throttle(Function saga,
-    {List<dynamic> args,
-    Map<Symbol, dynamic> namedArgs,
-    Function Catch,
-    Function Finally,
-    Channel channel,
+    {List<dynamic>? args,
+    Map<Symbol, dynamic>? namedArgs,
+    Function? Catch,
+    Function? Finally,
+    Channel? channel,
     dynamic pattern,
-    Duration duration,
+    Duration? duration,
     bool detached = false,
-    String name,
-    Result result}) {
+    String? name,
+    Result? result}) {
   return Fork(_Throttle,
       args: <dynamic>[saga],
       namedArgs: <Symbol, dynamic>{
@@ -87,21 +87,21 @@ Fork Throttle(Function saga,
 }
 
 Iterable<Effect> _Throttle(Function saga,
-    {List<dynamic> args,
-    Map<Symbol, dynamic> namedArgs,
-    Function Catch,
-    Function Finally,
-    Channel channel,
+    {List<dynamic>? args,
+    Map<Symbol, dynamic>? namedArgs,
+    Function? Catch,
+    Function? Finally,
+    Channel? channel,
     dynamic pattern,
-    Duration duration,
-    String name}) sync* {
+    Duration? duration,
+    String? name}) sync* {
   Channel throttleChannel;
 
   if (channel == null) {
     var channelResult = Result<Channel>();
     yield ActionChannel(pattern,
         buffer: Buffers.sliding<dynamic>(1), result: channelResult);
-    throttleChannel = channelResult.value;
+    throttleChannel = channelResult.value!;
   } else {
     throttleChannel = channel;
   }

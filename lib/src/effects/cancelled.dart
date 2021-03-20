@@ -28,7 +28,7 @@ part of redux_saga;
 ///
 class Cancelled extends EffectWithResult {
   /// Creates an instance of a Cancelled effect.
-  Cancelled({Result result}) : super(result: result);
+  Cancelled({Result? result}) : super(result: result);
 
   @override
   void _run(_SagaMiddleware middleware, _TaskCallback cb,
