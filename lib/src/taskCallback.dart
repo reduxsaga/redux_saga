@@ -19,6 +19,6 @@ class _TaskCallback {
   }
 
   void cancel() {
-    if (cancelHandler!=null) cancelHandler!();
+    if (cancelHandler != null) cancelHandler!();
   }
 }
