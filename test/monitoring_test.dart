@@ -135,8 +135,8 @@ class _TestMonitor implements SagaMonitor {
   }
 
   @override
-  void rootSagaStarted(int effectId, Function saga, List args,
-      Map<Symbol, dynamic> namedArgs, String name) {
+  void rootSagaStarted(int effectId, Function saga, List? args,
+      Map<Symbol, dynamic>? namedArgs, String? name) {
     ids.add(effectId);
     set(effectId, 'saga', saga);
     set(effectId, 'args', args);
@@ -147,6 +147,6 @@ class _TestMonitor implements SagaMonitor {
     if (effects[effectId] == null) {
       effects[effectId] = <String, dynamic>{};
     }
-    effects[effectId][key] = value;
+    effects[effectId]![key] = value;
   }
 }

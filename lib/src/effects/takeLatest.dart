@@ -53,15 +53,15 @@ part of redux_saga;
 ///  `TakeLatest` is a high-level API built using [Take] and [Fork].
 ///
 Fork TakeLatest(Function saga,
-    {List<dynamic> args,
-    Map<Symbol, dynamic> namedArgs,
-    Function Catch,
-    Function Finally,
-    Channel channel,
+    {List<dynamic>? args,
+    Map<Symbol, dynamic>? namedArgs,
+    Function? Catch,
+    Function? Finally,
+    Channel? channel,
     dynamic pattern,
     bool detached = false,
-    String name,
-    Result result}) {
+    String? name,
+    Result? result}) {
   return Fork(_TakeLatest,
       args: <dynamic>[saga],
       namedArgs: <Symbol, dynamic>{
@@ -78,13 +78,13 @@ Fork TakeLatest(Function saga,
 }
 
 Iterable<Effect> _TakeLatest(Function saga,
-    {List<dynamic> args,
-    Map<Symbol, dynamic> namedArgs,
-    Function Catch,
-    Function Finally,
-    Channel channel,
+    {List<dynamic>? args,
+    Map<Symbol, dynamic>? namedArgs,
+    Function? Catch,
+    Function? Finally,
+    Channel? channel,
     dynamic pattern,
-    String name}) sync* {
+    String? name}) sync* {
   var forkedTask = Result<Task>();
 
   while (true) {
@@ -92,7 +92,7 @@ Iterable<Effect> _TakeLatest(Function saga,
     yield Take(pattern: pattern, channel: channel, result: action);
 
     if (forkedTask.value != null) {
-      yield Cancel([forkedTask.value]);
+      yield Cancel([forkedTask.value!]);
     }
 
     yield Fork(saga,

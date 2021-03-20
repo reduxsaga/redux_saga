@@ -32,7 +32,7 @@ abstract class Task<T> {
   void setContext(Map<String, dynamic> context);
 
   /// Tasks meta data. It identifies saga.
-  SagaMeta meta;
+  late SagaMeta meta;
 }
 
 enum _TaskStatus { Running, Cancelled, Aborted, Done }
@@ -40,25 +40,25 @@ enum _TaskStatus { Running, Cancelled, Aborted, Done }
 class _Task extends Task<dynamic> {
   _SagaMiddleware middleware;
   _InternalTask mainTask;
-  SagaContext context;
+  late SagaContext context;
   int parentEffectId;
   bool isRoot;
-  _TaskCallback continueCallback;
+  _TaskCallback? continueCallback;
 
   @override
   final SagaMeta meta;
 
   //SagaContext _context;
-  _TaskStatus status;
+  late _TaskStatus status;
 
-  _ForkedTasks forkedTasks;
+  late _ForkedTasks forkedTasks;
 
   dynamic taskResult;
 
-  dynamic taskError;
-  StackTrace taskStackTrace;
+  Object? taskError;
+  StackTrace? taskStackTrace;
 
-  Completer<dynamic> futureEnd;
+  Completer<dynamic>? futureEnd;
   var cancelledDueToErrorTasks = <String>[];
 
   var joiners = <_TaskJoin>[];
@@ -81,14 +81,14 @@ class _Task extends Task<dynamic> {
   }
 
   void _completeWithError() {
-    futureEnd.completeError(taskError, taskStackTrace);
+    futureEnd!.completeError(taskError!, taskStackTrace);
   }
 
   void _completeWithTaskResult() {
-    futureEnd.complete(taskResult);
+    futureEnd!.complete(taskResult);
   }
 
-  void end({_TaskCallback invoker, dynamic arg, bool isErr = false}) {
+  void end({_TaskCallback? invoker, dynamic arg, bool isErr = false}) {
     if (!isErr) {
       // The status here may be Running or Cancelled
       // If the status is Cancelled, then we do not need to change it here
@@ -132,7 +132,7 @@ class _Task extends Task<dynamic> {
         _completeWithError();
       }
     }
-    continueCallback.next(arg: arg, isErr: isErr);
+    continueCallback!.next(arg: arg, isErr: isErr);
 
     for (var joiner in joiners) {
       joiner.callback.next(arg: arg, isErr: isErr);
@@ -176,7 +176,7 @@ class _Task extends Task<dynamic> {
   @override
   Future<dynamic> toFuture() {
     if (futureEnd != null) {
-      return futureEnd.future;
+      return futureEnd!.future;
     }
 
     futureEnd = Completer<dynamic>();
@@ -187,7 +187,7 @@ class _Task extends Task<dynamic> {
       _completeWithTaskResult();
     }
 
-    return futureEnd.future;
+    return futureEnd!.future;
   }
 
   @override
@@ -200,14 +200,14 @@ class _InternalTask {
   SagaMeta meta;
   final Callback _cancel;
   _TaskStatus status;
-  _TaskCallback continueCallback;
-  _Task task;
+  _TaskCallback? continueCallback;
+  _Task? task;
 
   void cancel() {
     _cancel();
   }
 
-  dynamic get result => task.result;
+  dynamic get result => task!.result;
 
   _InternalTask(this.meta, this._cancel, this.status);
 }

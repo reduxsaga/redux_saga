@@ -38,7 +38,7 @@ class All extends EffectWithResult {
   final Map<dynamic, dynamic> effects;
 
   /// Creates an instance of a All effect.
-  All(this.effects, {AllResult result}) : super(result: result);
+  All(this.effects, {AllResult? result}) : super(result: result);
 
   @override
   void _run(_SagaMiddleware middleware, _TaskCallback cb,
@@ -53,7 +53,7 @@ class All extends EffectWithResult {
     var childCallbacks = _createAllStyleChildCallbacks(effects, cb);
     for (var key in effects.keys) {
       executingContext.digestEffect(
-          effects[key], effectId, childCallbacks[key], key);
+          effects[key], effectId, childCallbacks[key]!, key);
     }
   }
 

@@ -17,25 +17,25 @@ void main() {
         yield Call(() => BasicChannel(), result: channel);
 
         var result = Result<dynamic>();
-        yield FlushChannel(channel.value, result: result);
+        yield FlushChannel(channel.value!, result: result);
         actual.add(result.value);
 
         yield Put(1, channel: channel.value);
         yield Put(2, channel: channel.value);
         yield Put(3, channel: channel.value);
 
-        yield FlushChannel(channel.value, result: result);
+        yield FlushChannel(channel.value!, result: result);
         actual.add(result.value);
 
         yield Put(4, channel: channel.value);
         yield Put(5, channel: channel.value);
 
-        channel.value.close();
+        channel.value!.close();
 
-        yield FlushChannel(channel.value, result: result);
+        yield FlushChannel(channel.value!, result: result);
         actual.add(result.value);
 
-        yield FlushChannel(channel.value, result: result);
+        yield FlushChannel(channel.value!, result: result);
         actual.add(result.value);
       });
 

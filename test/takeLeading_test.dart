@@ -25,7 +25,7 @@ void main() {
             pattern: TestActionA,
             result: forkedTask);
         yield Take(pattern: TestActionCancel);
-        yield Cancel([forkedTask.value]);
+        yield Cancel([forkedTask.value!]);
       });
 
       var f = ResolveSequentially([
@@ -77,7 +77,7 @@ void main() {
       expect(
           task.toFuture().then((dynamic value) => [
                 forkedTask
-                    .value.isRunning, // should finish takeLatest task on END
+                    .value!.isRunning, // should finish takeLatest task on END
                 called // should not call function if finished with END
               ]),
           completion([false, false]));

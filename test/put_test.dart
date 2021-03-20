@@ -141,12 +141,12 @@ void main() {
       var store = createStore(sagaMiddleware);
       sagaMiddleware.setStore(store);
 
-      dynamic error;
+      Object? error;
 
       Iterable<Effect> genFn(dynamic arg) sync* {
         yield Try(() sync* {
           error = Exception('error $arg');
-          yield PutResolve(Future(() => throw error));
+          yield PutResolve(Future(() => throw error!));
         }, Catch: (dynamic e, StackTrace s) sync* {
           actual.add(e);
         });
@@ -156,7 +156,7 @@ void main() {
 
       // saga must bubble thrown errors of generator putResolve effects
       expect(task.toFuture().then((dynamic value) => actual),
-          completion(<dynamic>[error]));
+          completion(<Object?>[error]));
     });
 
     test('saga nested puts handling', () {
@@ -216,12 +216,12 @@ void main() {
       var store = createStore(sagaMiddleware);
       sagaMiddleware.setStore(store);
 
-      dynamic error;
+      Object? error;
 
       Iterable<Effect> genFn(dynamic arg) sync* {
         yield Try(() sync* {
           error = Exception('error $arg');
-          yield PutResolve(Future(() => throw error));
+          yield PutResolve(Future(() => throw error!));
         }, Catch: (dynamic e, StackTrace s) sync* {
           actual.add(e);
         });
@@ -231,7 +231,7 @@ void main() {
 
       // saga must bubble thrown errors of generator putResolve effects
       expect(task.toFuture().then((dynamic value) => actual),
-          completion(<dynamic>[error]));
+          completion(<Object?>[error]));
     });
 
     test(

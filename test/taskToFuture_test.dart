@@ -90,20 +90,20 @@ void main() {
             yield Delay(Duration(seconds: 10));
           }, result: forkedTask);
           yield Delay(Duration(milliseconds: 10));
-          yield Cancel([forkedTask.value]);
+          yield Cancel([forkedTask.value!]);
         });
 
         expect(task.isRunning, equals(true));
-        expect(forkedTask.value.isRunning, equals(true));
+        expect(forkedTask.value!.isRunning, equals(true));
         expect(task.toFuture(), completion(equals(null)));
-        expect(forkedTask.value.toFuture(), completion(equals(TaskCancel)));
+        expect(forkedTask.value!.toFuture(), completion(equals(TaskCancel)));
 
         async.elapse(Duration(milliseconds: 100));
 
         expect(task.isRunning, equals(false));
-        expect(forkedTask.value.isRunning, equals(false));
+        expect(forkedTask.value!.isRunning, equals(false));
         expect(task.result, equals(null));
-        expect(forkedTask.value.result, equals(TaskCancel));
+        expect(forkedTask.value!.result, equals(TaskCancel));
       });
     });
   });

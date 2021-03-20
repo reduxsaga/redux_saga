@@ -53,7 +53,7 @@ void main() {
         () {
       var actual = <dynamic>[];
 
-      Future<dynamic> fail(dynamic msg) {
+      Future<dynamic> fail(Object msg) {
         return Future<dynamic>.error(msg);
       }
 
@@ -166,7 +166,7 @@ void main() {
           yield Put(_Action('start child'));
           yield Call(failfn);
           yield Put(_Action('success child'));
-        }, Catch: (dynamic e, StackTrace s) sync* {
+        }, Catch: (Object e, StackTrace s) sync* {
           yield Put(_Action('failure child'));
           throw e;
         });
@@ -1082,7 +1082,6 @@ void main() {
     test('simple call test throws', () {
       var execution = <int>[];
       dynamic caught;
-      bool stackTraceIsNull;
 
       var sagaMiddleware = createMiddleware();
       var store = createStore(sagaMiddleware);
@@ -1096,7 +1095,6 @@ void main() {
           throw exceptionToBeCaught;
         }, Catch: (dynamic e, StackTrace s) sync* {
           caught = e;
-          stackTraceIsNull = s == null;
           execution.add(2);
         }, Finally: () sync* {
           execution.add(3);
@@ -1115,8 +1113,7 @@ void main() {
                 task.isCancelled,
                 task.isAborted,
                 execution,
-                caught,
-                stackTraceIsNull
+                caught
               ]),
           completion([
             null,
@@ -1125,15 +1122,13 @@ void main() {
             false,
             false,
             [0, 1, 2, 3, 4],
-            exceptionToBeCaught,
-            false
+            exceptionToBeCaught
           ]));
     });
 
     test('simple call test', () {
       var execution = <int>[];
       dynamic caught;
-      bool stackTraceIsNull;
 
       var sagaMiddleware = createMiddleware();
       var store = createStore(sagaMiddleware);
@@ -1147,7 +1142,6 @@ void main() {
           throw exceptionToBeCaught;
         }, Catch: (dynamic e, StackTrace s) {
           caught = e;
-          stackTraceIsNull = s == null;
           execution.add(2);
         }, Finally: () {
           execution.add(3);
@@ -1166,8 +1160,7 @@ void main() {
                 task.isCancelled,
                 task.isAborted,
                 execution,
-                caught,
-                stackTraceIsNull
+                caught
               ]),
           completion([
             null,
@@ -1176,15 +1169,13 @@ void main() {
             false,
             false,
             [0, 1, 2, 3, 4],
-            exceptionToBeCaught,
-            false
+            exceptionToBeCaught
           ]));
     });
 
     test('simple call test', () {
       var execution = <int>[];
       dynamic caught;
-      bool stackTraceIsNull;
 
       var sagaMiddleware = createMiddleware();
       var store = createStore(sagaMiddleware);
@@ -1198,7 +1189,6 @@ void main() {
           throw exceptionToBeCaught;
         }, Catch: (dynamic e, StackTrace s) async {
           caught = e;
-          stackTraceIsNull = s == null;
           execution.add(2);
         }, Finally: () async {
           execution.add(3);
@@ -1217,8 +1207,7 @@ void main() {
                 task.isCancelled,
                 task.isAborted,
                 execution,
-                caught,
-                stackTraceIsNull
+                caught
               ]),
           completion([
             null,
@@ -1227,8 +1216,7 @@ void main() {
             false,
             false,
             [0, 1, 2, 3, 4],
-            exceptionToBeCaught,
-            false
+            exceptionToBeCaught
           ]));
     });
 
@@ -1431,10 +1419,10 @@ void main() {
         var context = Result<SampleAPI>();
         yield GetContext(#api, result: context);
         var result = Result<dynamic>();
-        yield Call(context.value.increase);
-        yield Call(context.value.increase);
-        yield Call(context.value.increase);
-        yield Call(context.value.getId, result: result);
+        yield Call(context.value!.increase);
+        yield Call(context.value!.increase);
+        yield Call(context.value!.increase);
+        yield Call(context.value!.getId, result: result);
         yield Return(result.value);
       });
 
@@ -1467,17 +1455,17 @@ void main() {
       var task = sagaMiddleware.run(() sync* {
         var context = Result<SampleAPI>();
         yield GetContext(#api, result: context);
-        yield Call(context.value.increase);
-        yield Call(context.value.increase);
-        yield Call(context.value.increase);
-        yield Call(context.value.getId, result: result1);
+        yield Call(context.value!.increase);
+        yield Call(context.value!.increase);
+        yield Call(context.value!.increase);
+        yield Call(context.value!.getId, result: result1);
 
         yield SetContext(<dynamic, dynamic>{#api2: SampleAPI(5)});
         yield GetContext(#api2, result: context);
-        yield Call(context.value.increase);
-        yield Call(context.value.increase);
-        yield Call(context.value.increase);
-        yield Call(context.value.getId, result: result2);
+        yield Call(context.value!.increase);
+        yield Call(context.value!.increase);
+        yield Call(context.value!.increase);
+        yield Call(context.value!.getId, result: result2);
       });
 
       expect(

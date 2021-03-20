@@ -41,11 +41,11 @@ abstract class Channel<T> {
   void close();
 
   /// Invoked before closing the channel. Then all the awating takers will be invoked with [End]
-  Callback onClose;
+  Callback? onClose;
 }
 
 /// Invoked after a successfull taken [message]
-typedef DataCallback<T> = void Function(T message);
+typedef DataCallback<T> = void Function(T? message);
 
 typedef _CancelCallback = void Function();
 
@@ -54,18 +54,16 @@ class TakeCallback<T> {
   /// Channel will invoke on a successfull take with action
   /// or on a channel close with [End]
   final DataCallback<T> onData;
-  _CancelCallback _cancel;
-  PatternMatcher<T> _matcher;
+  _CancelCallback? _cancel;
+  PatternMatcher<T>? _matcher;
 
   /// Creates an instance of a [TakeCallback] class
   ///
   /// Channel will invoke [onData] on a possible take
   TakeCallback(this.onData);
 
-  void _onData(T message) {
-    if (onData != null) {
-      onData(message);
-    }
+  void _onData(T? message) {
+    onData(message);
   }
 
   bool _cancelled = false;
@@ -74,22 +72,22 @@ class TakeCallback<T> {
   void cancel() {
     if (!_cancelled) {
       _cancelled = true;
-      if (_cancel != null) _cancel();
+      if (_cancel != null) _cancel!();
     }
   }
 
   bool _matched(T message) {
-    return _matcher != null && _matcher(message);
+    return _matcher != null && _matcher!(message);
   }
 }
 
 class _Channel<T> implements Channel<T> {
-  Buffer<T> _buffer;
+  late Buffer<T> _buffer;
 
   bool _closed = false;
   final List<TakeCallback<T>> _takers = <TakeCallback<T>>[];
 
-  _Channel({Buffer<T> buffer}) {
+  _Channel({Buffer<T>? buffer}) {
     _buffer = buffer ?? Buffers.expanding();
   }
 
@@ -105,7 +103,7 @@ class _Channel<T> implements Channel<T> {
   }
 
   @override
-  Callback onClose;
+  Callback? onClose;
 
   @override
   void close() {
@@ -119,7 +117,7 @@ class _Channel<T> implements Channel<T> {
 
     _closed = true;
 
-    if (onClose != null) onClose();
+    if (onClose != null) onClose!();
 
     var arr = <TakeCallback<T>>[];
     arr.addAll(_takers);
@@ -129,13 +127,9 @@ class _Channel<T> implements Channel<T> {
   }
 
   @override
-  void take(TakeCallback<T> callback, [PatternMatcher<T> matcher]) {
+  void take(TakeCallback<T> callback, [PatternMatcher<T>? matcher]) {
     if (_isDebugMode) {
       _checkForbiddenStates();
-    }
-
-    if (callback == null) {
-      throw CallbackCannotBeNull();
     }
 
     if (_closed && _buffer.isEmpty) {
@@ -170,13 +164,9 @@ class _Channel<T> implements Channel<T> {
   }
 
   @override
-  void flush(TakeCallback<List<T>> callback) {
+  void flush(TakeCallback<List<T?>> callback) {
     if (_isDebugMode) {
       _checkForbiddenStates();
-    }
-
-    if (callback == null) {
-      throw CallbackCannotBeNull();
     }
 
     if (_closed && _buffer.isEmpty) {
@@ -196,7 +186,7 @@ class _Channel<T> implements Channel<T> {
 class BasicChannel extends _Channel<dynamic> {
   /// Creates an instance of a BasicChannel. You can optionally pass
   /// it a [buffer] to control how the channel buffers the messages.
-  BasicChannel({Buffer buffer}) : super(buffer: buffer);
+  BasicChannel({Buffer? buffer}) : super(buffer: buffer);
 }
 
 /// Handler for emitting value to [EventChannel]
@@ -210,12 +200,12 @@ typedef Subscribe<T> = Unsubscribe Function(Emit<T> emitter);
 typedef Unsubscribe = void Function();
 
 class _EventChannel<T> implements Channel<T> {
-  Unsubscribe _unsubscriber;
+  late Unsubscribe _unsubscriber;
   bool _closed = false;
 
-  _Channel<T> _channel;
+  late _Channel<T> _channel;
 
-  _EventChannel({Subscribe<T> subscribe, Buffer<T> buffer}) {
+  _EventChannel(Subscribe<T> subscribe, {Buffer<T>? buffer}) {
     _channel = _Channel(buffer: buffer ?? Buffers.none<T>());
     _unsubscriber = subscribe((T message) {
       if (isEnd(message)) {
@@ -225,19 +215,13 @@ class _EventChannel<T> implements Channel<T> {
       _channel.put(message);
     });
 
-    if (_isDebugMode) {
-      if (_unsubscriber == null) {
-        throw EventChannelMustReturnUnsubscribeFunction();
-      }
-    }
-
     if (_closed) {
       _unsubscribe();
     }
   }
 
   @override
-  Callback onClose;
+  Callback? onClose;
 
   @override
   void close() {
@@ -247,7 +231,7 @@ class _EventChannel<T> implements Channel<T> {
 
     _closed = true;
 
-    if (onClose != null) onClose();
+    if (onClose != null) onClose!();
 
     _unsubscribe();
     _channel.close();
@@ -258,7 +242,7 @@ class _EventChannel<T> implements Channel<T> {
   void _unsubscribe() {
     if (!_unsubscribed) {
       _unsubscribed = true;
-      if (_unsubscriber != null) _unsubscriber();
+      _unsubscriber();
     }
   }
 
@@ -273,7 +257,7 @@ class _EventChannel<T> implements Channel<T> {
   }
 
   @override
-  void take(TakeCallback<T> callback, [PatternMatcher<T> matcher]) {
+  void take(TakeCallback<T> callback, [PatternMatcher<T>? matcher]) {
     _channel.take(callback);
   }
 }
@@ -352,15 +336,15 @@ class EventChannel extends _EventChannel<dynamic> {
   ///   function must return an unsubscribe function to terminate the subscription.
   /// [buffer] is an optional Buffer object to buffer messages on this channel. If
   ///   not provided, messages will not be buffered on this channel.
-  EventChannel({Subscribe subscribe, Buffer buffer})
-      : super(subscribe: subscribe, buffer: buffer);
+  EventChannel(Subscribe subscribe, {Buffer? buffer})
+      : super(subscribe, buffer: buffer);
 }
 
 class _MultiCastChannel<T> implements Channel<T> {
   bool _closed = false;
   List<TakeCallback<T>> _currentTakers = <TakeCallback<T>>[];
 
-  List<TakeCallback<T>> _nextTakers;
+  late List<TakeCallback<T>> _nextTakers;
 
   _MultiCastChannel() {
     _nextTakers = _currentTakers;
@@ -381,7 +365,7 @@ class _MultiCastChannel<T> implements Channel<T> {
   }
 
   @override
-  Callback onClose;
+  Callback? onClose;
 
   @override
   void close() {
@@ -395,7 +379,7 @@ class _MultiCastChannel<T> implements Channel<T> {
 
     _closed = true;
 
-    if (onClose != null) onClose();
+    if (onClose != null) onClose!();
 
     var takers = (_currentTakers = _nextTakers);
 
@@ -442,7 +426,7 @@ class _MultiCastChannel<T> implements Channel<T> {
   }
 
   @override
-  void take(TakeCallback<T> callback, [PatternMatcher<T> matcher]) {
+  void take(TakeCallback<T> callback, [PatternMatcher<T>? matcher]) {
     if (_isDebugMode) {
       _checkForbiddenStates();
     }

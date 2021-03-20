@@ -7,7 +7,7 @@ part of redux_saga;
 class SagaAction {
   /// If the action was dispatched by a Saga an action if it implements [SagaAction]
   /// then the actions [dispatched] property is set to true
-  bool dispatched;
+  bool dispatched = false;
 }
 
 /// [End] action class

@@ -32,12 +32,12 @@ part of redux_saga;
 class Try extends Call {
   /// Creates an instance of a Try effect.
   Try(Function fn,
-      {List<dynamic> args,
-      Map<Symbol, dynamic> namedArgs,
-      Function Catch,
-      Function Finally,
-      String name,
-      Result result})
+      {List<dynamic>? args,
+      Map<Symbol, dynamic>? namedArgs,
+      Function? Catch,
+      Function? Finally,
+      String? name,
+      Result? result})
       : super(fn,
             args: args,
             namedArgs: namedArgs,

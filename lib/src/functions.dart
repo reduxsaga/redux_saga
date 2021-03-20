@@ -1,12 +1,12 @@
 part of redux_saga;
 
-dynamic _callFunctionWithArgument(Function f, List<dynamic> args,
-    Map<Symbol, dynamic> namedArgs, dynamic firstArg) {
+dynamic _callFunctionWithArgument(Function f, List<dynamic>? args,
+    Map<Symbol, dynamic>? namedArgs, dynamic firstArg) {
   return Function.apply(f, <dynamic>[firstArg, ...?args], namedArgs);
 }
 
 dynamic _callFunction(
-    Function f, List<dynamic> args, Map<Symbol, dynamic> namedArgs) {
+    Function f, List<dynamic>? args, Map<Symbol, dynamic>? namedArgs) {
   return Function.apply(f, args, namedArgs);
 }
 

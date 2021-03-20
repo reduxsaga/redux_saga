@@ -67,23 +67,23 @@ typedef OnErrorHandler = void Function(dynamic e, String stack);
 ///
 class Options {
   /// Initial value of the saga's context.
-  Map<dynamic, dynamic> context;
+  Map<dynamic, dynamic>? context;
 
   /// A channel is an object used to send and receive messages between tasks.
   /// Preferably you should use [StdChannel] here.
-  Channel channel;
+  Channel? channel;
 
   /// If a Saga Monitor is provided, the middleware will deliver monitoring
   /// events to the monitor.
-  SagaMonitor sagaMonitor;
+  SagaMonitor? sagaMonitor;
 
   /// If provided, the middleware will call it with uncaught errors from Sagas.
   /// useful for sending uncaught exceptions to error tracking services.
-  OnErrorHandler onError;
+  OnErrorHandler? onError;
 
   /// Allows you to intercept any effect, resolve it on your own and pass to the
   /// next middleware.
-  List<EffectMiddlewareHandler> effectMiddlewares;
+  List<EffectMiddlewareHandler>? effectMiddlewares;
 
   /// Creates an instance of a middleware [Options]
   Options(

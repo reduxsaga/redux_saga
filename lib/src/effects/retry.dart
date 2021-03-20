@@ -45,14 +45,14 @@ part of redux_saga;
 ///  Note that, `retry` is a high-level API built using [Delay] and [Call].
 ///
 Call Retry(Function fn,
-    {List<dynamic> args,
-    Map<Symbol, dynamic> namedArgs,
-    Function Catch,
-    Function Finally,
-    int maxTries,
-    Duration duration,
-    String name,
-    Result result}) {
+    {List<dynamic>? args,
+    Map<Symbol, dynamic>? namedArgs,
+    Function? Catch,
+    Function? Finally,
+    int? maxTries,
+    Duration? duration,
+    String? name,
+    Result? result}) {
   return Call(_Retry,
       args: <dynamic>[fn],
       namedArgs: <Symbol, dynamic>{
@@ -68,13 +68,13 @@ Call Retry(Function fn,
 }
 
 Iterable<Effect> _Retry(Function fn,
-    {List<dynamic> args,
-    Map<Symbol, dynamic> namedArgs,
-    int maxTries,
-    Duration duration,
-    String name,
-    Result result}) sync* {
-  var triesLeft = maxTries;
+    {List<dynamic>? args,
+    Map<Symbol, dynamic>? namedArgs,
+    int? maxTries,
+    Duration? duration,
+    String? name,
+    Result? result}) sync* {
+  var triesLeft = maxTries ?? 1;
   while (true) {
     var failed = false;
     yield Call(fn, args: args, namedArgs: namedArgs,

@@ -13,7 +13,7 @@ Store<AppState> createStore(SagaMiddleware middleware) {
 }
 
 class AppState {
-  final int x;
+  final int? x;
 
   const AppState({this.x});
 
@@ -21,7 +21,7 @@ class AppState {
     return AppState(x: 0);
   }
 
-  AppState copyWith({int x}) {
+  AppState copyWith({int? x}) {
     return AppState(
       x: x ?? this.x,
     );
@@ -38,7 +38,7 @@ class AppState {
         'x': x,
       };
 
-  static AppState fromJson(dynamic json) {
+  static AppState? fromJson(dynamic json) {
     return json == null
         ? null
         : AppState(
@@ -58,7 +58,7 @@ class DecrementCounterAction {}
 
 AppState appReducer(AppState state, dynamic action) {
   return AppState(
-    x: countersReducer(state.x, action),
+    x: countersReducer(state.x!, action),
   );
 }
 

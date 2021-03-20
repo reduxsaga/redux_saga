@@ -134,19 +134,10 @@ void main() {
     });
 
     test('Event channel', () {
-      // eventChannel should throw if subscriber does not return a function to unsubscribe
-      expect(
-          () => EventChannel(
-                subscribe: (emitter) {
-                  return;
-                },
-              ),
-          throwsException);
-
       dynamic _emitter;
 
       final chan = EventChannel(
-          subscribe: (emitter) {
+          (emitter) {
             _emitter = (dynamic v) => emitter(v);
 
             return () => _emitter = (dynamic v) {};
@@ -188,7 +179,7 @@ void main() {
     test('Unsubscribe event channel synchronously', () {
       var unsubscribed = false;
 
-      final chan = EventChannel(subscribe: (emitter) {
+      final chan = EventChannel((emitter) {
         return () => unsubscribed = true;
       });
 
@@ -199,7 +190,7 @@ void main() {
 
     test('Unsubscribe event channel asynchronously', () {
       var unsubscribed = false;
-      final chan = EventChannel(subscribe: (emitter) {
+      final chan = EventChannel((emitter) {
         Future.delayed(Duration(seconds: 0), () => emitter(End));
         return () => unsubscribed = true;
       });
@@ -222,9 +213,9 @@ void main() {
       chan.put('action-2');
       chan.put('action-3');
 
-      int actual;
+      var actual = 0;
 
-      chan.flush(TakeCallback<List>((items) => actual = items.length));
+      chan.flush(TakeCallback<List>((items) => actual = items!.length));
       // expanding buffer should be able to buffer more items than its initial limit
       expect(actual, 3);
     });

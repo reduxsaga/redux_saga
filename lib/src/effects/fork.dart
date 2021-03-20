@@ -48,22 +48,22 @@ part of redux_saga;
 ///  To create *detached* forks, use [Spawn] instead or set [detached] to true.
 class Fork extends EffectWithResult {
   /// Meta name of function
-  final String name;
+  final String? name;
 
   /// A Generator function or a normal function to call.
   final Function fn;
 
   /// Arguments of the function to call
-  final List<dynamic> args;
+  final List<dynamic>? args;
 
   /// Named arguments of the function to call
-  final Map<Symbol, dynamic> namedArgs;
+  final Map<Symbol, dynamic>? namedArgs;
 
   /// A Generator function or a normal function to invoke for uncaught errors.
-  final Function Catch;
+  final Function? Catch;
 
   /// A Generator function or a normal function to invoke in any case after call.
-  final Function Finally;
+  final Function? Finally;
 
   /// Determines if returning Task is attached or not.
   final bool detached;
@@ -76,7 +76,7 @@ class Fork extends EffectWithResult {
       this.Finally,
       this.name,
       this.detached = false,
-      Result result})
+      Result? result})
       : super(result: result);
 
   @override
@@ -132,7 +132,7 @@ class Fork extends EffectWithResult {
 }
 
 Iterable _createTaskIterator(
-    Function function, List<dynamic> args, Map<Symbol, dynamic> namedArgs) {
+    Function function, List<dynamic>? args, Map<Symbol, dynamic>? namedArgs) {
   // catch synchronous failures
   try {
     dynamic result = _callFunction(function, args, namedArgs);

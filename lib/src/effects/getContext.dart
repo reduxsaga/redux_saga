@@ -6,7 +6,7 @@ class GetContext extends EffectWithResult {
   final dynamic name;
 
   /// Creates an instance of a GetContext effect.
-  GetContext(this.name, {Result result}) : super(result: result);
+  GetContext(this.name, {Result? result}) : super(result: result);
 
   @override
   void _run(_SagaMiddleware middleware, _TaskCallback cb,

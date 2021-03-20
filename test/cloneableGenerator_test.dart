@@ -16,7 +16,7 @@ void main() {
 
       var values = <dynamic>[];
 
-      CloneableGenerator gen1, gen2;
+      late CloneableGenerator gen1, gen2;
 
       while (gen.moveNext()) {
         values.add(gen.current);

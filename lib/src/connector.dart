@@ -26,7 +26,7 @@ part of redux_saga;
 /// sagaMiddleware.run(rootSaga);
 ///```
 ///
-SagaMiddleware createSagaMiddleware([Options options]) {
+SagaMiddleware createSagaMiddleware([Options? options]) {
   return _SagaMiddleware(options);
 }
 
@@ -60,7 +60,7 @@ Middleware<State> applyMiddleware<State>(SagaMiddleware middleware) {
 /// Middleware is applied a Store<dynamic> and read to use test purposes.
 /// Mocking can be handled by attaching handlers to middleware's [SagaMiddleware.dispatch] and
 /// [SagaMiddleware.getState] methods.
-SagaMiddleware createTestMiddleware([Options options]) {
+SagaMiddleware createTestMiddleware([Options? options]) {
   var testMiddleware = createSagaMiddleware(options);
 
   var store = Store<dynamic>(

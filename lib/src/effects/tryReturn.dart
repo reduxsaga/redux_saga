@@ -60,12 +60,12 @@ part of redux_saga;
 class TryReturn extends Call {
   /// Creates an instance of a Try effect.
   TryReturn(Function fn,
-      {List<dynamic> args,
-      Map<Symbol, dynamic> namedArgs,
-      Function Catch,
-      Function Finally,
-      String name,
-      Result result})
+      {List<dynamic>? args,
+      Map<Symbol, dynamic>? namedArgs,
+      Function? Catch,
+      Function? Finally,
+      String? name,
+      Result? result})
       : super(fn,
             args: args,
             namedArgs: namedArgs,

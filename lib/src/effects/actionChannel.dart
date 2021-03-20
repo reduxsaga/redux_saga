@@ -33,10 +33,10 @@ class ActionChannel extends EffectWithResult {
   final dynamic pattern;
 
   /// An optional buffer can be provided to channel
-  final Buffer buffer;
+  final Buffer? buffer;
 
   /// Creates an instance of an ActionChannel effect
-  ActionChannel(this.pattern, {this.buffer, Result result})
+  ActionChannel(this.pattern, {this.buffer, Result? result})
       : super(result: result);
 
   @override
@@ -45,14 +45,14 @@ class ActionChannel extends EffectWithResult {
     final chan = BasicChannel(buffer: buffer);
     final match = _matcher<dynamic>(pattern);
 
-    TakeCallback<dynamic> Function() createTaker;
+    TakeCallback<dynamic>? Function()? createTaker;
 
-    TakeCallback<dynamic> lastTaker;
+    TakeCallback<dynamic>? lastTaker;
 
     createTaker = () {
       lastTaker = TakeCallback<dynamic>((dynamic action) {
         if (!isEnd(action)) {
-          middleware.channel.take(createTaker(), match);
+          middleware.channel.take(createTaker!()!, match);
         }
         chan.put(action);
       });
@@ -61,10 +61,10 @@ class ActionChannel extends EffectWithResult {
     };
 
     chan.onClose = () {
-      lastTaker.cancel();
+      lastTaker!.cancel();
     };
 
-    middleware.channel.take(createTaker(), match);
+    middleware.channel.take(createTaker()!, match);
     cb.next(arg: chan);
   }
 

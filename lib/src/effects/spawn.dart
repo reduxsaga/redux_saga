@@ -7,12 +7,12 @@ part of redux_saga;
 class Spawn extends Fork {
   /// Creates an instance of a Spawn effect.
   Spawn(Function fn,
-      {List<dynamic> args,
-      Map<Symbol, dynamic> namedArgs,
-      Function Catch,
-      Function Finally,
-      String name,
-      Result result})
+      {List<dynamic>? args,
+      Map<Symbol, dynamic>? namedArgs,
+      Function? Catch,
+      Function? Finally,
+      String? name,
+      Result? result})
       : super(fn,
             args: args,
             namedArgs: namedArgs,

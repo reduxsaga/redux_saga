@@ -16,9 +16,9 @@ void main() {
 
       var task = sagaMiddleware.run(() sync* {
         yield Try(() sync* {
-          yield CPS(({CPSCallback cb}) {
+          yield CPS(({CPSCallback? cb}) {
             actual.add('call 1');
-            cb.callback(err: 'err');
+            cb!.callback(err: 'err');
           });
           actual.add('call 2');
         }, Catch: (dynamic e, StackTrace s) sync* {
@@ -91,8 +91,8 @@ void main() {
       var store = createStore(sagaMiddleware);
       sagaMiddleware.setStore(store);
 
-      void cpsFn({CPSCallback cb}) {
-        cb.cancel = () {
+      void cpsFn({CPSCallback? cb}) {
+        cb!.cancel = () {
           cancelled = true;
         };
       }
@@ -103,7 +103,7 @@ void main() {
           yield CPS(cpsFn);
         }, result: forkedTask);
 
-        yield Cancel([forkedTask.value]);
+        yield Cancel([forkedTask.value!]);
       });
 
       //saga should call cancellation function on callback

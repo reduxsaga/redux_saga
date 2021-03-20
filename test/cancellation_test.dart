@@ -31,7 +31,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             yield Call(() => 'subroutine cancelled', result: result);
             actual.add(result.value);
           }
@@ -49,7 +49,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             yield Call(() => 'cancelled', result: result);
             actual.add(result.value);
           }
@@ -110,7 +110,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('leaf $idx cancelled');
           }
         });
@@ -130,7 +130,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('childA cancelled');
           }
         });
@@ -150,7 +150,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('childB cancelled');
           }
         });
@@ -172,7 +172,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('main cancelled');
           }
         });
@@ -224,7 +224,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('cancelled');
           }
         });
@@ -275,7 +275,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('subroutine cancelled');
           }
         });
@@ -291,7 +291,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('joiner1 cancelled');
           }
         });
@@ -307,7 +307,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('joiner2 cancelled');
           }
         });
@@ -324,7 +324,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('caller of joiner1 cancelled');
           }
         });
@@ -343,7 +343,7 @@ void main() {
         yield Call(() => cancelComp.future, result: result);
         actual.add(result.value);
 
-        yield Cancel([task.value]);
+        yield Cancel([task.value!]);
       }
 
       var sagaMiddleware = createMiddleware();
@@ -394,7 +394,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('subroutine cancelled');
           }
         });
@@ -410,12 +410,12 @@ void main() {
 
         yield Try(() sync* {
           var jr = JoinResult();
-          yield Join(<dynamic, Task>{#task: task.value}, result: jr);
+          yield Join(<dynamic, Task>{#task: task.value!}, result: jr);
           actual.add(jr.value);
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('cancelled');
           }
         });
@@ -478,7 +478,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('subroutine 1 cancelled');
           }
         });
@@ -494,7 +494,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('subroutine 2 cancelled');
           }
         });
@@ -515,7 +515,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('cancelled');
           }
         });
@@ -572,7 +572,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('subroutine cancelled');
           }
         });
@@ -588,7 +588,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('subroutine cancelled');
           }
         });
@@ -609,7 +609,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('cancelled');
           }
         });
@@ -675,7 +675,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('subtask 2 cancelled');
           }
         });
@@ -738,7 +738,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('winner subtask cancelled');
           }
         });
@@ -755,7 +755,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('loser subtask cancelled');
           }
         });
@@ -772,7 +772,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('parallel subtask cancelled');
           }
         });
@@ -834,7 +834,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('task cancelled');
           }
         });
@@ -851,7 +851,7 @@ void main() {
         yield Call(() => signOut.future, result: result);
         actual.add(result.value);
 
-        yield Cancel([task.value]);
+        yield Cancel([task.value!]);
       }
 
       var sagaMiddleware = createMiddleware();
@@ -900,7 +900,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('nested task 1 cancelled');
           }
         });
@@ -917,7 +917,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('nested task 2 cancelled');
           }
         });
@@ -939,7 +939,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('subtask cancelled');
           }
         });
@@ -956,7 +956,7 @@ void main() {
         yield Call(() => stop.future, result: result);
         actual.add(result.value);
 
-        yield Cancel([task.value]);
+        yield Cancel([task.value!]);
       }
 
       var sagaMiddleware = createMiddleware();
@@ -1010,7 +1010,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('nested task cancelled');
           }
         });
@@ -1029,7 +1029,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('subtask cancelled');
           }
         });
@@ -1046,7 +1046,7 @@ void main() {
         yield Call(() => stop.future, result: result);
         actual.add(result.value);
 
-        yield Cancel([task.value]);
+        yield Cancel([task.value!]);
       }
 
       var sagaMiddleware = createMiddleware();
@@ -1081,7 +1081,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add(i);
           }
         });
@@ -1097,7 +1097,7 @@ void main() {
         var task3 = Result<Task>();
         yield Fork(worker, args: <dynamic>[2], result: task3);
 
-        yield Cancel([task1.value, task2.value, task3.value]);
+        yield Cancel([task1.value!, task2.value!, task3.value!]);
       }
 
       var sagaMiddleware = createMiddleware();
@@ -1122,7 +1122,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('self cancellation');
           }
         });
@@ -1159,7 +1159,7 @@ void main() {
           var taskA = Result<Task>();
           yield Fork(child, result: taskA);
           yield Delay(Duration(milliseconds: 100));
-          yield Cancel([taskA.value]);
+          yield Cancel([taskA.value!]);
         }
 
         dynamic caughtMiddlewareError;
@@ -1192,7 +1192,7 @@ void main() {
         Iterable<Effect> main() sync* {
           var taskA = Result<Task>();
           yield Fork(child, result: taskA);
-          yield Join(<dynamic, Task>{#taskA: taskA.value});
+          yield Join(<dynamic, Task>{#taskA: taskA.value!});
         }
 
         var sagaMiddleware = createMiddleware();
@@ -1229,7 +1229,7 @@ void main() {
           var parentTask = Result<Task>();
           yield Fork(parent, result: parentTask);
           yield Delay(Duration(milliseconds: 0));
-          yield Cancel([parentTask.value]);
+          yield Cancel([parentTask.value!]);
         }
 
         var sagaMiddleware = createMiddleware();
@@ -1240,9 +1240,9 @@ void main() {
 
         expect(
             task.toFuture().then((dynamic value) => [
-                  forkedTask.value.isCancelled,
-                  forkedTask.value.isRunning,
-                  forkedTask.value.isAborted
+                  forkedTask.value!.isCancelled,
+                  forkedTask.value!.isRunning,
+                  forkedTask.value!.isAborted
                 ]),
             completion([true, false, false]));
 

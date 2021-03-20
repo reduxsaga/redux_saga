@@ -39,22 +39,22 @@ part of redux_saga;
 ///  Generator, the error will propagate to the calling Generator.
 class Call extends EffectWithResult {
   /// Meta name of function
-  final String name;
+  final String? name;
 
   /// A Generator function or a normal function to call.
   final Function fn;
 
   /// Arguments of the function to call
-  final List<dynamic> args;
+  final List<dynamic>? args;
 
   /// Named arguments of the function to call
-  final Map<Symbol, dynamic> namedArgs;
+  final Map<Symbol, dynamic>? namedArgs;
 
   /// A Generator function or a normal function to invoke for uncaught errors.
-  final Function Catch;
+  final Function? Catch;
 
   /// A Generator function or a normal function to invoke in any case after call.
-  final Function Finally;
+  final Function? Finally;
 
   /// Creates an instance of a Call effect.
   Call(this.fn,
@@ -63,7 +63,7 @@ class Call extends EffectWithResult {
       this.Catch,
       this.Finally,
       this.name,
-      Result result})
+      Result? result})
       : super(result: result);
 
   @override

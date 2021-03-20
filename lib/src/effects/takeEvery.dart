@@ -54,15 +54,15 @@ part of redux_saga;
 ///  `TakeEvery` doesn't handle out of order responses from tasks. There is no guarantee that the tasks will
 ///  terminate in the same order they were started. To handle out of order responses, you may consider [TakeLatest].
 Fork TakeEvery(Function saga,
-    {List<dynamic> args,
-    Map<Symbol, dynamic> namedArgs,
-    Function Catch,
-    Function Finally,
-    Channel channel,
+    {List<dynamic>? args,
+    Map<Symbol, dynamic>? namedArgs,
+    Function? Catch,
+    Function? Finally,
+    Channel? channel,
     dynamic pattern,
     bool detached = false,
-    String name,
-    Result result}) {
+    String? name,
+    Result? result}) {
   return Fork(_TakeEvery,
       args: <dynamic>[saga],
       namedArgs: <Symbol, dynamic>{
@@ -79,13 +79,13 @@ Fork TakeEvery(Function saga,
 }
 
 Iterable<Effect> _TakeEvery(Function saga,
-    {List<dynamic> args,
-    Map<Symbol, dynamic> namedArgs,
-    Function Catch,
-    Function Finally,
-    Channel channel,
+    {List<dynamic>? args,
+    Map<Symbol, dynamic>? namedArgs,
+    Function? Catch,
+    Function? Finally,
+    Channel? channel,
     dynamic pattern,
-    String name}) sync* {
+    String? name}) sync* {
   while (true) {
     var action = Result<dynamic>();
     yield Take(pattern: pattern, channel: channel, result: action);

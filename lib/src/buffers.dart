@@ -9,14 +9,14 @@ abstract class Buffer<T> {
   /// Used to put new message in the buffer. Note the Buffer can choose to not
   /// store the message (e.g. a dropping buffer can drop any new message
   /// exceeding a given limit).
-  void put(T message);
+  void put(T? message);
 
   /// Used to retrieve any buffered message. Note the behavior of this method has
   /// to be consistent with [isEmpty].
-  T take();
+  T? take();
 
   /// Flushes all the messages in the buffer to a `List`.
-  List<T> flush();
+  List<T?> flush();
 }
 
 class _ZeroBuffer<T> implements Buffer<T> {
@@ -29,7 +29,7 @@ class _ZeroBuffer<T> implements Buffer<T> {
   bool get isEmpty => true;
 
   @override
-  void put(T message) {
+  void put(T? message) {
     //Do nothing here. It is zero buffer
   }
 
@@ -42,10 +42,10 @@ class _ZeroBuffer<T> implements Buffer<T> {
 enum _overflowActions { Throw, Drop, Slide, Expand }
 
 class _RingBuffer<T> implements Buffer<T> {
-  int _limit;
-  _overflowActions _overflowAction;
+  late int _limit;
+  late _overflowActions _overflowAction;
 
-  List<T> _arr;
+  late List<T?> _arr;
   int _length = 0;
   int _pushIndex = 0;
   int _popIndex = 0;
@@ -53,17 +53,17 @@ class _RingBuffer<T> implements Buffer<T> {
   _RingBuffer(int limit, _overflowActions overflowAction) {
     _limit = limit;
     _overflowAction = overflowAction;
-    _arr = List<T>.filled(_limit, null, growable: true);
+    _arr = List<T?>.filled(_limit, null, growable: true);
   }
 
-  void _push(T it) {
+  void _push(T? it) {
     _arr[_pushIndex] = it;
     _pushIndex = (_pushIndex + 1) % _limit;
     _length++;
   }
 
   @override
-  T take() {
+  T? take() {
     if (_length == 0) {
       throw BufferisEmpty();
     } else {
@@ -76,8 +76,8 @@ class _RingBuffer<T> implements Buffer<T> {
   }
 
   @override
-  List<T> flush() {
-    var items = <T>[];
+  List<T?> flush() {
+    var items = <T?>[];
     while (_length > 0) {
       items.add(take());
     }
@@ -88,7 +88,7 @@ class _RingBuffer<T> implements Buffer<T> {
   bool get isEmpty => _length == 0;
 
   @override
-  void put(T message) {
+  void put(T? message) {
     if (_length < _limit) {
       _push(message);
     } else {

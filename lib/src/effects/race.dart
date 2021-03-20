@@ -48,7 +48,7 @@ class Race extends EffectWithResult {
   final Map<dynamic, dynamic> effects;
 
   /// Creates an instance of a Race effect.
-  Race(this.effects, {RaceResult result}) : super(result: result);
+  Race(this.effects, {RaceResult? result}) : super(result: result);
 
   @override
   void _run(_SagaMiddleware middleware, _TaskCallback cb,
@@ -61,7 +61,7 @@ class Race extends EffectWithResult {
 
     for (var key in keys) {
       var chCbAtKey = _TaskCallback(
-        ({_TaskCallback invoker, dynamic arg, bool isErr}) {
+        ({_TaskCallback? invoker, dynamic arg, bool isErr = false}) {
           if (completed) {
             return;
           }
@@ -85,7 +85,7 @@ class Race extends EffectWithResult {
       if (!completed) {
         completed = true;
         for (var key in keys) {
-          childCallbacks[key].cancel();
+          childCallbacks[key]!.cancel();
         }
       }
     };
@@ -95,7 +95,7 @@ class Race extends EffectWithResult {
         return;
       }
       executingContext.digestEffect(
-          effects[key], effectId, childCallbacks[key], key);
+          effects[key], effectId, childCallbacks[key]!, key);
     }
   }
 
@@ -114,8 +114,8 @@ class Race extends EffectWithResult {
 /// Result is map with a single entry
 class RaceResult extends Result<Map<dynamic, dynamic>> {
   /// Key of the single entry in the map
-  dynamic get key => value.keys.first;
+  dynamic get key => value!.keys.first;
 
   /// Key value of the single entry in the map
-  dynamic get keyValue => value[key];
+  dynamic get keyValue => value![key];
 }

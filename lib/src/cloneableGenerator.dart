@@ -33,10 +33,10 @@ class CloneableGenerator implements Iterator<dynamic> {
   final Function fn;
 
   /// Arguments of the generator function to call
-  final List<dynamic> args;
+  final List<dynamic>? args;
 
   /// Named arguments of the generator function to call
-  final Map<Symbol, dynamic> namedArgs;
+  final Map<Symbol, dynamic>? namedArgs;
 
   /// Creates an instance of a CloneableGenerator
   CloneableGenerator(this.fn, {this.args, this.namedArgs});
@@ -45,7 +45,7 @@ class CloneableGenerator implements Iterator<dynamic> {
   dynamic get current => _iterator?.current;
 
   bool _started = false;
-  Iterator _iterator;
+  late Iterator? _iterator;
   int _currentStep = -1;
 
   final _effectResults = <int, dynamic>{};
@@ -63,7 +63,7 @@ class CloneableGenerator implements Iterator<dynamic> {
     }
 
     _currentStep++;
-    return _iterator.moveNext();
+    return _iterator!.moveNext();
   }
 
   /// Clones the generator and both generator can resume from the same step.

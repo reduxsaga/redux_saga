@@ -132,9 +132,9 @@ void main() {
     test('saga take from eventChannel', () {
       var actual = <dynamic>[];
 
-      Emit channelEmitter;
+      late Emit channelEmitter;
 
-      var channel = EventChannel(subscribe: (emitter) {
+      var channel = EventChannel((emitter) {
         channelEmitter = emitter;
 
         // The subscriber must return an unsubscribe function
@@ -300,14 +300,14 @@ void main() {
             completion([exceptionToBeCaught, null, false, false, true]));
 
         expect(
-            forkedTaskA.value
+            forkedTaskA.value!
                 .toFuture()
                 .catchError((dynamic error) => <dynamic>[
                       error,
-                      forkedTaskA.value.result,
-                      forkedTaskA.value.isRunning,
-                      forkedTaskA.value.isCancelled,
-                      forkedTaskA.value.isAborted,
+                      forkedTaskA.value!.result,
+                      forkedTaskA.value!.isRunning,
+                      forkedTaskA.value!.isCancelled,
+                      forkedTaskA.value!.isAborted,
                     ]),
             completion([exceptionToBeCaught, null, false, false, true]));
         async.elapse(Duration(milliseconds: 100));
@@ -393,43 +393,43 @@ void main() {
 
         var task = sagaMiddleware.run(() sync* {
           yield Take(result: result);
-          takes.add(result.value.payload);
+          takes.add(result.value!.payload);
 
           yield Take(pattern: '*', result: result);
-          takes.add(result.value.payload);
+          takes.add(result.value!.payload);
 
           yield Take(pattern: 'TestActionA', result: result);
-          takes.add(result.value.payload);
+          takes.add(result.value!.payload);
 
           yield Take(pattern: TestActionA, result: result);
-          takes.add(result.value.payload);
+          takes.add(result.value!.payload);
 
           yield Take(
               pattern: (dynamic action) =>
                   action is TestActionA && action.payload == 4,
               result: result);
-          takes.add(result.value.payload);
+          takes.add(result.value!.payload);
 
           yield Take(pattern: [
             'TestActionA',
             TestActionB,
             (dynamic action) => action is TestActionA && action.payload == 7
           ], result: result);
-          takes.add(result.value.payload);
+          takes.add(result.value!.payload);
 
           yield Take(pattern: [
             'TestActionB',
             TestActionA,
             (dynamic action) => action is TestActionA && action.payload == 7
           ], result: result);
-          takes.add(result.value.payload);
+          takes.add(result.value!.payload);
 
           yield Take(pattern: [
             'TestActionB',
             TestActionB,
             (dynamic action) => action is TestActionA && action.payload == 7
           ], result: result);
-          takes.add(result.value.payload);
+          takes.add(result.value!.payload);
         });
 
         store.dispatch(TestActionA(0));

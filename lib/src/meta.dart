@@ -4,7 +4,7 @@ part of redux_saga;
 /// If name is not provided then id is used to identify a saga.
 class SagaMeta {
   /// name of saga
-  final String name;
+  final String? name;
 
   /// id of saga
   final int id;

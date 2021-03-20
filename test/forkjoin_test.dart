@@ -30,13 +30,13 @@ void main() {
       expect(task.toFuture(), completion(null));
 
       //fork result must include the name of the forked effect name
-      expect(forkedTask.value.meta.name, equals('subGen'));
+      expect(forkedTask.value!.meta.name, equals('subGen'));
 
       //fork result must resolve with the return value of the forked task
-      expect(forkedTask.value.toFuture(), completion(1));
+      expect(forkedTask.value!.toFuture(), completion(1));
 
       //fork must also handle generators defined as instance methods
-      expect(forkedTask2.value.toFuture(), completion(2));
+      expect(forkedTask2.value!.toFuture(), completion(2));
     });
 
     test('saga join handling : generators', () {
@@ -67,7 +67,7 @@ void main() {
         actual.add(result.value);
 
         var joinResult = JoinResult();
-        yield Join(<dynamic, Task>{#task: forkedTask.value},
+        yield Join(<dynamic, Task>{#task: forkedTask.value!},
             result: joinResult);
         actual.add(joinResult.value);
       }
@@ -129,11 +129,11 @@ void main() {
         actual.add(result.value);
 
         var joinResult = JoinResult();
-        yield Join(<dynamic, Task>{#task: forkedTask.value},
+        yield Join(<dynamic, Task>{#task: forkedTask.value!},
             result: joinResult);
         actual.add(joinResult.value);
 
-        yield Join(<dynamic, Task>{#task: forkedSyncTask.value},
+        yield Join(<dynamic, Task>{#task: forkedSyncTask.value!},
             result: joinResult);
         actual.add(joinResult.value);
       }
@@ -233,7 +233,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('leaf ${idx + 1} cancelled');
           }
         });
@@ -251,7 +251,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('childA cancelled');
           }
         });
@@ -268,7 +268,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('childB cancelled');
           }
         });
@@ -281,13 +281,13 @@ void main() {
           var result = Result<dynamic>();
           yield Call(() => mainComp.future, result: result);
           actual.add(result.value);
-        }, Catch: (dynamic e, StackTrace s) sync* {
+        }, Catch: (Object e, StackTrace s) sync* {
           actual.add(e);
           throw e;
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('main cancelled');
           }
         });
@@ -352,7 +352,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('leaf ${idx + 1} cancelled');
           }
         });
@@ -370,7 +370,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('childA cancelled');
           }
         });
@@ -387,7 +387,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('childB cancelled');
           }
         });
@@ -403,7 +403,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('main cancelled');
           }
         });
@@ -418,7 +418,7 @@ void main() {
           yield Call(() => rootComp.future, result: result);
           actual.add(result.value);
 
-          yield Cancel([forkedTask.value]);
+          yield Cancel([forkedTask.value!]);
         }, Catch: (dynamic e, StackTrace s) sync* {
           actual.add('root caught $e');
         });
@@ -468,13 +468,13 @@ void main() {
           var result = Result<dynamic>();
           yield Call(() => comps[idx].future, result: result);
           actual.add(result.value);
-        }, Catch: (dynamic e, StackTrace s) sync* {
+        }, Catch: (Object e, StackTrace s) sync* {
           actual.add(e);
           throw e;
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('leaf ${idx + 1} cancelled');
           }
         });
@@ -492,7 +492,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('childA cancelled');
           }
         });
@@ -509,7 +509,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('childB cancelled');
           }
         });
@@ -526,7 +526,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('main cancelled');
           }
         });
@@ -586,13 +586,13 @@ void main() {
           var result = Result<dynamic>();
           yield Call(() => comps[idx].future, result: result);
           actual.add(result.value);
-        }, Catch: (dynamic e, StackTrace s) sync* {
+        }, Catch: (Object e, StackTrace s) sync* {
           actual.add(e);
           throw e;
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('leaf ${idx + 1} cancelled');
           }
         });
@@ -610,7 +610,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('childA cancelled');
           }
         });
@@ -627,7 +627,7 @@ void main() {
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('childB cancelled');
           }
         });
@@ -641,13 +641,13 @@ void main() {
           yield Call(() => mainComp.future, result: result);
           actual.add(result.value);
           yield Return('main returned');
-        }, Catch: (dynamic e, StackTrace s) sync* {
+        }, Catch: (Object e, StackTrace s) sync* {
           actual.add(e);
           throw e;
         }, Finally: () sync* {
           var cancelled = Result<bool>();
           yield Cancelled(result: cancelled);
-          if (cancelled.value) {
+          if (cancelled.value!) {
             actual.add('main cancelled');
           }
         });
@@ -704,9 +704,9 @@ void main() {
         yield Fork(worker, args: <dynamic>[2], result: task3);
 
         yield Join(<dynamic, Task>{
-          #task1: task1.value,
-          #task2: task2.value,
-          #task3: task3.value
+          #task1: task1.value!,
+          #task2: task2.value!,
+          #task3: task3.value!
         }, result: actual);
       }
 

@@ -28,7 +28,7 @@ void main() {
           execution.add(2);
         });
 
-        spawnedTask.value.toFuture().then((dynamic v) => taskCompletion.add(0));
+        spawnedTask.value!.toFuture().then((dynamic v) => taskCompletion.add(0));
         task.toFuture().then((dynamic v) => taskCompletion.add(1));
 
         expect(
@@ -78,7 +78,7 @@ void main() {
           execution.add(2);
         });
 
-        spawnedTask.value.toFuture().then((dynamic v) => taskCompletion.add(0));
+        spawnedTask.value!.toFuture().then((dynamic v) => taskCompletion.add(0));
         task.toFuture().then((dynamic v) => taskCompletion.add(1));
 
         expect(
@@ -103,7 +103,7 @@ void main() {
 
         //spawned task finished after main task
         expect(
-            spawnedTask.value
+            spawnedTask.value!
                 .toFuture()
                 .then((dynamic value) => taskCompletion),
             completion([1, 0]));
@@ -135,7 +135,7 @@ void main() {
           execution.add(2);
         });
 
-        spawnedTask.value.toFuture().then((dynamic v) => taskCompletion.add(0));
+        spawnedTask.value!.toFuture().then((dynamic v) => taskCompletion.add(0));
         task.toFuture().then((dynamic v) => taskCompletion.add(1));
 
         expect(
@@ -196,7 +196,7 @@ void main() {
           execution.add(2);
         });
 
-        spawnedTaskA.value
+        spawnedTaskA.value!
             .toFuture()
             .then((dynamic v) => taskCompletion.add(0));
         task.toFuture().then((dynamic v) => taskCompletion.add(1));
@@ -224,12 +224,12 @@ void main() {
             ]));
 
         expect(
-            spawnedTaskA.value.toFuture().then((dynamic value) => <dynamic>[
+            spawnedTaskA.value!.toFuture().then((dynamic value) => <dynamic>[
                   value,
-                  spawnedTaskA.value.result,
-                  spawnedTaskA.value.isRunning,
-                  spawnedTaskA.value.isCancelled,
-                  spawnedTaskA.value.isAborted,
+                  spawnedTaskA.value!.result,
+                  spawnedTaskA.value!.isRunning,
+                  spawnedTaskA.value!.isCancelled,
+                  spawnedTaskA.value!.isAborted,
                   execution,
                   taskCompletion,
                   values.toString()
@@ -282,7 +282,7 @@ void main() {
         });
 
         task.toFuture().then((dynamic v) => taskCompletion.add(1));
-        spawnedTaskA.value
+        spawnedTaskA.value!
             .toFuture()
             .then((dynamic v) => taskCompletion.add(0))
             .catchError((dynamic e, StackTrace s) {
@@ -312,14 +312,14 @@ void main() {
             ]));
 
         expect(
-            spawnedTaskA.value
+            spawnedTaskA.value!
                 .toFuture()
                 .catchError((dynamic error) => <dynamic>[
                       error,
-                      spawnedTaskA.value.result,
-                      spawnedTaskA.value.isRunning,
-                      spawnedTaskA.value.isCancelled,
-                      spawnedTaskA.value.isAborted,
+                      spawnedTaskA.value!.result,
+                      spawnedTaskA.value!.isRunning,
+                      spawnedTaskA.value!.isCancelled,
+                      spawnedTaskA.value!.isAborted,
                       execution,
                       taskCompletion,
                       values.toString()
@@ -368,7 +368,7 @@ void main() {
           }
         });
 
-        spawnedTaskA.value
+        spawnedTaskA.value!
             .toFuture()
             .then((dynamic v) => taskCompletion.add(0));
         task
@@ -401,12 +401,12 @@ void main() {
             ]));
 
         expect(
-            spawnedTaskA.value.toFuture().then((dynamic value) => <dynamic>[
+            spawnedTaskA.value!.toFuture().then((dynamic value) => <dynamic>[
                   value,
-                  spawnedTaskA.value.result,
-                  spawnedTaskA.value.isRunning,
-                  spawnedTaskA.value.isCancelled,
-                  spawnedTaskA.value.isAborted,
+                  spawnedTaskA.value!.result,
+                  spawnedTaskA.value!.isRunning,
+                  spawnedTaskA.value!.isCancelled,
+                  spawnedTaskA.value!.isAborted,
                   execution,
                   taskCompletion,
                   values.toString()
@@ -457,7 +457,7 @@ void main() {
           execution.add(2);
         });
 
-        spawnedTaskA.value
+        spawnedTaskA.value!
             .toFuture()
             .then((dynamic v) => taskCompletion.add(0));
         task.toFuture().then((dynamic v) => taskCompletion.add(1));
@@ -485,12 +485,12 @@ void main() {
             ]));
 
         expect(
-            spawnedTaskA.value.toFuture().then((dynamic value) => <dynamic>[
+            spawnedTaskA.value!.toFuture().then((dynamic value) => <dynamic>[
                   value,
-                  spawnedTaskA.value.result,
-                  spawnedTaskA.value.isRunning,
-                  spawnedTaskA.value.isCancelled,
-                  spawnedTaskA.value.isAborted,
+                  spawnedTaskA.value!.result,
+                  spawnedTaskA.value!.isRunning,
+                  spawnedTaskA.value!.isCancelled,
+                  spawnedTaskA.value!.isAborted,
                   execution,
                   taskCompletion,
                   values.toString()
@@ -551,10 +551,10 @@ void main() {
           execution.add(3);
         });
 
-        spawnedTaskA.value
+        spawnedTaskA.value!
             .toFuture()
             .then((dynamic v) => taskCompletion.add(0));
-        spawnedTaskB.value
+        spawnedTaskB.value!
             .toFuture()
             .then((dynamic v) => taskCompletion.add(1));
         task.toFuture().then((dynamic v) => taskCompletion.add(2));
@@ -582,12 +582,12 @@ void main() {
             ]));
 
         expect(
-            spawnedTaskA.value.toFuture().then((dynamic value) => <dynamic>[
+            spawnedTaskA.value!.toFuture().then((dynamic value) => <dynamic>[
                   value,
-                  spawnedTaskA.value.result,
-                  spawnedTaskA.value.isRunning,
-                  spawnedTaskA.value.isCancelled,
-                  spawnedTaskA.value.isAborted,
+                  spawnedTaskA.value!.result,
+                  spawnedTaskA.value!.isRunning,
+                  spawnedTaskA.value!.isCancelled,
+                  spawnedTaskA.value!.isAborted,
                   execution,
                   taskCompletion,
                   values.toString()
@@ -604,12 +604,12 @@ void main() {
             ]));
 
         expect(
-            spawnedTaskB.value.toFuture().then((dynamic value) => <dynamic>[
+            spawnedTaskB.value!.toFuture().then((dynamic value) => <dynamic>[
                   value,
-                  spawnedTaskB.value.result,
-                  spawnedTaskB.value.isRunning,
-                  spawnedTaskB.value.isCancelled,
-                  spawnedTaskB.value.isAborted,
+                  spawnedTaskB.value!.result,
+                  spawnedTaskB.value!.isRunning,
+                  spawnedTaskB.value!.isCancelled,
+                  spawnedTaskB.value!.isAborted,
                   execution,
                   taskCompletion,
                   values.toString()
@@ -672,10 +672,10 @@ void main() {
           execution.add(3);
         });
 
-        spawnedTaskA.value
+        spawnedTaskA.value!
             .toFuture()
             .then((dynamic v) => taskCompletion.add(0));
-        spawnedTaskB.value
+        spawnedTaskB.value!
             .toFuture()
             .then((dynamic v) => taskCompletion.add(1));
         task.toFuture().then((dynamic v) => taskCompletion.add(2));
@@ -703,12 +703,12 @@ void main() {
             ]));
 
         expect(
-            spawnedTaskA.value.toFuture().then((dynamic value) => <dynamic>[
+            spawnedTaskA.value!.toFuture().then((dynamic value) => <dynamic>[
                   value,
-                  spawnedTaskA.value.result,
-                  spawnedTaskA.value.isRunning,
-                  spawnedTaskA.value.isCancelled,
-                  spawnedTaskA.value.isAborted,
+                  spawnedTaskA.value!.result,
+                  spawnedTaskA.value!.isRunning,
+                  spawnedTaskA.value!.isCancelled,
+                  spawnedTaskA.value!.isAborted,
                   execution,
                   taskCompletion,
                   values.toString()
@@ -725,12 +725,12 @@ void main() {
             ]));
 
         expect(
-            spawnedTaskB.value.toFuture().then((dynamic value) => <dynamic>[
+            spawnedTaskB.value!.toFuture().then((dynamic value) => <dynamic>[
                   value,
-                  spawnedTaskB.value.result,
-                  spawnedTaskB.value.isRunning,
-                  spawnedTaskB.value.isCancelled,
-                  spawnedTaskB.value.isAborted,
+                  spawnedTaskB.value!.result,
+                  spawnedTaskB.value!.isRunning,
+                  spawnedTaskB.value!.isCancelled,
+                  spawnedTaskB.value!.isAborted,
                   execution,
                   taskCompletion,
                   values.toString()
@@ -782,7 +782,7 @@ void main() {
 
           execution.add(2);
 
-          yield Cancel([spawnedTaskA.value]);
+          yield Cancel([spawnedTaskA.value!]);
 
           for (var i = 0; i < 10; i++) {
             values.write(i);
@@ -793,10 +793,10 @@ void main() {
           execution.add(3);
         });
 
-        spawnedTaskA.value
+        spawnedTaskA.value!
             .toFuture()
             .then((dynamic v) => taskCompletion.add(0));
-        spawnedTaskB.value
+        spawnedTaskB.value!
             .toFuture()
             .then((dynamic v) => taskCompletion.add(1));
         task.toFuture().then((dynamic v) => taskCompletion.add(2));
@@ -824,12 +824,12 @@ void main() {
             ]));
 
         expect(
-            spawnedTaskA.value.toFuture().then((dynamic value) => <dynamic>[
+            spawnedTaskA.value!.toFuture().then((dynamic value) => <dynamic>[
                   value,
-                  spawnedTaskA.value.result,
-                  spawnedTaskA.value.isRunning,
-                  spawnedTaskA.value.isCancelled,
-                  spawnedTaskA.value.isAborted,
+                  spawnedTaskA.value!.result,
+                  spawnedTaskA.value!.isRunning,
+                  spawnedTaskA.value!.isCancelled,
+                  spawnedTaskA.value!.isAborted,
                   execution,
                   taskCompletion,
                   values.toString()
@@ -846,12 +846,12 @@ void main() {
             ]));
 
         expect(
-            spawnedTaskB.value.toFuture().then((dynamic value) => <dynamic>[
+            spawnedTaskB.value!.toFuture().then((dynamic value) => <dynamic>[
                   value,
-                  spawnedTaskB.value.result,
-                  spawnedTaskB.value.isRunning,
-                  spawnedTaskB.value.isCancelled,
-                  spawnedTaskB.value.isAborted,
+                  spawnedTaskB.value!.result,
+                  spawnedTaskB.value!.isRunning,
+                  spawnedTaskB.value!.isCancelled,
+                  spawnedTaskB.value!.isAborted,
                   execution,
                   taskCompletion,
                   values.toString()
@@ -903,7 +903,7 @@ void main() {
 
           execution.add(2);
 
-          yield Cancel([spawnedTaskA.value, spawnedTaskB.value]);
+          yield Cancel([spawnedTaskA.value!, spawnedTaskB.value!]);
 
           for (var i = 0; i < 10; i++) {
             values.write(i);
@@ -914,10 +914,10 @@ void main() {
           execution.add(3);
         });
 
-        spawnedTaskA.value
+        spawnedTaskA.value!
             .toFuture()
             .then((dynamic v) => taskCompletion.add(0));
-        spawnedTaskB.value
+        spawnedTaskB.value!
             .toFuture()
             .then((dynamic v) => taskCompletion.add(1));
         task.toFuture().then((dynamic v) => taskCompletion.add(2));
@@ -945,12 +945,12 @@ void main() {
             ]));
 
         expect(
-            spawnedTaskA.value.toFuture().then((dynamic value) => <dynamic>[
+            spawnedTaskA.value!.toFuture().then((dynamic value) => <dynamic>[
                   value,
-                  spawnedTaskA.value.result,
-                  spawnedTaskA.value.isRunning,
-                  spawnedTaskA.value.isCancelled,
-                  spawnedTaskA.value.isAborted,
+                  spawnedTaskA.value!.result,
+                  spawnedTaskA.value!.isRunning,
+                  spawnedTaskA.value!.isCancelled,
+                  spawnedTaskA.value!.isAborted,
                   execution,
                   taskCompletion,
                   values.toString()
@@ -967,12 +967,12 @@ void main() {
             ]));
 
         expect(
-            spawnedTaskB.value.toFuture().then((dynamic value) => <dynamic>[
+            spawnedTaskB.value!.toFuture().then((dynamic value) => <dynamic>[
                   value,
-                  spawnedTaskB.value.result,
-                  spawnedTaskB.value.isRunning,
-                  spawnedTaskB.value.isCancelled,
-                  spawnedTaskB.value.isAborted,
+                  spawnedTaskB.value!.result,
+                  spawnedTaskB.value!.isRunning,
+                  spawnedTaskB.value!.isCancelled,
+                  spawnedTaskB.value!.isAborted,
                   execution,
                   taskCompletion,
                   values.toString()
@@ -1027,7 +1027,7 @@ void main() {
 
           execution.add(2);
 
-          yield Join(<dynamic, Task>{#spawnA: spawnedTaskA.value},
+          yield Join(<dynamic, Task>{#spawnA: spawnedTaskA.value!},
               result: joinResult);
 
           for (var i = 0; i < 10; i++) {
@@ -1039,10 +1039,10 @@ void main() {
           execution.add(3);
         });
 
-        spawnedTaskA.value
+        spawnedTaskA.value!
             .toFuture()
             .then((dynamic v) => taskCompletion.add(0));
-        spawnedTaskB.value
+        spawnedTaskB.value!
             .toFuture()
             .then((dynamic v) => taskCompletion.add(1));
         task.toFuture().then((dynamic v) => taskCompletion.add(2));
@@ -1072,12 +1072,12 @@ void main() {
             ]));
 
         expect(
-            spawnedTaskA.value.toFuture().then((dynamic value) => <dynamic>[
+            spawnedTaskA.value!.toFuture().then((dynamic value) => <dynamic>[
                   value,
-                  spawnedTaskA.value.result,
-                  spawnedTaskA.value.isRunning,
-                  spawnedTaskA.value.isCancelled,
-                  spawnedTaskA.value.isAborted,
+                  spawnedTaskA.value!.result,
+                  spawnedTaskA.value!.isRunning,
+                  spawnedTaskA.value!.isCancelled,
+                  spawnedTaskA.value!.isAborted,
                   execution,
                   taskCompletion,
                   values.toString()
@@ -1094,12 +1094,12 @@ void main() {
             ]));
 
         expect(
-            spawnedTaskB.value.toFuture().then((dynamic value) => <dynamic>[
+            spawnedTaskB.value!.toFuture().then((dynamic value) => <dynamic>[
                   value,
-                  spawnedTaskB.value.result,
-                  spawnedTaskB.value.isRunning,
-                  spawnedTaskB.value.isCancelled,
-                  spawnedTaskB.value.isAborted,
+                  spawnedTaskB.value!.result,
+                  spawnedTaskB.value!.isRunning,
+                  spawnedTaskB.value!.isCancelled,
+                  spawnedTaskB.value!.isAborted,
                   execution,
                   taskCompletion,
                   values.toString()
@@ -1156,8 +1156,8 @@ void main() {
           execution.add(2);
 
           yield Join(<dynamic, Task>{
-            #spawnA: spawnedTaskA.value,
-            #spawnB: spawnedTaskB.value
+            #spawnA: spawnedTaskA.value!,
+            #spawnB: spawnedTaskB.value!
           }, result: joinResult);
 
           for (var i = 0; i < 10; i++) {
@@ -1169,10 +1169,10 @@ void main() {
           execution.add(3);
         });
 
-        spawnedTaskA.value
+        spawnedTaskA.value!
             .toFuture()
             .then((dynamic v) => taskCompletion.add(0));
-        spawnedTaskB.value
+        spawnedTaskB.value!
             .toFuture()
             .then((dynamic v) => taskCompletion.add(1));
         task.toFuture().then((dynamic v) => taskCompletion.add(2));
@@ -1202,12 +1202,12 @@ void main() {
             ]));
 
         expect(
-            spawnedTaskA.value.toFuture().then((dynamic value) => <dynamic>[
+            spawnedTaskA.value!.toFuture().then((dynamic value) => <dynamic>[
                   value,
-                  spawnedTaskA.value.result,
-                  spawnedTaskA.value.isRunning,
-                  spawnedTaskA.value.isCancelled,
-                  spawnedTaskA.value.isAborted,
+                  spawnedTaskA.value!.result,
+                  spawnedTaskA.value!.isRunning,
+                  spawnedTaskA.value!.isCancelled,
+                  spawnedTaskA.value!.isAborted,
                   execution,
                   taskCompletion,
                   values.toString()
@@ -1224,12 +1224,12 @@ void main() {
             ]));
 
         expect(
-            spawnedTaskB.value.toFuture().then((dynamic value) => <dynamic>[
+            spawnedTaskB.value!.toFuture().then((dynamic value) => <dynamic>[
                   value,
-                  spawnedTaskB.value.result,
-                  spawnedTaskB.value.isRunning,
-                  spawnedTaskB.value.isCancelled,
-                  spawnedTaskB.value.isAborted,
+                  spawnedTaskB.value!.result,
+                  spawnedTaskB.value!.isRunning,
+                  spawnedTaskB.value!.isCancelled,
+                  spawnedTaskB.value!.isAborted,
                   execution,
                   taskCompletion,
                   values.toString()
@@ -1292,8 +1292,8 @@ void main() {
           execution.add(4);
 
           yield Join(<dynamic, Task>{
-            #spawnA: spawnedTaskA.value,
-            #spawnB: spawnedTaskB.value
+            #spawnA: spawnedTaskA.value!,
+            #spawnB: spawnedTaskB.value!
           }, result: joinResult);
 
           for (var i = 0; i < 10; i++) {
@@ -1307,10 +1307,10 @@ void main() {
           execution.add(6);
         });
 
-        spawnedTaskA.value
+        spawnedTaskA.value!
             .toFuture()
             .then((dynamic v) => taskCompletion.add(0));
-        spawnedTaskB.value
+        spawnedTaskB.value!
             .toFuture()
             .then((dynamic v) => taskCompletion.add(1));
         task.toFuture().then((dynamic v) => taskCompletion.add(2));
@@ -1341,12 +1341,12 @@ void main() {
             ]));
 
         expect(
-            spawnedTaskA.value.toFuture().then((dynamic value) => <dynamic>[
+            spawnedTaskA.value!.toFuture().then((dynamic value) => <dynamic>[
                   value,
-                  spawnedTaskA.value.result,
-                  spawnedTaskA.value.isRunning,
-                  spawnedTaskA.value.isCancelled,
-                  spawnedTaskA.value.isAborted,
+                  spawnedTaskA.value!.result,
+                  spawnedTaskA.value!.isRunning,
+                  spawnedTaskA.value!.isCancelled,
+                  spawnedTaskA.value!.isAborted,
                   execution,
                   taskCompletion,
                   values.toString()
@@ -1363,12 +1363,12 @@ void main() {
             ]));
 
         expect(
-            spawnedTaskB.value.toFuture().then((dynamic value) => <dynamic>[
+            spawnedTaskB.value!.toFuture().then((dynamic value) => <dynamic>[
                   value,
-                  spawnedTaskB.value.result,
-                  spawnedTaskB.value.isRunning,
-                  spawnedTaskB.value.isCancelled,
-                  spawnedTaskB.value.isAborted,
+                  spawnedTaskB.value!.result,
+                  spawnedTaskB.value!.isRunning,
+                  spawnedTaskB.value!.isCancelled,
+                  spawnedTaskB.value!.isAborted,
                   execution,
                   taskCompletion,
                   values.toString()
@@ -1426,8 +1426,8 @@ void main() {
           execution.add(2);
 
           yield Join(<dynamic, Task>{
-            #spawnA: spawnedTaskA.value,
-            #spawnB: spawnedTaskB.value
+            #spawnA: spawnedTaskA.value!,
+            #spawnB: spawnedTaskB.value!
           }, result: joinResult);
 
           for (var i = 0; i < 10; i++) {
@@ -1439,10 +1439,10 @@ void main() {
           execution.add(3);
         });
 
-        spawnedTaskA.value
+        spawnedTaskA.value!
             .toFuture()
             .then((dynamic v) => taskCompletion.add(0));
-        spawnedTaskB.value
+        spawnedTaskB.value!
             .toFuture()
             .then((dynamic v) => taskCompletion.add(1));
         task.toFuture().then((dynamic v) => taskCompletion.add(2));
@@ -1473,12 +1473,12 @@ void main() {
             ]));
 
         expect(
-            spawnedTaskA.value.toFuture().then((dynamic value) => <dynamic>[
+            spawnedTaskA.value!.toFuture().then((dynamic value) => <dynamic>[
                   value,
-                  spawnedTaskA.value.result,
-                  spawnedTaskA.value.isRunning,
-                  spawnedTaskA.value.isCancelled,
-                  spawnedTaskA.value.isAborted,
+                  spawnedTaskA.value!.result,
+                  spawnedTaskA.value!.isRunning,
+                  spawnedTaskA.value!.isCancelled,
+                  spawnedTaskA.value!.isAborted,
                   execution,
                   taskCompletion,
                   values.toString()
@@ -1495,12 +1495,12 @@ void main() {
             ]));
 
         expect(
-            spawnedTaskB.value.toFuture().then((dynamic value) => <dynamic>[
+            spawnedTaskB.value!.toFuture().then((dynamic value) => <dynamic>[
                   value,
-                  spawnedTaskB.value.result,
-                  spawnedTaskB.value.isRunning,
-                  spawnedTaskB.value.isCancelled,
-                  spawnedTaskB.value.isAborted,
+                  spawnedTaskB.value!.result,
+                  spawnedTaskB.value!.isRunning,
+                  spawnedTaskB.value!.isCancelled,
+                  spawnedTaskB.value!.isAborted,
                   execution,
                   taskCompletion,
                   values.toString()

@@ -107,13 +107,13 @@ void main() {
 
       var task = sagaMiddleware.run(() sync* {
         yield apiCall1;
-        actual.addAll(<dynamic>['effect\'s result is', apiCall1.result.value]);
+        actual.addAll(<dynamic>['effect\'s result is', apiCall1.result!.value]);
 
         yield callA;
-        actual.addAll(<dynamic>['effect\'s result is', callA.result.value]);
+        actual.addAll(<dynamic>['effect\'s result is', callA.result!.value]);
 
         yield apiCall2;
-        actual.addAll(<dynamic>['effect\'s result is', apiCall2.result.value]);
+        actual.addAll(<dynamic>['effect\'s result is', apiCall2.result!.value]);
       });
 
       //multiple effectMiddlewares must create a chain
@@ -180,7 +180,7 @@ void main() {
         actual.add(result.value.payload);
 
         yield apiCall;
-        actual.add(apiCall.result.value);
+        actual.add(apiCall.result!.value);
 
         yield Return('result');
       }

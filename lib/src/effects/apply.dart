@@ -4,12 +4,12 @@ part of redux_saga;
 class Apply extends Call {
   /// Creates an instance of a Apply effect.
   Apply(Function fn,
-      {List<dynamic> args,
-      Map<Symbol, dynamic> namedArgs,
-      Function Catch,
-      Function Finally,
-      String name,
-      Result result})
+      {List<dynamic>? args,
+      Map<Symbol, dynamic>? namedArgs,
+      Function? Catch,
+      Function? Finally,
+      String? name,
+      Result? result})
       : super(fn,
             args: args,
             namedArgs: namedArgs,

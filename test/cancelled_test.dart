@@ -113,12 +113,12 @@ void main() {
           completion([null, null, false, false, false, false]));
 
       expect(
-          forkedTaskA.value.toFuture().then((dynamic value) => <dynamic>[
+          forkedTaskA.value!.toFuture().then((dynamic value) => <dynamic>[
                 value,
-                forkedTaskA.value.result,
-                forkedTaskA.value.isRunning,
-                forkedTaskA.value.isCancelled,
-                forkedTaskA.value.isAborted,
+                forkedTaskA.value!.result,
+                forkedTaskA.value!.isRunning,
+                forkedTaskA.value!.isCancelled,
+                forkedTaskA.value!.isAborted,
                 isforkedTaskCancelled.value
               ]),
           completion([TaskCancel, TaskCancel, false, true, false, true]));
@@ -140,7 +140,7 @@ void main() {
           yield Cancelled(result: isforkedTaskCancelled);
         }, result: forkedTaskA);
 
-        yield Join(<dynamic, Task>{#forkA: forkedTaskA.value});
+        yield Join(<dynamic, Task>{#forkA: forkedTaskA.value!});
       }, Finally: () sync* {
         yield Cancelled(result: isRootCancelled);
       });
@@ -157,12 +157,12 @@ void main() {
           completion([TaskCancel, TaskCancel, false, true, false, true]));
 
       expect(
-          forkedTaskA.value.toFuture().then((dynamic value) => <dynamic>[
+          forkedTaskA.value!.toFuture().then((dynamic value) => <dynamic>[
                 value,
-                forkedTaskA.value.result,
-                forkedTaskA.value.isRunning,
-                forkedTaskA.value.isCancelled,
-                forkedTaskA.value.isAborted,
+                forkedTaskA.value!.result,
+                forkedTaskA.value!.isRunning,
+                forkedTaskA.value!.isCancelled,
+                forkedTaskA.value!.isAborted,
                 isforkedTaskCancelled.value
               ]),
           completion([TaskCancel, TaskCancel, false, true, false, true]));
@@ -185,7 +185,7 @@ void main() {
             yield Cancelled(result: isforkedTaskCancelled);
           }, result: forkedTaskA);
 
-          yield Cancel([forkedTaskA.value]);
+          yield Cancel([forkedTaskA.value!]);
         }, Finally: () sync* {
           yield Cancelled(result: isRootCancelled);
         });
@@ -202,12 +202,12 @@ void main() {
             completion([null, null, false, false, false, false]));
 
         expect(
-            forkedTaskA.value.toFuture().then((dynamic value) => <dynamic>[
+            forkedTaskA.value!.toFuture().then((dynamic value) => <dynamic>[
                   value,
-                  forkedTaskA.value.result,
-                  forkedTaskA.value.isRunning,
-                  forkedTaskA.value.isCancelled,
-                  forkedTaskA.value.isAborted,
+                  forkedTaskA.value!.result,
+                  forkedTaskA.value!.isRunning,
+                  forkedTaskA.value!.isCancelled,
+                  forkedTaskA.value!.isAborted,
                   isforkedTaskCancelled.value
                 ]),
             completion([TaskCancel, TaskCancel, false, true, false, true]));

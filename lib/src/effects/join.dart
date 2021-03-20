@@ -18,7 +18,7 @@ class Join extends EffectWithResult {
   final Map<dynamic, Task> tasks;
 
   /// Creates an instance of a Join effect.
-  Join(this.tasks, {JoinResult result}) : super(result: result);
+  Join(this.tasks, {JoinResult? result}) : super(result: result);
 
   @override
   void _run(_SagaMiddleware middleware, _TaskCallback cb,
@@ -30,7 +30,7 @@ class Join extends EffectWithResult {
 
     var childCallbacks = _createAllStyleChildCallbacks(tasks, cb);
     for (var key in tasks.keys) {
-      _joinSingleTask(executingContext.task, tasks[key], childCallbacks[key]);
+      _joinSingleTask(executingContext.task, tasks[key]!, childCallbacks[key]!);
     }
   }
 
@@ -83,7 +83,7 @@ Map<dynamic, _TaskCallback> _createAllStyleChildCallbacks(
 
   for (var key in keys) {
     var chCbAtKey = _TaskCallback(
-      ({_TaskCallback invoker, dynamic arg, bool isErr}) {
+      ({_TaskCallback? invoker, dynamic arg, bool isErr = false}) {
         if (completed) {
           return;
         }
@@ -105,7 +105,7 @@ Map<dynamic, _TaskCallback> _createAllStyleChildCallbacks(
     if (!completed) {
       completed = true;
       for (var key in keys) {
-        childCallbacks[key].cancel();
+        childCallbacks[key]!.cancel();
       }
     }
   };

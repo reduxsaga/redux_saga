@@ -49,8 +49,8 @@ class SagaMonitor {
   /// [args] The arguments passed to the generator function
   ///
   /// [name] The generator function name
-  void rootSagaStarted(int effectId, Function saga, List<dynamic> args,
-      Map<Symbol, dynamic> namedArgs, String name) {}
+  void rootSagaStarted(int effectId, Function saga, List<dynamic>? args,
+      Map<Symbol, dynamic>? namedArgs, String? name) {}
 
   /// Defines function type which is invoked when an effect triggered by the middleware
   ///

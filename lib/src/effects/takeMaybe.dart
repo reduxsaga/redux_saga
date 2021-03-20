@@ -18,7 +18,7 @@ part of redux_saga;
 ///
 class TakeMaybe extends Take {
   /// Creates an instance of a TakeMaybe effect.
-  TakeMaybe({dynamic pattern, Channel channel, Result result})
+  TakeMaybe({dynamic pattern, Channel? channel, Result? result})
       : super(pattern: pattern, channel: channel, maybe: true, result: result);
 
   @override

@@ -71,51 +71,47 @@ abstract class SagaMiddleware {
   /// Used to fulfill [Put] effects.
   ///
   /// This method can be set a fake method in order to handle tests
-  DispatchHandler dispatch;
+  DispatchHandler? dispatch;
 
   /// Used to fulfill [Select] effects
   ///
   /// This method can be set a fake method in order to handle tests
-  GetStateHandler getState;
+  GetStateHandler? getState;
 }
 
 class _SagaMiddleware extends SagaMiddleware {
-  SagaContext context;
-  Channel channel;
-  SagaMonitor sagaMonitor;
-  OnErrorHandler onError;
-  List<EffectMiddlewareHandler> effectMiddlewares;
+  late SagaContext context;
+  late Channel channel;
+  SagaMonitor? sagaMonitor;
+  late OnErrorHandler onError;
+  List<EffectMiddlewareHandler>? effectMiddlewares;
   _UniqueId uniqueId = _UniqueId();
   bool connectedToStore = false;
 
-  _SagaMiddleware([Options options]) {
-    context = options == null ? SagaContext() : SagaContext(options.context);
-    channel = options == null || options.channel == null
-        ? StdChannel()
-        : options.channel;
-    sagaMonitor = options == null ? null : options.sagaMonitor;
-    onError = options == null || options.onError == null
-        ? (_isDebugMode ? _logError : _logErrorEmpty)
-        : options.onError;
-    effectMiddlewares = options == null ? null : options.effectMiddlewares;
+  _SagaMiddleware([Options? options]) {
+    context = SagaContext(options?.context);
+    channel = options?.channel ?? StdChannel();
+    sagaMonitor = options?.sagaMonitor;
+    onError = options?.onError ?? (_isDebugMode ? _logError : _logErrorEmpty);
+    effectMiddlewares = options?.effectMiddlewares;
   }
 
-  bool get monitoring => sagaMonitor != null;
+  //bool get monitoring => sagaMonitor != null;
 
   final errorStack = _SagaErrorStack();
 
   @override
   Task run(Function saga,
-      {List<dynamic> args,
-      Map<Symbol, dynamic> namedArgs,
-      Function Catch,
-      Function Finally,
-      String name}) {
+      {List<dynamic>? args,
+      Map<Symbol, dynamic>? namedArgs,
+      Function? Catch,
+      Function? Finally,
+      String? name}) {
     if (!connectedToStore) throw SagaMustBeConnectedToTheStore();
     if (_store == null) throw SagaStoreMustBeSet();
     if (dispatch == null) throw SagaMiddlewareDispatchMustBeSet();
     if (getState == null) throw SagaMiddlewareGetStateMustBeSet();
-    if (saga == null) throw SagaFunctionMustBeNonNullException();
+    //if (saga == null) throw SagaFunctionMustBeNonNullException();
 
     dynamic result = _callFunction(saga, args, namedArgs);
 
@@ -129,24 +125,20 @@ class _SagaMiddleware extends SagaMiddleware {
 
     final effectId = uniqueId.nextSagaId();
 
-    if (monitoring) {
-      sagaMonitor.rootSagaStarted(effectId, saga, args, namedArgs, 'root');
-    }
+    sagaMonitor?.rootSagaStarted(effectId, saga, args, namedArgs, 'root');
 
     return immediately(() {
       var task = _createTask(context, iterator, Catch, Finally, effectId,
           SagaMeta(name, effectId), true, null);
 
-      if (monitoring) {
-        sagaMonitor.effectResolved(effectId, task);
-      }
+      sagaMonitor?.effectResolved(effectId, task);
 
       return task;
     });
   }
 
   _RunEffectFinalizer getRunEffectFinalizer() {
-    if (effectMiddlewares == null) {
+    if (effectMiddlewares == null || effectMiddlewares!.isEmpty) {
       return (f) => f;
     } else {
       var composedMiddleware = getComposedMiddleware();
@@ -154,15 +146,15 @@ class _SagaMiddleware extends SagaMiddleware {
         return (dynamic effect, int effectId, _TaskCallback currCb) {
           var plainRunEffect =
               (dynamic eff) => runEffect(eff, effectId, currCb);
-          composedMiddleware(effect, plainRunEffect);
+          composedMiddleware!(effect, plainRunEffect);
         };
       };
     }
   }
 
-  EffectMiddlewareHandler getComposedMiddleware() {
-    EffectMiddlewareHandler composedMiddleware;
-    effectMiddlewares.reversed.forEach((EffectMiddlewareHandler middleware) {
+  EffectMiddlewareHandler? getComposedMiddleware() {
+    EffectMiddlewareHandler? composedMiddleware;
+    effectMiddlewares!.reversed.forEach((EffectMiddlewareHandler middleware) {
       var currentDispatcher = composedMiddleware;
       composedMiddleware = currentDispatcher == null
           ? (dynamic effect, NextMiddlewareHandler runEffect) =>
@@ -179,42 +171,39 @@ class _SagaMiddleware extends SagaMiddleware {
   }
 
   void put(dynamic action) {
-    if (sagaMonitor != null && sagaMonitor.actionDispatched != null) {
-      sagaMonitor.actionDispatched(action);
-    }
+    sagaMonitor?.actionDispatched(action);
     channel.put(action);
   }
 
-  Store _store;
+  Store? _store;
 
   @override
   void setStore(Store value) {
-    if (value == null) throw SagaStoreCanNotBeNull();
     _store = value;
     dispatch = _dispatch;
     getState = _getState;
   }
 
   dynamic _getState() {
-    return _store.state;
+    return _store!.state;
   }
 
   dynamic _dispatch(dynamic action) {
     if (action is SagaAction) {
       action.dispatched = true;
     }
-    return _store.dispatch(action);
+    return _store!.dispatch(action);
   }
 
   Task _createTask(
       SagaContext parentContext,
       Iterator iterator,
-      Function onError,
-      Function onFinally,
+      Function? onError,
+      Function? onFinally,
       int parentEffectId,
       SagaMeta meta,
       bool isRoot,
-      _TaskCallback continueCallback) {
+      _TaskCallback? continueCallback) {
     var runner = _taskRunner(this, parentContext, iterator, onError, onFinally,
         parentEffectId, meta, isRoot, continueCallback);
     return runner.createTask();
