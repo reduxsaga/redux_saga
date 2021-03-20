@@ -131,7 +131,8 @@ class _taskRunner {
       clearCurrentExecution(ncb);
       onErrorExecuted = true;
       codeBlock = _CodeBlock.errorCode;
-      processFunctionReturn(ncb, _callErrorFunction(onError!, currentException!));
+      processFunctionReturn(
+          ncb, _callErrorFunction(onError!, currentException!));
     } catch (e, s) {
       ncb.next(arg: _createSagaException(e, s), isErr: true);
     }
@@ -150,8 +151,8 @@ class _taskRunner {
 
   void processFunctionReturn(_TaskCallback callback, dynamic fr) {
     if (fr is Future || fr is FutureWithCancel) {
-      var tcb =
-          _TaskCallback(({_TaskCallback? invoker, dynamic arg, bool isErr = false}) {
+      var tcb = _TaskCallback((
+          {_TaskCallback? invoker, dynamic arg, bool isErr = false}) {
         callback.next(arg: arg, isErr: isErr);
       }, () {
         callback.cancel();
@@ -309,7 +310,7 @@ class _taskRunner {
     var effectId = middleware.uniqueId.nextSagaId();
 
     middleware.sagaMonitor
-          ?.effectTriggered(effectId, parentEffectId, label, effect);
+        ?.effectTriggered(effectId, parentEffectId, label, effect);
 
     var effectSettled = false;
 

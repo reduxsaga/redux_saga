@@ -38,7 +38,6 @@ class FlushChannel extends EffectWithResult {
   @override
   void _run(_SagaMiddleware middleware, _TaskCallback cb,
       _ExecutingContext executingContext) {
-
     channel.flush(TakeCallback<List<dynamic>>((dynamic input) {
       cb.next(arg: input);
     }));
