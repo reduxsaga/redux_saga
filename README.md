@@ -2,6 +2,20 @@
 
 ![Dart CI](https://github.com/reduxsaga/redux_saga/workflows/Dart%20CI/badge.svg?branch=master)
 
+<a href="https://github.com/reduxsaga/redux_saga/issues">
+  <img src="https://img.shields.io/github/issues-raw/reduxsaga/redux_saga" alt="Issues related to redux_saga" />
+</a>
+<a href="https://pub.dev/packages/redux_saga">
+  <img src="https://img.shields.io/pub/v/redux_saga.svg" alt="Pub Package Version" />
+</a>
+<a href="https://pub.dev/documentation/redux_saga/latest">
+  <img src="https://img.shields.io/badge/dartdocs-latest-blue.svg" alt="Latest Dartdocs" />
+</a>
+<a href="https://gitter.im/Redux-Saga-Dart-and-Flutter/community">
+  <img src="https://badges.gitter.im/dart-lang/build.svg" alt="Join the chat on Gitter" />
+</a>
+</br></br>
+
 Redux Saga Middleware for Dart and Flutter is a library that aims to make application side effects (i.e. asynchronous things like data fetching and impure things like accessing the browser cache) easier to manage, more efficient to execute, easy to test, and better at handling failures.
 
 The mental model is that a saga is like a separate thread in your application that's solely responsible for side effects. `Redux Saga` is a redux middleware, which means this thread can be started, paused and cancelled from the main application with normal redux actions, it has access to the full redux application state and it can dispatch redux actions as well.
