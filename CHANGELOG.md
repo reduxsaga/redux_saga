@@ -109,9 +109,9 @@ Proper usage example :
 
 - Updated to null safety
 
-## 3.0.4
+## 3.0.5
 
-- pub.dev fixex
+- pub.dev fixes
 
 
 
