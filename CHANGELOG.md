@@ -113,5 +113,9 @@ Proper usage example :
 
 - pub.dev fixes
 
+## 3.0.6
+
+- pub.dev fixes and update
+
 
 
