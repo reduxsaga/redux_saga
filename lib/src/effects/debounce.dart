@@ -105,7 +105,7 @@ Iterable<Effect> _Debounce(Function saga,
     var actionResult = Result<dynamic>();
     yield Take(
         pattern: pattern, channel: debounceChannel, result: actionResult);
-    dynamic action = actionResult is Result ? actionResult.value : actionResult;
+    dynamic action = actionResult.value;
 
     while (true) {
       var raceResult = RaceResult();

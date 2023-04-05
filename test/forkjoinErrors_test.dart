@@ -194,7 +194,7 @@ void main() {
       sagaMiddleware.setStore(store);
 
       void willFail({dynamic action}) {
-        if (!(action.fail as bool)) {
+        if (!(action as _actionType).fail) {
           actual.add(action.i);
           return;
         }
@@ -233,7 +233,7 @@ class _actionType {
   final int i;
   final bool fail;
 
-  _actionType(this.i, [this.fail = false]);
+  _actionType(this.i, this.fail);
 }
 
 class _actionType1 extends _actionType {

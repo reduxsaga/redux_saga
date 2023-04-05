@@ -54,11 +54,7 @@ class CloneableGenerator implements Iterator<dynamic> {
   bool moveNext() {
     if (!_started) {
       var result = _callFunction(fn, args, namedArgs) as Iterable;
-      if (result is Iterable) {
-        _iterator = result.iterator;
-      } else {
-        throw GeneratorFunctionExpectedException();
-      }
+      _iterator = result.iterator;
       _started = true;
     }
 

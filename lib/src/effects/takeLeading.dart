@@ -91,7 +91,7 @@ Iterable<Effect> _TakeLeading(Function saga,
         args: args,
         namedArgs: <Symbol, dynamic>{
           ...?namedArgs,
-          #action: action is Result ? action.value : action
+          #action: action.value
         },
         Catch: Catch,
         Finally: Finally);
