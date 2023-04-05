@@ -117,5 +117,9 @@ Proper usage example :
 
 - pub.dev fixes and update
 
+## 3.1.0
+
+- removed unnecessary type checks
+
 
 
