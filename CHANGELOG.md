@@ -121,5 +121,9 @@ Proper usage example :
 
 - removed unnecessary type checks
 
+## 3.2.0
+
+- Environment update, docs update
+
 
 
