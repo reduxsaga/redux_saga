@@ -14,7 +14,7 @@ fetchPostsWithTimeout() sync* {
   yield Race({
     #posts: Call(fetchApi, args: ['/posts']),
     #timeout: Delay(Duration(seconds: 1))
-  });
+  }, result: result);
 
   if (result.key == #posts) {
     yield Put(PostsReceived(posts));
