@@ -1,6 +1,6 @@
 # Redux Saga Middleware Dart and Flutter
 
-![Dart CI](https://github.com/reduxsaga/redux_saga/workflows/Dart%20CI/badge.svg?branch=master)
+![Dart CI](https://github.com/reduxsaga/redux_saga/actions/workflows/dart.yml/badge.svg?branch=master)
 
 <a href="https://github.com/reduxsaga/redux_saga/issues">
   <img src="https://img.shields.io/github/issues-raw/reduxsaga/redux_saga" alt="Issues related to redux_saga" />
