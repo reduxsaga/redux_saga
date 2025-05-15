@@ -125,5 +125,9 @@ Proper usage example :
 
 - Environment update, docs update
 
+## 3.2.1
+
+- Environment update, docs update
+
 
 
