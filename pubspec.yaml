@@ -2,11 +2,11 @@ name: redux_saga
 maintainer: Bilal Uslu (@bilaluslu)
 description: redux_saga is a library that aims to make application side effects easier to manage, more efficient to execute, easy to test, and better at handling failures.
 homepage: https://github.com/reduxsaga/redux_saga
-version: 3.1.0
+version: 3.2.1
 repository: https://github.com/reduxsaga/redux_saga
 
 environment:
-  sdk: '>=2.12.0 <=3.7.2'
+  sdk: '>=2.12.0 <=3.7.3'
 
 dependencies:
   redux: ^5.0.0
